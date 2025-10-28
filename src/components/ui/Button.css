@@ -1,0 +1,91 @@
+/* ============== Button.css ============== */
+:root{
+  /* 브랜드 팔레트 (원하면 자유롭게 교체) */
+  --c-bg: #f7f8fc;
+  --c-text: #1f2330;
+  --c-muted: #6b7280;
+  --c-border: #e7e7f1;
+  --c-card: #ffffff;
+
+  --c-primary: #6b4ef3;
+  --c-primary-600: #553ad8;
+
+  --c-secondary: #eef0ff;
+  --c-secondary-600: #dfe3ff;
+
+  --c-danger: #ef4444;
+  --c-danger-600: #dc2626;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+
+  padding:10px 16px;
+  border-radius:12px;
+  border:1px solid transparent;
+  background:#fff;
+  color:var(--c-text);
+  font-weight:600;
+  line-height:1;
+  cursor:pointer;
+  transition:background .2s ease, border-color .2s ease, color .2s ease, transform .06s ease, box-shadow .2s ease;
+  box-shadow: 0 8px 22px rgba(0,0,0,.06);
+  text-decoration:none;
+}
+
+.btn:focus-visible{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(107,78,243,.25);
+}
+.btn:active{ transform: translateY(1px); }
+
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  box-shadow:none;
+}
+
+/* Variants */
+.primary{
+  background: var(--c-primary);
+  color:#fff;
+}
+.primary:hover{ background: var(--c-primary-600); }
+
+.secondary{
+  background: var(--c-secondary);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+.secondary:hover{ background: var(--c-secondary-600); }
+
+.outline{
+  background: #fff;
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+.outline:hover{
+  background:#fafafe;
+  border-color:#cfd2e6;
+}
+
+.text{
+  background: transparent;
+  color: var(--c-text);
+  box-shadow:none;
+}
+.text:hover{ background:#f6f7fb; }
+
+.danger{
+  background: var(--c-danger);
+  color:#fff;
+}
+.danger:hover{ background: var(--c-danger-600); }
+
+/* 옵션 클래스(필요 시 사용) */
+.fullWidth{ width:100%; }
+.sm{ padding:8px 12px; font-size:13px; border-radius:10px; }
+.lg{ padding:12px 18px; font-size:16px; border-radius:14px; }
