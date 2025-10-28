@@ -1,0 +1,87 @@
+/* 래퍼와 라벨 */
+.spinner-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.spinner-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ====== 알약(캡슐) 스피너 ====== */
+.pill {
+  /* 사이즈 변수: width = --size, height = --size/2.2 */
+  --size: 28px;
+  --color: currentColor;
+  --speed: 0.9s;
+
+  position: relative;
+  display: inline-block;
+  width: var(--size);
+  height: calc(var(--size) / 2.2);
+  border-radius: 999px;
+  animation: pill-rotate var(--speed) linear infinite;
+  transform-origin: center center;
+  /* 살짝 테두리 배경 */
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--color) 88%, white) 0 50%,
+    color-mix(in srgb, var(--color) 55%, white) 50% 100%
+  );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color) 25%, white),
+    0 8px 18px rgba(0,0,0,.08);
+}
+
+/* 하이라이트(빛 반사) */
+.pill::before,
+.pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* 캡슐 반짝임 (대각선 하이라이트) */
+.pill::before {
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,.65) 6%,
+    rgba(255,255,255,.0) 26%
+  );
+  filter: blur(0.2px);
+}
+
+/* 중앙 분리선 은은하게 */
+.pill::after {
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--color) 25%, white);
+  height: 100%;
+  border-radius: 1px;
+}
+
+/* 회전 애니메이션 */
+@keyframes pill-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* color-mix 미지원 브라우저 폴백 */
+@supports not (background: color-mix(in srgb, #000 50%, #fff)) {
+  .pill {
+    background: linear-gradient(
+      90deg,
+      var(--color) 0 50%,
+      rgba(0,0,0,.12) 50% 100%
+    );
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.15),
+      0 8px 18px rgba(0,0,0,.08);
+  }
+  .pill::after {
+    background: rgba(0,0,0,.15);
+  }
+}
