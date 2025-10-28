@@ -1,3 +1,4 @@
+// 푸터
 const Footer = () => {
   return (
     <>
