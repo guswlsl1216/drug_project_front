@@ -1,5 +1,6 @@
 .mypage-container {
   padding: 20px;
+  padding-top: 80px;
   max-width: 800px;
   margin: 0 auto;
 }
@@ -23,5 +24,6 @@
 }
 
 .mypage-content {
+  margin-top: 20px;
   padding: 10px;
 }

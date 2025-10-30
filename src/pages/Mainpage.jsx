@@ -4,7 +4,7 @@ import "../styles/Mainpage.css";
 function Mainpage() {
   return (
     <>
-      <main>
+      <main className="wrapper">
         <section className="main_contents">
           <div className="main_text">
             <h1 className="main_title">Medi.Check!</h1>
