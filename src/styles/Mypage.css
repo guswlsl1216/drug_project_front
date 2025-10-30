@@ -1,0 +1,27 @@
+.mypage-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mypage-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.mypage-tabs a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: gray;
+}
+
+.mypage-tabs a.active {
+  color: #000;
+  border-bottom: 3px solid #000;
+}
+
+.mypage-content {
+  padding: 10px;
+}
