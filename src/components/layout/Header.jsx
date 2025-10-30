@@ -14,11 +14,11 @@ const Header = () => {
             </NavLink>
           </div>
           <ul className="header_menu">
-            <NavLink to="Analyze">AI분석</NavLink>
-            <NavLink to="Medslist">의약품목록</NavLink>
-            <NavLink to="Login">로그인</NavLink>
-            <NavLink to="Signup">회원가입</NavLink>
-            <NavLink to="Mypage">마이페이지(임시)</NavLink>
+            <NavLink to="analyze">AI분석</NavLink>
+            <NavLink to="medslist">의약품목록</NavLink>
+            <NavLink to="login">로그인</NavLink>
+            <NavLink to="signup">회원가입</NavLink>
+            <NavLink to="mypage">마이페이지(임시)</NavLink>
           </ul>
         </nav>
       </header>
