@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import "../../styles/Mypage.css";
+import "../../styles/mypage/Mypage.css";
 
 const Mypage = () => {
   return (

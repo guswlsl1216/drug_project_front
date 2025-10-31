@@ -1,0 +1,38 @@
+.history_cardlist {
+  padding-top: 20px;
+}
+
+.history_cardlist > li {
+  list-style-type: none;
+}
+
+.history_card {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #f2f2f2;
+}
+
+.history_card:hover {
+  background: #e2e2e2;
+}
+
+.history_cardInfo {
+  display: flex;
+}
+
+.history_cardInfo_logo {
+  height: 50px;
+  width: 50px;
+  align-content: center;
+  text-align: center;
+  border-radius: 50%;
+  background-color: sandybrown;
+  color: #fff;
+}
+
+.history_cardBtn {
+  display: flex; 
+  align-items: flex-end;
+}
