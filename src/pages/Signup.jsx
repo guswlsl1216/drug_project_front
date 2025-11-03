@@ -25,10 +25,10 @@ const Signup = () => {
       payload: form,
       setLoading,
       onSuccess:(data) => {
-        alert(`${data.data.nickname}님 환영합니다.`);
+        alert(`${data.data.nickname}님 환영합니다. 일반 로그인은 알림 설정이 불가능 합니다.`);
         console.log(data);
         
-        goTo("/auth/login");
+        goTo("/signupComplete");
       },
       onError: (msg) => {
         alert(msg);
