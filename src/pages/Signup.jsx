@@ -13,7 +13,11 @@ const Signup = () => {
     username:"",
     password:"",
     nickname:"",
-    email:""
+    email:"",
+    age:"",
+    gender:"",
+    address:"",
+    detailed_address:""
   });
   
   const handleSubmit = (e) => {
@@ -36,7 +40,8 @@ const Signup = () => {
     })
   };
 
-  const unable = Object.values(form).some((value) => value.trim() === "");
+  const required = ["username","password","email","nickname"]
+  const unable = required.some((field) => form[field].trim() === "");
 
   return (
     <>
@@ -63,6 +68,30 @@ const Signup = () => {
           <div>
             <h4>이메일</h4>
             <input type="text" name="email" value={form.email} onChange={Changehandler(setForm)} placeholder="email"/>
+          </div>
+
+          <div>
+            <h4>나이</h4> 
+            <h5>(선택사항)</h5>
+            <input type="text" name="age" value={form.age} onChange={Changehandler(setForm)} placeholder="ex) 23"/>
+          </div>
+
+          <div>
+            <h4>성별</h4>
+            <h5>(선택사항)</h5>
+            <input type="text" name="gender" value={form.gender} onChange={Changehandler(setForm)} placeholder="ex) 남 or 여"/>
+          </div>
+
+          <div>
+            <h4>주소</h4>
+            <h5>(선택사항)</h5>
+            <input type="text" name="address" value={form.address} onChange={Changehandler(setForm)} placeholder="ex) 도로명 주소"/>
+          </div>
+
+          <div>
+            <h4>상세 주소</h4>
+            <h5>(선택사항)</h5>
+            <input type="text" name="detailed_address" value={form.detailed_address} onChange={Changehandler(setForm)} placeholder="ex) 상세 주소"/>
           </div>
 
           <Button variant="primary" disabled={unable} onClick={handleSubmit}>가입하기</Button>
