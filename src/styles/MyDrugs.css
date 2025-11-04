@@ -1,0 +1,484 @@
+/* --- 메인 색상 변수 설정 (깨끗한 흑백 톤) --- */
+.clean-theme {
+    --main-color: #333333;       /* 짙은 흑색 (강조색 역할) */
+    --hover-color: #555555;      /* 중간 회색 (마우스 오버) */
+    --light-bg: #F8F8F8;         /* 아주 연한 배경 (탭 및 목록 배경) */
+    --border-color: #EEEEEE;     /* 얇은 경계선 */
+    --primary-color: #4CAF50;    /* 영양제 강조색 (초록) */
+    --secondary-color: #F44336;  /* 복용약 강조색 (빨강) */
+}
+
+/* 폰트 및 전체 컨테이너 기본 설정 */
+.my-med-container {
+    max-width: 900px; 
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Inter', 'Noto Sans KR', sans-serif;
+}
+
+/* --- 성공 메시지 스타일 --- */
+.success-message-global {
+    background-color: #E6F7E6; 
+    color: #1E8449; 
+    padding: 12px 20px;
+    margin-bottom: 20px; 
+    border-radius: 8px;
+    border: 1px solid #C8E6C9;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* --- 메인 레이아웃 (좌우 분할) --- */
+.main-layout-wrapper {
+    display: flex;
+    margin-top: 20px;
+}
+
+/* --- 탭 사이드바 (왼쪽 영역 - 세로 정렬) --- */
+.med-sidebar {
+    display: flex;
+    flex-direction: column; 
+    width: 180px; 
+    margin-right: 35px;
+    border-right: 1px solid var(--border-color); 
+    padding-right: 20px;
+}
+
+/* --- 사이드바 버튼 스타일 (세로 탭) --- */
+.sidebar-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 10px 15px; 
+    margin-bottom: 5px; 
+    font-size: 14px; 
+    font-weight: 500;
+    color: #6a6a6a;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 4px;
+}
+
+.sidebar-btn:hover {
+    background-color: #F0F0F0; 
+    color: var(--hover-color);
+}
+
+/* ⭐ 활성화된 탭 스타일 (깔끔한 왼쪽 강조선) ⭐ */
+.sidebar-btn.active {
+    color: var(--main-color) !important; 
+    font-weight: 700;
+    background-color: #F0F0F0; 
+    border-left: 4px solid var(--main-color); 
+    padding-left: 11px; 
+}
+
+/* --- 탭 콘텐츠 영역 (오른쪽 영역) --- */
+.tab-content-wrapper {
+    flex-grow: 1; 
+}
+
+
+/* --- 공통 스타일 --- */
+h4 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--main-color); 
+    margin-bottom: 20px;
+    text-align: center;
+}
+.content-title {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--main-color); 
+    margin-bottom: 30px;
+}
+
+.section-heading {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 15px;
+    border-left: 5px solid #CED4DA; 
+    padding-left: 15px;
+}
+
+.section-heading-small {
+    font-size: 16px;
+    font-weight: 700;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.list-divider {
+    border: 0;
+    height: 1px;
+    background: var(--border-color);
+    margin: 30px 0;
+}
+
+/* --- 복용 목록 아이템 카드 스타일 (.DrugList.jsx) --- */
+.med-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 25px;
+    background-color: var(--light-bg); 
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s, background-color 0.2s, border-left 0.2s;
+    border-left: 5px solid transparent;
+}
+
+.list-item:hover {
+    transform: translateY(-2px);
+    background-color: #F0F0F0;
+}
+
+.list-item.med { border-left-color: var(--secondary-color); }
+.list-item.supp { border-left-color: var(--primary-color); }
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--main-color);
+}
+
+.item-howto { 
+    font-size: 15px;
+    color: #777;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.item-type-tag {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 10px;
+}
+.item-type-tag.med {
+    background-color: #FEECEE;
+    color: var(--secondary-color);
+    border: 1px solid #FBC0BD;
+}
+.item-type-tag.supp {
+    background-color: #E6F7E6;
+    color: var(--primary-color);
+    border: 1px solid #C8E6C9;
+}
+
+.item-note {
+    font-size: 13px;
+    color: #999;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.item-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-btn.delete {
+    background-color: #F5F5F5;
+    color: #777;
+    border: 1px solid #DDD;
+}
+.action-btn.delete:hover {
+    background-color: #FCE8E8;
+    color: #D32F2F;
+}
+
+.action-btn.primary {
+    background-color: #555555;
+    color: white;
+    border: none;
+}
+.action-btn.primary:hover {
+    background-color: var(--main-color);
+}
+
+
+.no-item-msg {
+    text-align: center;
+    color: #adb5bd;
+    padding: 20px;
+    border: 1px dashed #ced4da;
+    border-radius: 6px;
+}
+
+/* --- 입력 탭 공통 스타일 (.MedInput.jsx, .SuppInput.jsx) --- */
+.status-box {
+    padding: 20px;
+    background-color: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.info-text {
+    padding: 15px;
+    background-color: #EFEFEF;
+    border-radius: 8px;
+    color: #6a6a6a;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    border-left: 4px solid #CED4DA;
+}
+
+/* --- AI 분석 관련 스타일 --- */
+.upload-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.upload-btn {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: #EBEBEB;
+    color: #333;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.upload-btn:hover {
+    background-color: #DEDEDE;
+}
+
+.analyze-btn {
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    background-color: var(--secondary-color); /* 복용약 강조색 사용 */
+    color: white;
+    border: none;
+    width: 150px;
+}
+
+.analyze-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.analyze-btn:hover:not(:disabled) {
+    background-color: #d32f2f;
+}
+
+.hidden-file-input {
+    display: none;
+}
+
+.result-display {
+    padding: 0;
+    opacity: 0; 
+    height: 0;
+    overflow: hidden;
+    transition: opacity 0.5s, padding 0.5s, height 0.5s;
+    background-color: #F7F7F7;
+    border-left: 5px solid #aaa;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.result-display.visible {
+    opacity: 1;
+    height: auto;
+    padding: 15px;
+}
+
+.ai-result {
+    font-weight: 600;
+    color: var(--main-color);
+    line-height: 1.5;
+}
+
+/* --- 입력 폼 공통 스타일 --- */
+.input-form {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.input-label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #444;
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.input-label:first-of-type {
+    margin-top: 0; /* 폼 시작 시 첫 레이블의 마진 제거 */
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    resize: vertical;
+}
+
+.input-field:focus {
+    border-color: var(--main-color);
+    box-shadow: 0 0 5px rgba(51, 51, 51, 0.1);
+    outline: none;
+}
+
+/* --- 버튼 및 활성화 상태 스타일 --- */
+.save-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 30px;
+    background-color: var(--main-color); 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.save-btn:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed !important;
+}
+
+
+/* --- SuppInput 상세 옵션 스타일 --- */
+.dosage-frequency-options, .time-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.dosage-option, .time-option {
+    padding: 8px 12px;
+    border: 1px solid #DDD;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: white;
+    color: #444;
+    user-select: none;
+}
+
+.dosage-option:hover, .time-option:hover {
+    background-color: #F0F0F0;
+}
+
+/* 횟수 활성화 */
+.dosage-option.active {
+    background-color: var(--main-color);
+    color: white;
+    border-color: var(--main-color);
+}
+
+/* 시간 활성화 (영양제 테마색 사용) */
+.time-option.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.hidden-radio, .hidden-checkbox {
+    display: none;
+}
+
+.count-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.count-input-field {
+    width: 80px;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.unit-text {
+    font-size: 15px;
+    color: #555;
+}
+
+/* 반응형 디자인: 모바일 환경에서 탭을 가로 스크롤로 변경 */
+@media (max-width: 600px) {
+    .main-layout-wrapper {
+        flex-direction: column;
+    }
+    .med-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding-right: 0;
+        margin-bottom: 20px;
+        flex-direction: row;
+        overflow-x: auto; /* 가로 스크롤 허용 */
+        white-space: nowrap; /* 버튼들이 한 줄에 유지되도록 */
+    }
+    .sidebar-btn {
+        flex-shrink: 0;
+    }
+    .sidebar-btn.active {
+        border-left: none; /* 세로선 제거 */
+        border-bottom: 4px solid var(--main-color); /* 하단 강조선 */
+        padding-left: 15px;
+        padding-bottom: 6px;
+        margin-bottom: 0;
+    }
+}

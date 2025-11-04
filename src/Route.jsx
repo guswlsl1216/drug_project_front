@@ -11,7 +11,7 @@ import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
-import Mymeds from "./pages/mypage/Mymeds";
+import MyDrugs from "./pages/mypage/MyDrugs";
 
 const Routers = () => {
 
@@ -27,7 +27,7 @@ const Routers = () => {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
           <Route path="history" element={<History />} />
-          <Route path="mymeds" element={<Mymeds />} />
+          <Route path="mydrugs" element={<MyDrugs />} />
           <Route path="routine" element={<Routine />} />
           <Route path="cart" element={<Cart />} />
           <Route path="orders" element={<Orders />} />
