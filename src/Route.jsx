@@ -1,8 +1,8 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Mainpage from "./pages/Mainpage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Analyze from "./pages/Analyze";
+import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
 import Cart from "./pages/mypage/Cart";
 import Orders from "./pages/mypage/Orders";
@@ -12,6 +12,10 @@ import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
+import MedicinePage from "./pages/analyze/MedicinePage";
+import SupplementPage from "./pages/analyze/SupplementPage";
+
+
 
 const Routers = () => {
 
@@ -21,7 +25,10 @@ const Routers = () => {
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/analyze" element={<Analyze />} />
+        <Route path="/analyze" element={<Analyze />}>
+          <Route path="medicine" element={<MedicinePage />} />
+          <Route path="supplement" element={<SupplementPage />} />
+        </Route>
         <Route path="/medslist" element={<Medslist />} />
 
         <Route path="/mypage" element={<Mypage />}>

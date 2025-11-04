@@ -1,0 +1,36 @@
+.analyze-tab-contents {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.analyze-tabs {
+  display: flex;
+  width: 80%;
+  justify-items: flex-start;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+  margin: 0 auto;
+}
+
+.analyze-tabs a{
+  text-decoration: none;
+  color: inherit;
+}
+
+.medicine-tab, .supplement-tab {
+  width: 100px;
+  height: 30px;
+  text-align: center;
+}
+
+.medicine-tab{
+  background-color: rgb(252, 49, 49);
+}
+
+.analyze-tab-content{
+  width: 80%;
+  margin: 0 auto;
+}
