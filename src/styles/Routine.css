@@ -1,0 +1,60 @@
+/* Routine 컨테이너 - calendar와 list를 감싸는 부모 요소 */
+#Routine {
+  width: 100%;                    /* 전체 너비 */
+  max-width: 1400px;              /* 최대 너비 제한 */
+  height: 80vh;                   /* 화면 높이의 80% */
+  display: flex;                  /* Flexbox 레이아웃 */
+  flex-direction: column;         /* 세로 방향 정렬 (위아래) */
+  gap: 20px;                      /* 자식 요소 간 간격 */
+  padding: 20px;                  /* 내부 여백 */
+}
+
+/* 캘린더 컨테이너 - 월간/주간 뷰가 표시되는 영역 */
+#calendar {
+  flex: 1;                        /* 남은 공간 모두 차지 */
+  min-width: 400px;               /* 최소 너비 보장 */
+  height: 60%;                    /* Routine의 60% 높이 */
+}
+
+/* 캘린더 내부 FullCalendar 요소 */
+#calendar .fc {
+  height: 100%;                   /* 부모(#calendar) 높이에 맞춤 */
+}
+
+/* 리스트 컨테이너 - 일정 목록이 표시되는 영역 */
+#list {
+  flex: 0 0 250px;                /* 고정 크기 250px (늘어나지도 줄어들지도 않음) */
+  height: 40%;                    /* Routine의 40% 높이 */
+}
+
+/* 리스트 내부 FullCalendar 요소 */
+#list .fc {
+  height: 100%;                   /* 부모(#list) 높이에 맞춤 */
+}
+
+/* 리스트 이벤트의 시간 표시 부분 - "all-day" 또는 시간 텍스트 */
+.fc-list-event-time {
+  display: none !important;       /* 시간 표시 완전히 숨김 */
+}
+
+/* 리스트 이벤트의 제목 부분 - 이벤트명이 표시되는 영역 */
+.fc-list-event-title {
+  display: flex !important;       /* Flexbox로 변경 (가로 정렬) */
+  align-items: center !important; /* 세로 중앙 정렬 */
+  gap: 20px !important;           /* 내부 요소 간 간격 */
+}
+
+/* 리스트의 각 이벤트 행 전체 */
+.fc-list-event {
+  font-size: 20px;                /* 글자 크기 */
+  height: 60px !important;        /* 행 높이 고정 */
+  min-height: 60px !important;    /* 최소 높이 보장 */
+}
+
+/* 리스트 체크박스 컨테이너 - 아침/점심/저녁 체크박스를 감싸는 div */
+.list-checkbox {
+  display: flex;                  /* Flexbox로 가로 정렬 */
+  gap: 10px;                      /* 체크박스 간 간격 */
+  margin-top: 8px;                /* 위쪽 여백 */
+  margin-left: auto;              /* 오른쪽으로 밀기 */
+}
