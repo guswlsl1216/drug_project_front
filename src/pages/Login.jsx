@@ -18,9 +18,8 @@ const Login = () => {
 
     requestHandler({
       method: "post",
-      url:"auth/login",
+      url:"login/login",
       payload: form,
-      setLoading,
       onSuccess:(data) => {
         console.log(data);
 
