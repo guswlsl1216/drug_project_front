@@ -1,0 +1,88 @@
+/* src/styles/ChatbotDock.css */
+
+/* 창 자체: 오른쪽 하단 고정 */
+.dock{
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: min(92vw, 420px);
+  height: 640px;
+  background:#fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.25);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  z-index: 2100;
+  animation: dock-in .18s ease-out;
+}
+@keyframes dock-in{ from{ transform: translateY(10px); opacity:0 } to{ transform:none; opacity:1 } }
+
+/* 헤더 */
+.dock__header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; border-bottom:1px solid #eee;
+  background: repeating-linear-gradient(
+    45deg, rgba(255,0,102,.08), rgba(255,0,102,.08) 10px,
+    transparent 10px, transparent 20px
+  );
+  position: sticky; top: 0; z-index: 5;   /* ✅ 본문 위에 고정 */
+}
+
+/* ✅ 전역 h1 영향 차단 (모달 내부 전용) */
+.dock__header h1{
+  margin:0;
+  font-size:16px;
+  font-weight:800;
+  line-height: 1.2;
+  letter-spacing:-0.2px;
+}
+
+.dock__title{ display:flex; align-items:center; gap:8px; }
+.dock__actions{ display:flex; gap:4px; }
+
+/* ✅ 아이콘 버튼은 네이티브 <button> 기준으로 스타일 */
+.dock__actions button{
+  border:none; background:transparent; padding:6px; cursor:pointer;
+  font-size:16px; color:#111;
+}
+.dock__actions button:hover{ opacity:.8 }
+
+/* 본문 */
+.dock__body{ flex:1; overflow:auto; padding:16px; background:#fff }
+.dock__suggest h3{ margin:8px 0 12px; font-size:18px; }
+.accent{ color:#6c5ce7 }
+.chips{ display:flex; flex-direction:column; gap:10px }
+.chip{
+  border:none; cursor:pointer; text-align:left;
+  padding:10px 12px; border-radius:999px;
+  background:#f4f6f8; color:#111; font-size:14px;
+}
+.chip .plus{ font-weight:700; margin-right:6px }
+.chip:hover{ background:#e9eef5 }
+.msg{ padding:8px 10px; background:#f7f7f8; border-radius:10px; margin-bottom:8px }
+
+/* 입력 바 (아래) */
+.dock__input{
+  display:flex; align-items:center; gap:8px;
+  padding:12px; border-top:1px solid #eee;
+  background:#fff;
+}
+.dock__input .circle{
+  width:32px; height:32px; border-radius:999px; border:none; cursor:pointer;
+  background:#f3f4f6;
+}
+.dock__input input{
+  flex:1; height:44px; border-radius:999px; padding:0 14px; border:2px solid transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, #ff2dbb, #7a5cff, #3bbcff) border-box;  /* 그라디언트 테두리 */
+  outline:none;
+}
+.dock__input .send{
+  height:44px; padding:0 14px; border-radius:10px; border:none; cursor:pointer;
+  background:#111; color:#fff;
+}
+
+@media (max-width: 480px){
+  .dock{ width: 100vw; height: 75vh; right:0; bottom:0; border-radius: 10px 10px 0 0; }
+}
