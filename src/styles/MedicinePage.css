@@ -70,10 +70,17 @@
   margin-top: 5px; /* 버튼 간 간격 */
 }
 
-.button-save {
-  background-color: #ff6f61; /* 빨간색 계열 */
+.button-next {
+  background-color: #4CAF50; /* 초록색 계열 */
   margin-top: 30px;
-  width: 200px; /* 저장 버튼은 좀 더 넓게 */
+  width: 200px; /* 다음으로 버튼은 좀 더 넓게 */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  text-align: center;
 }
 
 /* 인식된 의약품 리스트 */

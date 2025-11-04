@@ -1,7 +1,9 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/MedicinePage.css"; // 새로 생성할 CSS 파일
 
 const MedicinePage = () => {
+  const navigate = useNavigate();
   // 예시를 위한 상태 관리 (실제 로직에서는 API 호출 등으로 데이터 관리)
   const [medicineImage, setMedicineImage] = useState(null);
   const [recognizedMedicines, setRecognizedMedicines] = useState([
@@ -40,9 +42,11 @@ const MedicinePage = () => {
     // 여기에 분석된 이미지로 의약품 정보 검색 로직 추가
   };
 
-  const handleSave = () => {
-    console.log("저장하기 버튼 클릭 - 최종 의약품 리스트 저장", recognizedMedicines);
+  const handleNext = () => {
+    // 현재 데이터를 저장하고 다음 페이지로 이동
+    console.log("의약품 데이터 저장:", recognizedMedicines);
     // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
+    navigate('/analyze/supplement'); // SupplementPage로 이동
   };
 
   return (
@@ -108,9 +112,9 @@ const MedicinePage = () => {
         ※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.
       </p>
 
-      {/* 저장하기 버튼 */}
-      <button className="button-save" onClick={handleSave}>
-        저장하기
+      {/* 다음으로 버튼 */}
+      <button className="button-next" onClick={handleNext}>
+        다음으로
       </button>
     </div>
   );

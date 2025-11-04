@@ -14,7 +14,7 @@ const Header = () => {
             </NavLink>
           </div>
           <ul className="header_menu">
-            <NavLink to="analyze">AI분석</NavLink>
+            <NavLink to="analyze/medicine">AI분석</NavLink>
             <NavLink to="medslist">의약품목록</NavLink>
             <NavLink to="login">로그인</NavLink>
             <NavLink to="signup">회원가입</NavLink>
