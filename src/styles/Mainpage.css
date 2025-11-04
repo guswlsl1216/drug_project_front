@@ -1,7 +1,21 @@
 @font-face {
-    font-family: 'Hamchorom';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2104@1.0/HANBatang.woff') format('woff');
-    font-weight: normal;
+    font-family: 'BookkMyungjo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Lt.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'BookkMyungjo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Bd.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aggravo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroL.woff') format('woff');
+    font-weight: 300;
     font-display: swap;
 }
 
@@ -41,7 +55,8 @@
   align-items: center;
   width: 100%;
   text-align: center;
-  font-family: 'Hamchorom';
+  font-family:'BookkMyungjo';
+  font-size: 20px;
   font-weight: 100;
 }
 
@@ -52,6 +67,13 @@
 .intro_img img{
   width: 50px;
   height: 50px;
+}
+
+.info_text_box h2{
+  font-family: 'Aggravo';
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
 

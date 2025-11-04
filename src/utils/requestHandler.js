@@ -1,3 +1,4 @@
+import axiosImage from "./axiosImage"
 import axiosInstance from "./axiosInstance"
 
 /**
@@ -9,6 +10,7 @@ import axiosInstance from "./axiosInstance"
  * @param {(msg:string, err:any)=>void} [onError]
  * @param {(v:boolean)=>void} [setLoading]
  * @param {object} [params] - GET 쿼리스트링 분리해서 쓰고 싶을 때
+ * @param {boolean} [useImage] - 이미지 전용 axios 인스턴스 사용 여부
  * @returns {Promise<{ok:boolean, data?:any, message?:string}>}
  */
 
@@ -20,19 +22,21 @@ const requestHandler = async ({
   onError,
   setLoading,
   params,
+  userImage = false // 이미지 관련
 }) => {
   const m = method?.toLowerCase?.() || "get"
+  const instance = userImage ? axiosImage : axiosInstance // 어떤 인스턴스 쓸지 결정
 
   try {
     setLoading?.(true)
 
     let res
     if (m === "get") {
-      res = await axiosInstance.get(url, {params: params ?? payload})
+      res = await instance.get(url, {params: params ?? payload})
     } else if ( m === "delete") {
-      res = await axiosInstance.delete(url, {data: payload})
+      res = await instance.delete(url, {data: payload})
     } else {
-      res = await axiosInstance[m](url, payload)
+      res = await instance[m](url, payload)
     }
 
     onSuccess?.(res.data)
