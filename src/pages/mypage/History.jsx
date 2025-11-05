@@ -5,10 +5,12 @@ import { useEffect, useState } from 'react';
 
 const History = () => {
   const [historyList, setHistoryList] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 번호
   const [loading, setLoading] = useState(false);
-  const [totalPages, setTotalPages] = useState(3);  // 화면에서 보여줄 총 페이지 번호
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i+1); // 화면에서 보여줄 총 페이지 번호 수에 따른 배열
+
+  const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지 번호
+  const [startPage, setStartPage] = useState(1);  // 현재 첫 페이지 번호
+  const [endPage, setEndPage] = useState(10);  // 현재 마지막 페이지 번호
+  const pageNumbers = Array.from({ length: endPage }, (_, i) => startPage + i); // 화면에서 보여줄 총 페이지 번호에 따른 배열
 
   const status_color = {
     '정상' : 'history_normal',
@@ -108,7 +110,7 @@ const History = () => {
             <p className='ellipsis'><span>[의약품]</span> {
               history.meds_ingredients.map(med => med).join(', ')
             }</p>
-            <p className='ellipsis'><span>[건강기능식품]</span> {
+            <p className='ellipsis'><span>[영양제]</span> {
               history.supps.map(
                 // supp => `${supp.name}(${supp.ingredients.map(ing => ing).join(', ')})` => 성분까지 표시
                 supp => supp.name
@@ -117,7 +119,7 @@ const History = () => {
           </div>
         </div>
         <div className="history_cardBtn">
-          <Button variant="primary">상세보기</Button>
+          <Button variant="primary" onClick={() => console.log('분석 결과 상세 팝업')}>상세보기</Button>
         </div>
       </article>
     )
@@ -143,8 +145,10 @@ const History = () => {
 
           <div className="history_pagination">
             <ul className="history_pagination_list">
-              {}
-              <li onClick={() => setCurrentPage(currentPage - 1)}>&lt;</li>
+              {
+                
+              }
+              <li onClick={() => setCurrentPage(currentPage - 10)}>&lt;</li>
               {
                 pageNumbers.map((page, i) => (
                   <li
@@ -154,7 +158,7 @@ const History = () => {
                   >{page}</li>
                 ))
               }
-              <li onClick={() => setCurrentPage(currentPage + 1)}>&gt;</li>
+              <li onClick={() => setCurrentPage(currentPage + 10)}>&gt;</li>
             </ul>
           </div>
         </section>
