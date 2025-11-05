@@ -1,11 +1,87 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/MedicinePage.css"; // 새로 생성할 CSS 파일
+
+const SearchModal = ({ isOpen, onClose, searchTerm, onSelect }) => {
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const searchMedicines = async () => {
+      if (isOpen && searchTerm) {
+        setLoading(true);
+        try {
+          // axios 인스턴스를 통한 요청
+          const response = await axiosInstance.get(`/medicine/search`, {
+            params: {
+              keyword: searchTerm
+            }
+          });
+          
+          const data = response.data;
+          
+          if (data.success) {
+            setSearchResults(data.medicines);
+          } else {
+            console.error('검색 실패:', data.message);
+            setSearchResults([]);
+          }
+        } catch (error) {
+          console.error('검색 중 오류 발생:', error);
+          setSearchResults([]);
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    // 타이핑할 때마다 바로 검색하지 않고 0.5초 후에 검색 실행
+    const debounceTimer = setTimeout(() => {
+      searchMedicines();
+    }, 500);
+
+    return () => clearTimeout(debounceTimer);
+  }, [isOpen, searchTerm]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="search-modal-overlay">
+      <div className="search-modal">
+        <div className="search-modal-header">
+          <h3>의약품 검색</h3>
+          <button onClick={onClose} className="close-button">×</button>
+        </div>
+        <div className="search-modal-content">
+          {loading ? (
+            <div className="loading">검색중...</div>
+          ) : (
+            <ul className="search-results">
+              {searchResults.map(item => (
+                <li 
+                  key={item.id} 
+                  onClick={() => onSelect(item)}
+                  className="search-result-item"
+                >
+                  <div className="result-name">{item.name}</div>
+                  <div className="result-detail">제조사: {item.detail}</div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const MedicinePage = () => {
   const navigate = useNavigate();
   // 예시를 위한 상태 관리 (실제 로직에서는 API 호출 등으로 데이터 관리)
   const [medicineImage, setMedicineImage] = useState(null);
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const [selectedMedicineId, setSelectedMedicineId] = useState(null);
   const [recognizedMedicines, setRecognizedMedicines] = useState([
     {id: 1, name: "인식된 의약품 1"},
     {id: 2, name: "인식된 의약품 2"},
@@ -89,11 +165,15 @@ const MedicinePage = () => {
               <div key={med.id} className="medicine-item">
                 <input
                   type="text"
+                  className="medicine-input"
                   value={med.name}
                   onChange={(e) => handleMedicineNameChange(med.id, e.target.value)}
                 />
-                <button className="button-edit" onClick={() => console.log("수정", med.id)}>
-                  ✏️
+                <button className="button-edit" onClick={() => {
+                  setSelectedMedicineId(med.id);
+                  setSearchModalOpen(true);
+                }}>
+                  ✓
                 </button>
                 <button className="button-delete" onClick={() => handleMedicineDelete(med.id)}>
                   🗑️
@@ -116,8 +196,27 @@ const MedicinePage = () => {
       <button className="button-next" onClick={handleNext}>
         다음으로
       </button>
+
+      {/* 검색 모달 */}
+      <SearchModal
+        isOpen={searchModalOpen}
+        onClose={() => setSearchModalOpen(false)}
+        searchTerm={selectedMedicineId ? recognizedMedicines.find(med => med.id === selectedMedicineId)?.name : ""}
+        onSelect={(selectedItem) => {
+          setRecognizedMedicines(
+            recognizedMedicines.map(med =>
+              med.id === selectedMedicineId
+                ? { ...med, name: selectedItem.name }
+                : med
+            )
+          );
+          setSearchModalOpen(false);
+        }}
+      />
     </div>
   );
 };
 
 export default MedicinePage;
+
+
