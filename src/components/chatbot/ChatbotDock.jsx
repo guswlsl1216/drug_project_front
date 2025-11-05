@@ -1,11 +1,16 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Button from "../ui/Button"
-import { faCommentMedical, faXmark } from "@fortawesome/free-solid-svg-icons"
+import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons"
 import "../../styles/ChatbotDock.css"
 import { useEffect, useRef, useState } from "react"
+import handler from "../../../api/apiChat"
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
   const [input, setInput] = useState("")
+  const [scope, setScope] = useState("health")
+  const [loading, setLoading] = useState(false)
   const bodyRef = useRef(null)
 
   useEffect(() => {
@@ -17,13 +22,30 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
 
   if(!open) return null
 
-  const send = (e) => {
-    e?.preventDefault()
-    const text = input.trim()
-    if (!text) return
-    setMessages(prev => [...prev, `${text}`])
-    setInput("")
-  }
+  const send = async (e) => {
+    e?.preventDefault();
+    const text = input.trim();
+    if (!text || loading) return;
+
+    setMessages((prev) => [...prev, { role: "user", text }]);
+    setInput("");
+
+    try {
+      setLoading(true);
+
+      const { answer } = await handler ({ text, scope }); 
+      setMessages((prev) => [...prev, { role: "assistant", text: answer }]);
+    } catch (err) {
+      console.error(err);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "죄송해요. 응답을 가져오지 못했어요." },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   return (
     <div className="dock">
@@ -32,11 +54,11 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
           <h1>영양제·경구약 AI 챗봇</h1>
         </div>
         <div className="dock__actions">
-          <button aria-label="새 대화" onClick={onNewChat} >
-            <FontAwesomeIcon icon={faCommentMedical} />
+          <button className="icon-btn" aria-label="새 대화" onClick={onNewChat} >
+            <FontAwesomeIcon icon={faPenToSquare} size="lg" />
           </button>
-          <button onClick={onClose} aria-label="창 닫기">
-            <FontAwesomeIcon icon={faXmark} />
+          <button className="icon-btn" onClick={onClose} aria-label="창 닫기">
+            <FontAwesomeIcon icon={faXmark} size="lg" />
           </button>
         </div>
       </header>
@@ -44,13 +66,40 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
       <div className="dock__body" ref={bodyRef}>
         {messages.length === 0 ? (
           <div className="dock__suggest">
-            <h3>
-              <span className="accent">AI Chat</span>과 대화를 시작해볼까요?
+            <h3 className="lead">
+              고객님, 안녕하세요<br />
+              어떤 정보를 찾아드릴까요?<br />
+              <span className="accent">복용약 / 영양제 / 병용섭취 주의</span> 중에서 선택해주세요.
             </h3>
+
+            <div className="cats">
+              <Button 
+                variant="text" 
+                className={`cat-btn ${scope==='health' ? 'active' : ''}`}
+                onClick={() => setScope('health')}
+                title="복용약"
+              >
+                복용약
+              </Button>
+              <Button 
+                variant="text" 
+                className={`cat-btn ${scope==='drug' ? 'active' : ''}`}
+                onClick={() => setScope('drug')}
+                title="영양제"
+              >
+                영양제
+              </Button>
+              <Button 
+                variant="text" 
+                className={`cat-btn ${scope==='all' ? 'active' : ''}`}
+                onClick={() => setScope('all')}
+                title="영양제 – 의약품 병용섭취 주의"
+              >
+                영양제 – 의약품 병용섭취 주의
+              </Button>
+            </div>
             <div className="chips">
-              <Button variant="text">복용약</Button>
-              <Button variant="text">영양제</Button>
-              <Button variant="text">영양제 – 의약품 병용섭취 주의</Button>
+              <div className="chips__title">추천 질문</div> 
               {[
                 "오메가3와 와파린 같이 먹어도 돼?",
                 "불면에 좋은 영양제 추천해줘",
@@ -59,7 +108,6 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
                 "눈건강에 뭐가 좋아?"
               ].map((q,i) => {
                 return(
-
                 <Button key={i} variant="text" className="chip" onClick={()=>{ setInput(q); setTimeout(()=>send(),0)}}>
                   <span className="plus">＋</span> {q}
                 </Button>
@@ -69,9 +117,26 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
           </div>
         ) : (
           <div className="msgs">
-            {messages.map((m, i) => <div key={i} className="msg">{m}</div>)}
+            {messages.map((m, i) => (
+              <div key={i} className={`msg ${m.role}`}>
+                {m.role === "assistant" ? (
+                  <div className="md">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                    >{m.text}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  <span className="user-text">{m.text}</span>
+                )}
+              </div>))}
+              {loading && <div className="msg assistant">응답 생성 중...</div>}
           </div>
         )}
+      </div>
+
+      <div className="dock__disclaimer">
+        ※ AI 챗봇의 답변은 참고용이며, 의약 전문가의 상담을 대체하지 않습니다.
       </div>
 
       <form className="dock__input" onSubmit={send}>
@@ -80,7 +145,9 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
           onChange={(e)=>setInput(e.target.value)}
           placeholder="무엇이든 물어보세요."
         />
-        <Button type="submit" variant="text" className="send">보내기</Button>
+        <Button type="submit" variant="text" className="send" disabled={loading}>
+          {loading ? "보내는 중... " : "보내기"}
+        </Button>
       </form>
       
     </div>
