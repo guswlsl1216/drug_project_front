@@ -44,7 +44,7 @@ const Signup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "tel"){
+    if (name === "tel"){ // 전화번호 입력 시 자동 하이픈 생성
       let phone = value.replace(/[^0-9]/g,""); // 숫자만 남기기
       if (phone.length > 3 && phone.length <= 7){
         phone = phone.replace(/(\d{3})(\d+)/, "$1-$2");
@@ -57,8 +57,8 @@ const Signup = () => {
     }
   };
 
-  const required = ["username","password","email","nickname"]
-  const unable = required.some((field) => form[field].trim() === "");
+  const required = ["username","password","email","nickname"] // 필수 입력
+  const unable = required.some((field) => form[field].trim() === ""); 
 
   return (
     <>

@@ -2,7 +2,8 @@ import UseNavi from "../utils/UseNavi";
 import Button from "../components/ui/Button";
 import requestHandler from "../utils/requestHandler";
 import Changehandler from "../utils/Changehandler";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUser } from "../components/context/UserContext";
 
 // 로그인 페이지
 
@@ -12,24 +13,46 @@ const Login = () => {
     username:"",
     password:""
   });
+  const [loading, setLoading] = useState(true);
+  const { user, setUser, isLoggedIn } = useUser();
 
+  useEffect(()=>{
+    requestHandler({
+      method:"get",
+      url:"login/check",
+      onSuccess:(data) => {
+        if (data.logged_in){
+          setUser(data.User);
+          
+          goIndex();
+        }else{
+          setLoading(false);
+        }
+      },
+      onError: () => setLoading(false),
+    });
+  }, [goIndex, setUser]);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     requestHandler({
       method: "post",
       url:"login/login",
       payload: form,
       onSuccess:(data) => {
-        console.log(data);
+        console.log(data)
+        setUser(data.data);
 
         goIndex();
       },
       onError: (msg) => {
-        alert(msg)
+        alert(msg);
       }
     })
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <>
