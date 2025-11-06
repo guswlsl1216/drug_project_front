@@ -15,8 +15,18 @@ const Analyze = () => {
         </section>
         <section className='analyze-tab-contents'>
           <nav className="analyze-tabs">
-            <NavLink to="medicine" className="medicine-tab">의약품</NavLink>
-            <NavLink to="supplement" className="supplement-tab">영양제</NavLink>
+            <NavLink 
+              to="medicine" 
+              className={({ isActive }) => `medicine-tab${isActive ? ' active' : ''}`}
+            >
+              의약품
+            </NavLink>
+            <NavLink 
+              to="supplement" 
+              className={({ isActive }) => `supplement-tab${isActive ? ' active' : ''}`}
+            >
+              영양제
+            </NavLink>
           </nav>
 
           <div className="analyze-tab-content">

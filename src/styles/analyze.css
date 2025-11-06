@@ -24,10 +24,17 @@
   width: 100px;
   height: 30px;
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
-.medicine-tab{
+.medicine-tab.active {
   background-color: rgb(252, 49, 49);
+  color: white;
+}
+
+.supplement-tab.active {
+  background-color: rgb(252, 49, 49);
+  color: white;
 }
 
 .analyze-tab-content{
