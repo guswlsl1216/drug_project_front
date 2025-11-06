@@ -1,0 +1,173 @@
+.analyze_result_content h4 {
+  text-align: left;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.3em;
+}
+
+.analyze_result_bg {
+  border-top: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.analyze_result_content {
+  padding: 20px 0;
+}
+
+.analyze_result_summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  margin-bottom: 30px;
+  background-color: #f0f0f0;
+}
+
+.analyze_result_summary h3 {
+  font-size: 1.8em;
+  font-weight: 800;
+  margin: 10px 0;
+}
+
+.analyze_result_summary p {
+  color: #666;
+  margin-top: 5px;
+}
+
+.analyze_result_warnings > p {
+  color: red;
+  font-size: 0.8em;
+  padding-bottom: 10px;
+}
+
+.analyze_result_warning_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.warning_item_level {
+  width: 80px;
+  padding: 10px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.warning_item_box_container {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.warning_item_box {
+  flex: 1;
+  text-align: center;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.warning_item_name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.warning_item_ingredient {
+  color: #555;
+  font-size: 0.9em;
+}
+
+.warning_item_message {
+  font-weight: 600;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+  background-color: #fff;
+}
+
+.analyze_result_duplicates > p {
+  color: #555;
+  padding-bottom: 10px;
+  font-size: 0.95em;
+}
+
+.duplicate_ingredients_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.duplicate_ingredient {
+  background: #EAF2FF;
+  color: #1565C0;
+  font-weight: 700;
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+}
+
+.drugs_box_container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.drugs_box {
+  width: calc(33.33% - 14px); 
+  min-width: 200px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.drugs_box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 이미지 자리 */
+.meds_box_image {
+  background-color: #e6e6e6;
+  width: 80px;
+  height: 80px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  line-height: 80px; /* 텍스트 중앙 정렬용 */
+  color: #999;
+  font-size: 0.8em;
+}
+
+.drugs_box_name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.show_details_icon {
+  font-size: 0.9em;
+  color: #007bff;
+  cursor: pointer;
+}

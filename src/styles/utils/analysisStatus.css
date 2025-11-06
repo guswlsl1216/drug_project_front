@@ -1,0 +1,11 @@
+.status_good {
+  background-color: seagreen;
+}
+
+.status_warning {
+  background-color: orange;
+}
+
+.status_danger {
+  background-color: tomato;
+}
