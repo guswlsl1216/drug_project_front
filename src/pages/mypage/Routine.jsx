@@ -3,56 +3,84 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list"
 import "../../styles/Routine.css";
-import getRoutine from "../../static/Routine"
-import { useEffect, useState } from "react";
+import { getRoutine, performRoutine } from "../../static/Routine"
+import { useEffect, useRef, useState } from "react";
 
 const Routine = () => {
   const [events, setEvents] = useState([])
   const [logs, setLogs] = useState([])
+  const [counts, setCounts] = useState([])
+
+  const calendarRef = useRef(null);
+
+  const routine_load = async () => {
+    const routine_data = await getRoutine()
+
+    if (routine_data.ok) {
+      const filterd = routine_data.routine.map((data) => ({ 'id': data.id, 'title': data.drugName, 'start': data.start_date, 'end': data.end_date+'T23:59:00'}))
+      setEvents(filterd)
+      //{id: 1, title: "오메가", start: "2025-10-31", end: '2025-10-31'}
+      setLogs(routine_data.log)
+      // 체크박스 default값 설정용 {routine.id:[ {date:년월일, performed_times:[bool,bool,bool]} ]}잇음  
+      // routine.id를 키값으로 하는 딕셔너리{routine.id:[]} 안에 date:string 와 performed_times:list를 가진 딕셔너리를 요소로 하는 리스트[{}]를 가짐
+      setCounts(routine_data.counts)
+    }
+  }
 
   useEffect(() => {
-
-    const rt = async () => {
-      const routine_data = await getRoutine()
-      console.log(routine_data.routine)
-      console.log(routine_data.log)
-
-      if (routine_data.ok) {
-        const filterd = routine_data.routine.map((data) => ({ 'id': data.id, 'title': data.drugName, 'start': data.start_date, 'end': data.end_date }))
-        setEvents(filterd)
-        //{id: 1, title: "오메가", start: "2025-10-31", end: '2025-10-31'}
-        setLogs(routine_data.log)
-        // 체크박스 default값 설정용 {routine.id:[ {date:년월일, performed_times:[bool,bool,bool]} ]}잇음  
-        // routine.id를 키값으로 하는 딕셔너리{routine.id:[]} 안에 date:string 와 performed_times:list를 가진 딕셔너리를 요소로 하는 리스트[{}]를 가짐                                    
-      }
-    }
-    rt()
+    //페이지 로드 되면 루틴리스트와 그에 해당하는 로그들을 쫙불러옴
+    routine_load()
   }, [])
 
-  const checkBoxChanged = async (eventId, date, performed_times) => {
-    // 해당 로그 딕셔너리 접근후 performed_times 수정
-    //  log[log.id][date]:performed_times
-    // /routine/performed/eventId로 요청
-    console.log(eventId, date, performed_times)
+  //요청전송
+  const checkBoxChanged = async (eventId, date) => {
+    await performRoutine(eventId, date, logs[eventId][date])
+    routine_load()
   }
-  const checkboxes = document.querySelectorAll('.list-checkbox input')
-  console.log(checkboxes)
-  checkboxes.forEach(checkbox => {
+
+  //체크박스 생성 + 이벤트처리하여 반환
+  const makeBox = (eventId, date, index, isChecked = false) => {
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox'
+    checkbox.checked = isChecked
+
+    const today = new Date();          
+    const y = today.getFullYear();
+    const m = String(today.getMonth() + 1).padStart(2, '0');
+    const d = String(today.getDate()).padStart(2, '0');
+    const now = `${y}-${m}-${d}`; 
+
+    if (date != now) {
+      checkbox.disabled = true
+    }
+
     checkbox.addEventListener('change', (e) => {
       e.stopPropagation()
-
-      const eventId = checkbox.dataset.eventId
-      const date = checkbox.dataset.date
-      const index = checkbox.dataset.index
-
-      const currentLogs=logs
-      currentLogs[eventId][date][index]=checkbox.checked
+      const currentLogs = { ...logs }
+      if (!currentLogs[eventId]) {
+        currentLogs[eventId] = {}
+      }
+      if (!currentLogs[eventId][date]) {
+        currentLogs[eventId][date] = [false, false, false]
+      }
+      currentLogs[eventId][date][index] = e.target.checked
       setLogs(currentLogs)
-
-      console.log(eventId, date, logs[eventId][date][index])
-      checkBoxChanged(eventId, date, logs[eventId][date][index])
+      checkBoxChanged(eventId, date)
     })
-  })
+    return checkbox
+  }
+
+  //캘린더(daygrid) 클릭시 날짜정보 받음
+  const handleDateClick = (info) => {
+    goToDate(info.dateStr)
+  };
+
+  //레퍼런스로 지정한 캘린더를 지정한 날짜로 이동시킴
+  const goToDate = (dateStr) => {
+    const calendarApi = calendarRef.current.getApi();
+    calendarApi.gotoDate(dateStr);
+  };
+
   return (
     <>
       <h2>규칙적으로 약을 복용하세요</h2>
@@ -68,14 +96,56 @@ const Routine = () => {
             eventBackgroundColor="#ff0000" // 이벤트의 배경색을 설정합니다.
             eventBorderColor="#0000ff" // 이벤트의 테두리 색을 설정합니다.
             allDay={true} // 이벤트가 하루 종일인지 여부를 지정합니다.
-            timeZone="UTC" // 캘린더의 시간대를 UTC로 설정합니다.
+            timeZone="GMT" // 캘린더의 시간대를 GMT로 설정합니다.
             headerToolbar={{
               left: "prev today", center: "title", right: "next",
+            }}
+            dateClick={handleDateClick} //날짜클릭시 이벤트
+            dayCellClassNames={(arg) => {
+              const classes = [];
+
+              const date = arg.date;
+              const y = date.getFullYear();
+              const m = String(date.getMonth() + 1).padStart(2, '0');
+              const d = String(date.getDate()).padStart(2, '0');
+              const now = `${y}-${m}-${d}`;
+              let classname = 'common'
+              let outofrange = false
+              if (date > Date.now()) {
+                return classname
+              }
+              events.map((data) => {
+                if (date < new Date(data['start']) || date > new Date(data['end'])) {
+                  outofrange = true
+                }
+                else {
+                  outofrange = false
+                }
+              })
+              if (outofrange) {
+                return classname
+              }
+              for (const [k, v] of Object.entries(counts)) {
+                classes.push(v[now])
+              }
+
+              if (classes.includes('warning')) {
+                classname = 'warning'
+              } else if (classes.filter(el => el === 'danger').length + classes.filter(el => el === undefined).length == classes.length) {
+                classname = 'danger'
+              } else if (classes.filter(el => el === 'good').length == classes.length) {
+                classname = 'good'
+              } else {
+                classname = 'warning'
+              }
+              return classname
+
             }}
           />
         </div>
         <div id="list">
           <FullCalendar
+            ref={calendarRef}
             plugins={[listPlugin]}
             initialView="listDay"
             headerToolbar={{ left: "prev today", center: "title", right: "next" }}
@@ -87,9 +157,9 @@ const Routine = () => {
             nowIndicator={true} // 현재 시간을 표시하는 인디케이터를 활성화합니다.
             eventBackgroundColor="#ff0000" // 이벤트의 배경색을 설정합니다.
             eventBorderColor="#0000ff" // 이벤트의 테두리 색을 설정합니다.
-            allDay={true}
-
-            //  변수로 관리하고 /getRoutine에서 routine_list(dict list[{}]임) 받아올 것
+            allDay={false}
+            nextDayThreshold= "00:00"
+            displayEventTime= {false}
             events={events}
             eventDidMount={(info) => {
               const element = info.el.querySelector('.fc-list-event-title')
@@ -97,19 +167,26 @@ const Routine = () => {
               const m = String(info.view.currentStart.getMonth() + 1).padStart(2, '0')
               const d = String(info.view.currentStart.getDate()).padStart(2, '0')
               const now = `${y}-${m}-${d}`
-              if (logs[info.event.id][now]) {
-                element.innerHTML +=
-                  `<div class="list-checkbox">                               
-                <label><input type="checkbox" data-event-id=${info.event.id} data-date=${now} data-index=0 ${logs[info.event.id][now][0] ? 'checked' : ''}> 아침</label>
-                <label><input type="checkbox" data-event-id=${info.event.id} data-date=${now} data-index=1 ${logs[info.event.id][now][1] ? 'checked' : ''}> 점심</label>
-                <label><input type="checkbox" data-event-id=${info.event.id} data-date=${now} data-index=2 ${logs[info.event.id][now][2] ? 'checked' : ''}> 저녁</label></div>`
-              } else {
-                element.innerHTML +=
-                  `<div class="list-checkbox">                               
-                <label><input type="checkbox"> 아침</label>
-                <label><input type="checkbox"> 점심</label>
-                <label><input type="checkbox"> 저녁</label></div>`
-              }
+
+              //체크박스 파트
+              //루틴 삭제, 추가 후 캘린더 작업
+              const checkboxContainer = document.createElement('div')
+              checkboxContainer.className = 'list-checkbox'
+              const times = ['아침', '점심', '저녁']
+              times.forEach((time, index) => {
+                const label = document.createElement('label')
+                const checkbox = makeBox(
+                  info.event.id, //이벤트id
+                  now, //현재시각 (string)
+                  index, //아침 [0] 점심 [1] 저녁[2] times의 forEach문에서 가져왔다
+                  logs[info.event.id]?.[now]?.[index] || false //ischecked(체크박스 체크여부) 해당하는 log가 없으면 false반환
+                )
+                label.appendChild(checkbox)
+                label.appendChild(document.createTextNode(` ${time}`))
+                checkboxContainer.appendChild(label)
+              })
+              element.appendChild(checkboxContainer)
+
             }}
           />
         </div>

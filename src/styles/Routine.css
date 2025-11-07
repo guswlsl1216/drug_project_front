@@ -58,3 +58,33 @@
   margin-top: 8px;                /* 위쪽 여백 */
   margin-left: auto;              /* 오른쪽으로 밀기 */
 }
+
+.fc-daygrid-day.common{
+  background-color: white;
+}
+
+.fc-daygrid-day.good{
+  background-color: seagreen;
+}
+
+.fc-daygrid-day.warning{
+  background-color: orange;
+}
+
+.fc-daygrid-day.danger{
+  background-color: tomato;
+}
+
+/*오늘 날짜*/
+.fc-day-today.good{
+    background: lightgreen !important;
+    border: 2px solid seagreen !important;
+} 
+.fc-day-today.warning{
+    background: yellow !important;
+    border: 2px solid orange !important;
+} 
+.fc-day-today.danger{
+    background: pink !important;
+    border: 2px solid red !important;
+} 

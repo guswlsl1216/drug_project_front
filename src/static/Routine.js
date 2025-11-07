@@ -9,4 +9,17 @@ const getRoutine = async (requestDate)=>{
   return res.data
 }
 
-export default getRoutine
+const performRoutine = async (eventId, requestDate, performed_times)=>{
+  const res= await requestHandler({
+    method:"post",
+    url:"/routine/performed/"+eventId,
+    payload:{
+      "date":requestDate,
+      "performed_times":performed_times
+    }
+  })
+  
+  return res.data
+}
+
+export {getRoutine, performRoutine}
