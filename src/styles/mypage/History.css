@@ -1,9 +1,3 @@
-.ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .history_container li {
   list-style-type: none;
 }
@@ -20,7 +14,6 @@
   background: #fff;
   border: 1px solid #e2e2e2;
   border-radius: 10px;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   transition: background-color 0.2s;
 }
 
@@ -32,7 +25,7 @@
 .history_cardInfo {
   display: flex;
   align-items: center;  
-  margin-right: 15px;
+  margin-right: 20px;
   min-width: 0;
   flex-grow: 1;
 }
@@ -45,18 +38,6 @@
   border-radius: 50%;
   color: #fff;
   flex-shrink: 0;
-}
-
-.history_danger {
-  background-color: tomato;
-}
-
-.history_warning {
-  background-color: rgb(245, 155, 25);
-}
-
-.history_normal {
-  background-color: seagreen;
 }
 
 .history_cardInfo_content {
@@ -115,14 +96,14 @@
   border-color: coral;
 }
 
-.history_pagination_list > li:first-child,
-.history_pagination_list > li:last-child {
+.history_pagination_prev,
+.history_pagination_next {
   font-weight: bold;
   color: #666;
 }
 
-.history_pagination_list > li:first-child:hover,
-.history_pagination_list > li:last-child:hover {
+.history_pagination_prev:hover,
+.history_pagination_next:hover {
   background-color: #fff;
   color: coral;
 }
