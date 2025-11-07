@@ -28,7 +28,7 @@ import axios from "axios";
  * @type {import("axios").AxiosInstance}
  * @property {string} baseURL - API 서버 기본 경로
  * @property {object} headers - 모든 요청에 적용되는 HTTP 헤더
- * @property {boolean} withCredentials - 쿠키 기반 인증 허용 여부
+ * @property {boolean} withCredentials - 쿠키 기반 인증 허용 여부 (refreshToken cookie 주고 받을 수 있음)
  */
 
 const axiosInstance = axios.create({
@@ -36,7 +36,7 @@ const axiosInstance = axios.create({
   headers: { 
     'Content-Type': 'application/json; charset=utf-8'
   },
-  withCredentials: true
+  withCredentials: true 
 })
 
 export default axiosInstance

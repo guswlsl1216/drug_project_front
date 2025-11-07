@@ -12,6 +12,7 @@ import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
+import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import Store from "./pages/store/Store";
 import Allgoods from "./pages/store/Allgoods";
@@ -25,6 +26,7 @@ const Routers = () => {
       <Routes>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signupComplete" element={<SignupComplete/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/analyze" element={<Analyze />} />
         <Route path="/analyze/result" element={<AnalyzeResult />} />
