@@ -6,6 +6,7 @@ import requestHandler from '../../utils/requestHandler';
 import { useState } from 'react';
 
 const AnalyzeResult = () => {
+  // 아래 임시 코드들은 분석 기능 구현 완료 후 제거 예정
   // 결과 데이터(임시)
   const result_test = {
     "status": 2,
@@ -32,8 +33,22 @@ const AnalyzeResult = () => {
         "name": "베지 오메가-3",
         "ingredients": ["EPA 및 DHA 함유 유지 (오메가-3)"]
       },
+      {
+        "id": 100963,
+        "name": "눈촉촉 오메가3 오리지널",
+        "ingredients": ["EPA 및 DHA 함유 유지 (오메가-3)"]
+      },
     ],
-    "duplicates": ["나트륨", "카페인"],
+    "duplicates": [
+        {
+          "ingredient": "EPA 및 DHA 함유 유지 (오메가-3)",
+          "names": ["베지 오메가-3", "눈촉촉 오메가3 오리지널"]
+        },
+        {
+          "ingredient": "EPA 및 DHA 함유 유지 (오메가-3)",
+          "names": ["베지 오메가-3", "눈촉촉 오메가3 오리지널"]
+        },
+      ],
     "interactions": [ 
       {
         "product1_name": "로그펜정400밀리그람(이부프로펜)(수출용)",
@@ -53,11 +68,11 @@ const AnalyzeResult = () => {
       },
     ]
   }
+  // 세션스토리지에 저장(임시)
+  sessionStorage.setItem('result', JSON.stringify(result_test))
 
   const [loading, setLoading] = useState(false);
   
-  // 세션스토리지에 저장 (만약 분석페이지에서 저장하는 경우 삭제)
-  sessionStorage.setItem('result', JSON.stringify(result_test))
   
   // 세션스토리지에서 불러오기
   const result = JSON.parse(sessionStorage.getItem('result'))

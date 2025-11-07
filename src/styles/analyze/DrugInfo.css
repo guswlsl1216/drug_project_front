@@ -14,14 +14,30 @@
 
 .drug_info_content {
   background-color: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
+  padding: 0 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   width: 90%;
   max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
+}
+
+.drug_info_header {
+  position: sticky; 
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+  padding: 30px 30px 0 30px;
+  margin: 0 -30px 0 -30px; /* content padding을 상쇄하여 끝까지 차지하도록 */
+}
+
+.drug_info_header h2 {
+  font-size: 24px;
+  color: #222;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
 }
 
 .drug_info_close_btn {
@@ -37,14 +53,6 @@
 
 .drug_info_close_btn:hover {
   color: #ff4d4d;
-}
-
-.drug_info_content h2 {
-  font-size: 24px;
-  color: #222;
-  margin-bottom: 25px;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
 }
 
 .drug_info_loadingSpinner {
@@ -103,7 +111,7 @@
   text-decoration: underline;
 }
 
-.drugInfo_box p:first-of-type[class^='drugInfo_box'] {
+.drugInfo_box .drugInfo_box_msg {
   font-size: 12px;
   color: #888;
   margin-bottom: 5px;

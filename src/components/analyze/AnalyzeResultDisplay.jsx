@@ -56,11 +56,20 @@ const AnalyzeResultDisplay = ({ result }) => {
         <div className='analyze_result_duplicates analyze_result_bg'>
           <h4>중복 성분</h4>
           <p>아래 성분들을 과다 섭취하지 않도록 주의하세요.</p>
-          <div className="duplicate_ingredients_container">
+          <div className="duplicate_container">
           {
             result.duplicates.map((item, i) => {
               return (
-                <p className='duplicate_ingredient' key={i}>{item}</p>
+                <div className="duplicate_box" key={i}>
+                  <p className='duplicate_ingredient'>▼ {item.ingredient}</p>
+                  <div className="duplicate_names_group">
+                    {item.names.map((pdt_name, i) => {
+                      return (
+                        <p className='duplicate_names' key={i}>{pdt_name}</p>
+                      )
+                    })}
+                  </div>
+                </div>
               )
             })
           }

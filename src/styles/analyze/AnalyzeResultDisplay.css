@@ -6,8 +6,9 @@
 }
 
 .analyze_result_bg {
-  border-top: 1px solid #eee;
+  border-top: 1px solid #ddd;
   margin-bottom: 20px;
+  padding-top: 10px;
 }
 
 .analyze_result_content {
@@ -99,26 +100,49 @@
 
 .analyze_result_duplicates > p {
   color: #555;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   font-size: 0.95em;
+  font-weight: 500;
 }
 
-.duplicate_ingredients_container {
+.duplicate_container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 30px;
   margin-top: 10px;
 }
 
-.duplicate_ingredient {
+.duplicate_box .duplicate_ingredient {
   background: #EAF2FF;
-  color: #1565C0;
+  color: #0d47a1;
   font-weight: 700;
-  padding: 8px 15px;
-  border-radius: 20px;
-  border: none;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
+  font-size: 1em;
+  padding: 12px 15px;
+  margin: 0;
+  display: block;
+  border-bottom: 1px solid #d3e5ff;
+  text-align: center;
+}
+
+.duplicate_box .duplicate_names_group {
+  padding: 15px;
+  background-color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.duplicate_names {
+  font-size: 0.85em;
+  color: #555;
+  background-color: #f5f5f5;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 0;
+  display: inline-block;
+  transition: background-color 0.2s;
+  border: 1px solid #eee;
 }
 
 .drugs_box_container {

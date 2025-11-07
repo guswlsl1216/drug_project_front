@@ -79,17 +79,17 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType  }) => {
       </div>
       <div className="drugInfo_box">
         <h3>용법용량</h3>
-        <p>*다운로드 클릭 시 PDF 파일이 다운로드 됩니다.</p>
+        <p className="drugInfo_box_msg">*다운로드 클릭 시 PDF 파일이 다운로드 됩니다.</p>
         <a href={drugData.intake_method_doc}>용법용량 문서 다운로드</a>
       </div>
       <div className="drugInfo_box">
         <h3>효능효과</h3>
-        <p>*다운로드 클릭 시 PDF 파일이 다운로드 됩니다.</p>
+        <p className="drugInfo_box_msg">*다운로드 클릭 시 PDF 파일이 다운로드 됩니다.</p>
         <a href={drugData.effect_doc}>효능효과 문서 다운로드</a>
       </div>
       <div className="drugInfo_box">
         <h3>주의사항</h3>
-        <p>*다운로드 클릭 시 PDF 파일이 다운로드 됩니다.</p>
+        <p className="drugInfo_box_msg">*다운로드 클릭 시 PDF 파일이 다운로드 됩니다.</p>
         <a href={drugData.caution_doc}>주의사항 문서 다운로드</a>
       </div>
       </>
@@ -129,8 +129,10 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType  }) => {
           ? loadingSpinner()
           :
           <>
-          <p className="drug_info_close_btn" onClick={closePopup}>×</p>
-          <h2>약 상세</h2>
+          <div className="drug_info_header">
+            <p className="drug_info_close_btn" onClick={closePopup}>×</p>
+            <h2>약 상세</h2>
+          </div>
 
           <div className="drugInfo_box">
             <h3>제품명</h3>
