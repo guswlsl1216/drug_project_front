@@ -10,6 +10,7 @@ const MyDrugs = ( ) => {
   const [medsList, setMedsList] = useState([]);
   const [suppsList, setSuppsList] = useState([]);
 
+
   // 수정할 항목의 데이터를 저장하는 상태
   const [itemToEdit, setItemToEdit] = useState([null]);
 
@@ -88,7 +89,7 @@ const handleEditStart = (id, type, currentItem) => {
       case 'med-input':
         return <MedInput onDatasubmit={handleAddMed} />
       case 'supp-input':
-        return <SuppInput onDatasubmit={handleAddSupp} />  
+        return <SuppInput onDatasubmit={handleAddSupp} setActiveTab={setActiveTab}/>  
       default: // 기본 값 메세지 전달
         return <DrugList meds={medsList} supps={suppsList} />  
     }
@@ -96,7 +97,7 @@ const handleEditStart = (id, type, currentItem) => {
  
     return (
         <div className="my-med-container clean-theme">
-            <h4>내가 복욕중인 약 & 영양제 페이지</h4>
+          
             
             {/* 세로 탭 및 콘텐츠 영역을 위한 좌우 분할 레이아웃 */}
             <div className="main-layout-wrapper"> 
