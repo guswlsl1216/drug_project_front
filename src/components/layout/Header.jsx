@@ -34,7 +34,7 @@ const Header = () => {
             <NavLink to="medslist">의약품목록</NavLink>
             {isLoggedIn() ? (
               <>
-                <span>{user.username}님</span>
+                <span>{user.nickname}님</span>
                 <Button onClick={handleLogout}>로그아웃</Button>
               </>
             ) : (

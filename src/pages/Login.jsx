@@ -21,8 +21,9 @@ const Login = () => {
       method:"get",
       url:"login/check",
       onSuccess:(data) => {
+        console.log(data)
         if (data.logged_in){
-          setUser(data.User);
+          setUser(data.user);
           
           goIndex();
         }else{
@@ -39,6 +40,7 @@ const Login = () => {
     requestHandler({
       method: "post",
       url:"login/login",
+      credentials: "include",
       payload: form,
       onSuccess:(data) => {
         console.log(data)
