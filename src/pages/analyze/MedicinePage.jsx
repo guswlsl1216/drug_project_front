@@ -3,6 +3,20 @@ import { useNavigate } from "react-router-dom";
 import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MedicinePage.css";
 
+const ResultDataKey = "ANALYSIS_RESULT_DATA"; // 결과 데이터 키 (사용하지 않더라도 일관성을 위해 유지)
+const MedicineDataKey = "MEDICINE_LIST_TO_SEND"; // 약물 목록 저장 키
+
+const saveMedicineList = (data) => {
+  try {
+    // 💡 MedicineDataKey를 사용하여 recognizedMedicines를 저장합니다.
+    sessionStorage.setItem(MedicineDataKey, JSON.stringify(data));
+    console.log("약물 목록 세션 저장 완료.");
+  } catch (error) {
+    console.error("세션 저장 오류:", error);
+  }
+};
+
+
 const MedicinePage = () => {
   const navigate = useNavigate();
   // 예시를 위한 상태 관리 (실제 로직에서는 API 호출 등으로 데이터 관리)
@@ -47,6 +61,8 @@ const MedicinePage = () => {
 
   const handleNext = () => {
     // 현재 데이터를 저장하고 다음 페이지로 이동
+    saveMedicineList(recognizedMedicines);
+    
     console.log("의약품 데이터 저장:", recognizedMedicines);
     // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
     navigate('/analyze/supplement'); // SupplementPage로 이동
@@ -139,7 +155,13 @@ const MedicinePage = () => {
         onSelect={(selectedItem) => {
           setRecognizedMedicines(
             recognizedMedicines.map((med) =>
-              med.id === selectedMedicineId ? {...med, name: selectedItem.name} : med
+              med.id === selectedMedicineId
+                ? {
+                    id: selectedItem.id, 
+                    name: selectedItem.name,
+                    ingredients: selectedItem.ingredients || med.ingredients,
+                  }
+                : med
             )
           );
           setSearchModalOpen(false);
