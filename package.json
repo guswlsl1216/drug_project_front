@@ -22,6 +22,7 @@
     "@fullcalendar/timegrid": "^6.1.19",
     "axios": "^1.12.2",
     "react": "^19.1.1",
+    "react-cookie": "^8.0.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^6.30.1"
   },

@@ -12,6 +12,8 @@ import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
+import SignupComplete from "./pages/SignupComplete"
+import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 
 const Routers = () => {
 
@@ -20,8 +22,10 @@ const Routers = () => {
       <Routes>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signupComplete" element={<SignupComplete/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/analyze" element={<Analyze />} />
+        <Route path="/analyze/result" element={<AnalyzeResult />} />
         <Route path="/medslist" element={<Medslist />} />
 
         <Route path="/mypage" element={<Mypage />}>
