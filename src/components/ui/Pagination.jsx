@@ -12,25 +12,47 @@ const Pagination = ({ page, pages, loading, onChange }) => {
     numbers.push(i)
   }
 
-  const prevBlockFirst = Math.max(startPage - blockSize, 1)
+  const prevBlockLast = Math.max(startPage - 1, 1)
   const nextBlockFirst = endPage + 1 <= pages ? endPage + 1 : pages
+
+  const hasPrevBlock = startPage > 1;
+  const hasNextBlock = endPage < pages;
+
+  const showBlockNav = hasPrevBlock || hasNextBlock;       // ≪ ≫
+  const showFirstLast = pages > blockSize * 2;                // « »
 
   return (
     <div className="Pagination">
+      {/* 맨 처음 */}
+      {showFirstLast && (
+        <Button
+          variant="text"
+          disabled={page === 1 || loading}
+          onClick={() => onChange(1)}
+          aria-label="맨 처음"
+        >
+          «
+        </Button>
+      )}
+
       {/* 이전 블록 */}
-      <Button
-        variant="text"
-        disabled={startPage === 1 || loading}
-        onClick={() => onChange(prevBlockFirst)}
-      >
-        ≪
-      </Button>
+      {showBlockNav && (
+        <Button
+          variant="text"
+          disabled={startPage === 1 || loading}
+          onClick={() => onChange(prevBlockLast)}
+          aria-label="이전 블록" 
+        >
+          ≪
+        </Button>
+      )}
 
       {/* 이전 페이지 */}
       <Button
         variant="text"
         disabled={page === 1 || loading}
         onClick={() => onChange(page - 1)}
+        aria-label="이전 페이지"
       >
         〈
       </Button>
@@ -40,9 +62,10 @@ const Pagination = ({ page, pages, loading, onChange }) => {
         <Button
           key={num}
           variant={num === page ? "solid" : "outline"}
-          disabled={loading}
+          disabled={loading || num === page}
           className={`page-btn ${num === page ? "active" : ""}`}
-          onClick={() => onChange(num)}
+          onClick={() => num !== page && onChange(num)}
+          aria-label={`페이지 ${num}`}
         >
           {num}
         </Button>
@@ -53,18 +76,34 @@ const Pagination = ({ page, pages, loading, onChange }) => {
         variant="text"
         disabled={page === pages || loading}
         onClick={() => onChange(page + 1)}
+        aria-label="다음 페이지"
       >
         〉
       </Button>
 
       {/* 다음 블록 */}
-      <Button
-        variant="text"
-        disabled={endPage >= pages || loading}
-        onClick={() => onChange(nextBlockFirst)}
-      >
-        ≫
-      </Button>
+      {showBlockNav && (
+        <Button
+          variant="text"
+          disabled={endPage >= pages || loading}
+          onClick={() => onChange(nextBlockFirst)}
+          aria-label="다음 블록"
+        >
+          ≫
+        </Button>
+      )}
+      {/* 맨 끝 */}
+      {showFirstLast && (
+        <Button
+          variant="text"
+          disabled={page === pages || loading}
+          onClick={() => onChange(pages)}
+          aria-label="맨 끝"
+        >
+          »
+        </Button>
+      )}
+
     </div>
   )
 }
