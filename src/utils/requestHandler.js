@@ -34,9 +34,9 @@ const requestHandler = async ({
     if (m === "get") {
       res = await instance.get(url, {params: params ?? payload})
     } else if ( m === "delete") {
-      res = await instance.delete(url, {data: payload})
+      res = await instance.delete(url, {data: payload, params})
     } else {
-      res = await instance[m](url, payload)
+      res = await instance[m](url, payload, params ? { params } : undefined)
     }
 
     onSuccess?.(res.data)
