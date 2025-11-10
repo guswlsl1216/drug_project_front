@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Mainpage from "./pages/Mainpage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -12,7 +12,15 @@ import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
+import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
+import AdminPage from "./pages/admin/AdminPage";
+import ProductManage from "./pages/admin/ProductManage";
+import ProductList from "./pages/admin/ProductList ";
+import ProductRegister from "./pages/admin/ProductRegister";
+import SoldoutManage from "./pages/admin/SoldoutManage";
+import OrderHistory from "./pages/admin/OrderHistory";
+import ProductEdit from "./pages/admin/ProductEdit";
 
 const Routers = () => {
 
@@ -21,6 +29,7 @@ const Routers = () => {
       <Routes>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/signupComplete" element={<SignupComplete/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/analyze" element={<Analyze />} />
         <Route path="/analyze/result" element={<AnalyzeResult />} />
@@ -34,6 +43,17 @@ const Routers = () => {
           <Route path="cart" element={<Cart />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
+        </Route>
+
+        <Route path="/admin" element={<AdminPage />}>
+          <Route index element={<Navigate to="products" replace />} />   {/* 기본: 상품관리 */}
+          <Route path="products" element={<ProductManage />}>
+            <Route index element={<ProductList />} /> {/* 기본: 등록된 상품 목록 */}
+            <Route path="register" element={<ProductRegister />} /> {/* 상품 등록 */}
+            <Route path="edit/:id" element={<ProductEdit />} /> {/* 상품 수정 */}
+            <Route path="soldout" element={<SoldoutManage />} /> {/* 품절 관리 */}
+          </Route>
+          <Route path="order" element={<OrderHistory />} />
         </Route>
       </Routes>
     </>
