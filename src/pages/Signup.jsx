@@ -24,10 +24,15 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault(); 
 
+    const payload = {
+      ...form, 
+      tel: form.tel ? form.tel.replace(/-/g,"") : null, // 전화번호를 입력 시 하이픈 제거하고 보내고, 입력을 안 할 시 null로 보냄
+    }
+
     requestHandler({
       method: "post",
       url:"auth/signup",
-      payload: form,
+      payload: payload,
       setLoading,
       onSuccess:(data) => {
         alert(`${data.data.nickname}님 환영합니다. 일반 로그인은 알림 설정이 불가능 합니다.`);
