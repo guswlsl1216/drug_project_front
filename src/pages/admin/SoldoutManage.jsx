@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import UseNavi from "../../utils/UseNavi"
 import requestHandler from "../../utils/requestHandler";
 import "../../styles/admin/ProductList.css";
 import Spinner from "../../components/ui/Spinner";
 import Pagination from "../../components/ui/Pagination";
 
 const SoldoutManage = () => {
-  const {goTo} = UseNavi()
   const [loading, setLoading] = useState(true);
   const [goods, setGoods] = useState([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [total, setTotal] = useState(0);
+  const [perPage, setPerPage] = useState(10)
 
   useEffect(() => {
     requestHandler({
@@ -23,14 +22,16 @@ const SoldoutManage = () => {
         setGoods(data.goods || []);
         setTotal(data.total || 0);
         setPages(data.pages || 1);
+        setPerPage(typeof data.per_page === "number" ? data.per_page : 10);
       },
       onError: (msg) => {
         alert(msg);
         setGoods([]);
         setTotal(0);
+        setPages(1)
       },
     });
-  }, [page]);
+  }, [page, perPage]);
 
   return (
     <div className="productlist-container">

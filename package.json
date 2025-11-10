@@ -15,6 +15,11 @@
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/interaction": "^6.1.19",
+    "@fullcalendar/list": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
+    "@fullcalendar/timegrid": "^6.1.19",
     "@tiptap/extension-character-count": "^3.10.4",
     "@tiptap/extension-code-block-lowlight": "^3.10.4",
     "@tiptap/extension-color": "^3.10.4",
@@ -43,6 +48,7 @@
     "react-icons": "^5.5.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^6.30.1",
+    "run": "^1.5.0",
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {

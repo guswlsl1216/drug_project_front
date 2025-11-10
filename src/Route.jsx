@@ -21,6 +21,10 @@ import ProductRegister from "./pages/admin/ProductRegister";
 import SoldoutManage from "./pages/admin/SoldoutManage";
 import OrderHistory from "./pages/admin/OrderHistory";
 import ProductEdit from "./pages/admin/ProductEdit";
+import Store from "./pages/store/Store";
+import Allgoods from "./pages/store/Allgoods";
+import Functionality from "./pages/store/Functionality";
+import Ingredient from "./pages/store/Ingredient";
 
 const Routers = () => {
 
@@ -54,6 +58,11 @@ const Routers = () => {
             <Route path="soldout" element={<SoldoutManage />} /> {/* 품절 관리 */}
           </Route>
           <Route path="order" element={<OrderHistory />} />
+        </Route>
+        <Route path="/store" element={<Store />} >
+          <Route path="allgoods" element={<Allgoods />}/>
+          <Route path="functionality" element={<Functionality />}/>
+          <Route path="ingredient" element={<Ingredient />}/>
         </Route>
       </Routes>
     </>

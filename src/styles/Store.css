@@ -1,0 +1,197 @@
+/* =========================================================================
+ * 1. 기본 레이아웃 및 컨테이너 스타일
+ * ========================================================================= */
+.store-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+/* =========================================================================
+ * 2. 상단 네비게이션 탭 스타일 (Store 컴포넌트)
+ * ========================================================================= */
+.store-nav {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    border-bottom: solid 2px #ccc; /* 색상 통일 */
+}
+
+.store-nav .tab {
+    padding: 10px 25px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #555;
+    text-decoration: none;
+    border-radius: 8px 8px 0 0; /* 아래쪽은 뾰족하게 */
+    transition: all 0.2s ease;
+}
+
+.store-nav .tab:hover {
+    background-color: #f2f2f2;
+}
+
+.store-nav .tab.active {
+    color: white;
+    background-color: #a671ec;
+    box-shadow: 0 -2px 6px rgba(174, 147, 209, 0.3); /* 위쪽 그림자 */
+}
+
+/* =========================================================================
+ * 3. 카테고리/상품 공통 그리드 스타일
+ * ========================================================================= */
+.category-grid,
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* =========================================================================
+ * 4. 카테고리 항목 스타일 (Functionality, Ingredient 컴포넌트)
+ * ========================================================================= */
+.category-item {
+    padding: 16px 28px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-item:hover {
+    background-color: #f8f0ff; /* hover 색상 변경: 보라색 연하게 */
+    color: #555;
+    border-color: #c99fff;
+}
+
+/* 선택된 카테고리 (active) 스타일 */
+.category-item.category-active {
+    background-color: #a671ec; /* 탭 active와 동일 색상 */
+    color: white;
+    border-color: #a671ec;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(174, 147, 209, 0.5);
+}
+
+
+/* =========================================================================
+ * 5. 상품 목록 및 정렬 스타일 (GoodsList 컴포넌트)
+ * ========================================================================= */
+
+.goods-list-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* 정렬 버튼 컨테이너 */
+.sort-buttons {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* 개별 정렬 버튼 스타일 */
+.sort-buttons button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    padding: 0 15px;
+    position: relative;
+    transition: color 0.2s, font-weight 0.2s;
+}
+
+/* 버튼 사이 구분선 */
+.sort-buttons button:not(:last-child)::after {
+    content: '|';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+}
+
+/* 활성화된 정렬 기준 버튼 */
+.sort-buttons button.active {
+    font-weight: 700;
+    color: #a671ec; /* 메인 컬러로 강조 */
+}
+
+/* 상품 그리드 컨테이너 */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4열 그리드 */
+    gap: 20px;
+    justify-content: start; /* 왼쪽 정렬 */
+}
+
+/* 개별 상품 카드 */
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 카테고리 항목과 중복되는 스타일 제거 */
+    padding: 15px; 
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.product-card:hover {
+    border-color: #c99fff;
+    box-shadow: 0 4px 8px rgba(174, 147, 209, 0.2);
+    /* hover 시 색상 유지 (상품 카드 스타일) */
+    background-color: #fff; 
+    color: #333;
+}
+
+.product-card .product-image {
+    width: 100%;
+    height: 150px;
+    background-color: #f5f5f5; /* 이미지 영역 표시 */
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    font-size: 12px;
+}
+
+.product-card .product-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.product-card .product-price {
+    color: #a671ec;
+    font-weight: 700;
+}
+
+.product-card .product-sales-info {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+}
+
+.functionality-hr {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid #f0f0f0;
+}
