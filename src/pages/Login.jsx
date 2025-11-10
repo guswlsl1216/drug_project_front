@@ -21,7 +21,6 @@ const Login = () => {
       method:"get",
       url:"login/check",
       onSuccess:(data) => {
-        console.log(data)
         if (data.logged_in){
           setUser(data.user);
           
