@@ -4,6 +4,7 @@ import requestHandler from "../utils/requestHandler";
 import Changehandler from "../utils/Changehandler";
 import { useEffect, useState } from "react";
 import { useUser } from "../components/context/UserContext";
+import axiosInstance from "../utils/axiosInstance";
 
 // 로그인 페이지
 
@@ -13,45 +14,28 @@ const Login = () => {
     username:"",
     password:""
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { user, setUser, isLoggedIn } = useUser();
-
-  useEffect(()=>{
-    requestHandler({
-      method:"get",
-      url:"login/check",
-      onSuccess:(data) => {
-        if (data.logged_in){
-          setUser(data.user);
-          
-          goIndex();
-        }else{
-          setLoading(false);
-        }
-      },
-      onError: () => setLoading(false),
-    });
-  }, [goIndex, setUser]);
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+
     e.preventDefault();
     
-    requestHandler({
-      method: "post",
-      url:"login/login",
-      credentials: "include",
-      payload: form,
-      onSuccess:(data) => {
-        console.log(data)
-        setUser(data.data);
+    try {
+      // axiosInstance는 withCredentials: true 설정됨 -> 쿠키 전송
+      const res = await axiosInstance.post("login/login", form);
 
-        goIndex();
-      },
-      onError: (msg) => {
-        alert(msg);
-      }
-    })
-  };
+      // 서버에서 보내 준 user 정보로 Context 업데이트
+      setUser(res.data.data);
+
+      // 로그인 후 인덱스로 이동
+      goIndex();
+    } catch (err) {
+      alert(err?.response?.data?.message || "로그인 실패"); // 조건문 해석 불가능 다시 알아보고 수정 필요
+
+    } finally {
+      setLoading(false);
+    }};
 
   if (loading) return <div>Loading...</div>;
 
