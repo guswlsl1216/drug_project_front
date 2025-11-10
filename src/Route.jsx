@@ -14,6 +14,10 @@ import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
 import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
+import Store from "./pages/store/Store";
+import Allgoods from "./pages/store/Allgoods";
+import Functionality from "./pages/store/Functionality";
+import Ingredient from "./pages/store/Ingredient";
 
 const Routers = () => {
 
@@ -36,6 +40,12 @@ const Routers = () => {
           <Route path="cart" element={<Cart />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
+        </Route>
+
+        <Route path="/store" element={<Store />} >
+          <Route path="allgoods" element={<Allgoods />}/>
+          <Route path="functionality" element={<Functionality />}/>
+          <Route path="ingredient" element={<Ingredient />}/>
         </Route>
       </Routes>
     </>
