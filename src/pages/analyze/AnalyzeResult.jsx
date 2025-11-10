@@ -1,5 +1,4 @@
 import '../../styles/analyze/AnalyzeResult.css'
-import '../../styles/utils/analysisStatus.css'
 import AnalyzeResultDisplay from '../../components/analyze/AnalyzeResultDisplay';
 import Button from '../../components/ui/Button'
 import requestHandler from '../../utils/requestHandler';

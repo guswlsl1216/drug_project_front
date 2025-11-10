@@ -35,11 +35,12 @@ const UseNavi = () => {
    * 지정한 경로로 이동
    * @param {string} path - 이동할 경로 (예: "/product/detail")
    * @param {object} [state] - 함께 전달할 상태 객체 (선택)
+   * @param {boolean} [replace] - 현재 히스토리를 교체할지 여부 (선택)
    * @example
    * goTo("/detail", { id: 3, name: "비타민C" })
    */
-  const goTo = (path, state) => {
-    navigate(path, {state})
+  const goTo = (path, state, replace=false) => {
+    navigate(path, {state, replace})
   }
 
   /**

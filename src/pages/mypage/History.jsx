@@ -7,6 +7,7 @@ import ANALYSIS_STATUS_MAPPING from '../../utils/analysisStatus';
 import Spinner from '../../components/ui/Spinner';
 import UseNavi from '../../utils/UseNavi';
 import { replace, useLocation } from 'react-router-dom';
+import loadingSpinner from '../../utils/loadingSpinner';
 
 const History = () => {
   const [loading, setLoading] = useState(false);
@@ -19,14 +20,11 @@ const History = () => {
   const { goTo } = UseNavi();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  let initialPage = parseInt(queryParams.get('page'), 10);
-  
-  if(isNaN(initialPage) || initialPage < 1) {
-    initialPage = 1;
-    goTo(`/mypage/history?page=${initialPage}`, {replace: true});
-  }
+  const initialPage = parseInt(queryParams.get('page'), 10);
+  // page=NaN 혹은 page=-1 등의 잘못된 값 처리 -> page=1로 변환
+  const safeInitialPage = (isNaN(initialPage) || initialPage < 1) ? 1 : initialPage;
 
-  const [currentPage, setCurrentPage] = useState(initialPage);  // 현재 페이지 번호
+  const [currentPage, setCurrentPage] = useState(safeInitialPage);  // 현재 페이지 번호
   
   useEffect(() => {
     requestHandler({
@@ -35,6 +33,11 @@ const History = () => {
       params: { page: currentPage },
       setLoading,
       onSuccess: (data) => {
+        if(data.history.length === 0 && currentPage !== 1) {
+          setCurrentPage(1);
+          goTo("/mypage/history", null, true);
+          return;
+        }
         setHistoryList(data.history);
         setHas_prev(data.has_prev);
         setHas_next(data.has_next);
@@ -42,7 +45,7 @@ const History = () => {
       },
       onError: (msg) => alert(msg),
     })
-  }, [currentPage, location.search]);
+  }, [currentPage, location]);
   
   const historyCard = (history) => {
     const { status_label, status_className } = ANALYSIS_STATUS_MAPPING[history.status]
@@ -66,7 +69,9 @@ const History = () => {
           </div>
         </div>
         <div className="history_cardBtn">
-          <Button variant="primary" onClick={() => console.log('분석 결과 상세 팝업')}>상세보기</Button>
+          <Button variant="primary" onClick={() => {
+            goTo(`/mypage/history/detail/${history.id}`, {history: history} )
+          }}>상세보기</Button>
         </div>
       </article>
     )
@@ -77,17 +82,13 @@ const History = () => {
       <main>
         <section className="history_container">
           <div className="history_title">
-            <h2>분석결과내역 페이지</h2>
+            <h2>분석 결과 내역</h2>
           </div>
 
           {
             loading
             ?
-            <div className="drug_info_loadingSpinner">
-              <div className="overlay">
-                <Spinner size={70} color="#00e2ff" />
-              </div>
-            </div>
+            loadingSpinner({size:70})
             :
             <>
             <ul className="history_cardlist">
