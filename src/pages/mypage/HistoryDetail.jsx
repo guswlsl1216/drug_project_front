@@ -3,54 +3,60 @@ import { useEffect, useState } from "react";
 import { replace, useLocation, useParams } from "react-router-dom";
 import AnalyzeResultDisplay from "../../components/analyze/AnalyzeResultDisplay";
 import Button from "../../components/ui/Button";
-import loadingSpinner from '../../utils/loadingSpinner';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 import requestHandler from '../../utils/requestHandler';
 import UseNavi from '../../utils/UseNavi';
+import useLoginRedirect from '../../utils/useLoginRedirect';
 
 const HistoryDetail = () => {
   const { state } = useLocation();
   const { id } = useParams();
   const { goTo } = UseNavi();
+  const { requireLogin } = useLoginRedirect();
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if(state) {
-      setResult(state.history)
-    }
-    else {
-      requestHandler({
-        method: "get",
-        url: `/result/history/detail/${id}`,
-        onSuccess: (data) => {
-          setResult(data.result);
-        },
-        onError: (msg) => {
-          alert(msg);
-          goTo("/mypage/history", null, true);
-        }
-      })
-    }
+    requireLogin(() => {
+      if(state) {
+        setResult(state.history)
+      }
+      else {
+        requestHandler({
+          method: "get",
+          url: `/result/history/detail/${id}`,
+          onSuccess: (data) => {
+            setResult(data.result);
+          },
+          onError: (msg) => {
+            alert(msg);
+            goTo("/mypage/history", null, true);
+          }
+        })
+      }
+    }, true)
   }, [id, state])
 
   const deleteHistory = () => {
-    if (confirm("분석 결과 내역을 삭제하시겠습니까?")) {
-      requestHandler({
-        method: "delete",
-        url: `/result/history/detail/${id}`,
-        setLoading,
-        onSuccess: (data) => {
-          alert(data.message);
-          goTo("/mypage/history", null, true)
-        },
-        onError: (msg) => {
-          alert(msg);
-        }
-      })
-    } else {
-      return;
-    }
+    requireLogin(() => {
+      if (confirm("분석 결과 내역을 삭제하시겠습니까?")) {
+        requestHandler({
+          method: "delete",
+          url: `/result/history/detail/${id}`,
+          setLoading,
+          onSuccess: (data) => {
+            alert(data.message);
+            goTo("/mypage/history", null, true)
+          },
+          onError: (msg) => {
+            alert(msg);
+          }
+        })
+      } else {
+        return;
+      }
+    })
   }
 
   return (
@@ -65,7 +71,7 @@ const HistoryDetail = () => {
         ?
         <AnalyzeResultDisplay result={result} />
         :
-        loadingSpinner({size:70})
+        LoadingSpinner({size:70})
       }
 
       <div className='analyze_result_actions'>

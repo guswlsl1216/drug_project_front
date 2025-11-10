@@ -11,7 +11,7 @@ import Spinner from "../components/ui/Spinner";
  * @returns {JSX.Element} 로딩 스피너 UI.
  */
 
-const loadingSpinner = ({size=50, color="#00e2ff", label}) =>{
+const LoadingSpinner = ({size=50, color="#00e2ff", label}) =>{
   return (
     <div className="drug_info_loadingSpinner">
       <div className="overlay">
@@ -21,4 +21,4 @@ const loadingSpinner = ({size=50, color="#00e2ff", label}) =>{
   )
 }
 
-export default loadingSpinner;
+export default LoadingSpinner;

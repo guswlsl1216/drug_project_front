@@ -7,7 +7,7 @@ import ANALYSIS_STATUS_MAPPING from '../../utils/analysisStatus';
 import Spinner from '../../components/ui/Spinner';
 import UseNavi from '../../utils/UseNavi';
 import { replace, useLocation } from 'react-router-dom';
-import loadingSpinner from '../../utils/loadingSpinner';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 
 const History = () => {
   const [loading, setLoading] = useState(false);
@@ -88,7 +88,7 @@ const History = () => {
           {
             loading
             ?
-            loadingSpinner({size:70})
+            LoadingSpinner({size:70})
             :
             <>
             <ul className="history_cardlist">
