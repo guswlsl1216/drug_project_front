@@ -33,7 +33,7 @@ const Header = () => {
             <NavLink to="analyze">AI분석</NavLink>
             <NavLink to="medslist">의약품목록</NavLink>
 
-            <NavLink to="store">스토어</NavLink>
+            <NavLink to="store/allgoods">스토어</NavLink>
             <NavLink to="login">로그인</NavLink>
             <NavLink to="signup">회원가입</NavLink>
 
