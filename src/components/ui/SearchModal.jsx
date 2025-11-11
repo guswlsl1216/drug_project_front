@@ -62,6 +62,10 @@ const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/me
           {loading ? (
             <div className="loading">검색중...</div>
           ) : (
+            searchResults.length === 0 ? (
+          // 2-1. 검색 결과가 없을 때 (배열이 비어있을 때)
+          <div className="no-results">검색 결과가 없습니다.</div>
+        ) : (
             <ul className="search-results">
               {searchResults.map(item => (
                 <li 
@@ -74,6 +78,7 @@ const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/me
                 </li>
               ))}
             </ul>
+        )
           )}
         </div>
       </div>
