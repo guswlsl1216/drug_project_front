@@ -1,5 +1,6 @@
 /* =========================================================================
  * 1. 기본 레이아웃 및 컨테이너 스타일
+ * (이하 기존 스타일 유지)
  * ========================================================================= */
 .store-container {
     width: 100%;
@@ -144,19 +145,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* 카테고리 항목과 중복되는 스타일 제거 */
     padding: 15px; 
     border: 1px solid #ddd;
     border-radius: 12px;
     text-align: center;
-    cursor: pointer;
+    /* 💡 ProductCard 전체 클릭을 위해 div로 감싸고, 찜 버튼은 제외 */
+    /* cursor: pointer; // 찜 버튼 때문에 전체 카드에 커서 적용 제거 */
     transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+/* 찜 버튼을 제외한 클릭 가능한 영역 스타일 */
+.product-card-clickable-area {
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .product-card:hover {
     border-color: #c99fff;
     box-shadow: 0 4px 8px rgba(174, 147, 209, 0.2);
-    /* hover 시 색상 유지 (상품 카드 스타일) */
     background-color: #fff; 
     color: #333;
 }
@@ -191,7 +200,220 @@
 }
 
 .functionality-hr {
-  margin: 30px 0;
-  border: none;
-  border-top: 1px solid #f0f0f0;
+    margin: 30px 0;
+    border: none;
+    border-top: 1px solid #f0f0f0;
+}
+
+/* =========================================================================
+ * 7. 상품 상세 페이지 스타일 (ProductDetail 컴포넌트)
+ * (기존 스타일 유지 및 favorite-toggle-btn 추가)
+ * ========================================================================= */
+.product-detail-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-family: "Noto Sans KR", sans-serif;
+}
+/* ... 이하 ProductDetail 관련 CSS 유지 ... */
+.detail-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.product-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.product-id {
+    font-size: 14px;
+    color: #999;
+}
+
+/* 상단 레이아웃 */
+.detail-section {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+/* 상품 이미지 영역 */
+.detail-image-area {
+    flex: 1;
+    min-width: 320px;
+    height: 320px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #555;
+    font-size: 18px;
+    background-color: #fafafa;
+}
+
+/* 상품 정보 영역 */
+.detail-info-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-price {
+    font-size: 20px;
+    font-weight: 600;
+}
+/* ... 중략 ... */
+.product-category,
+.product-description,
+.product-stock {
+    font-size: 15px;
+    color: #555;
+}
+
+/* 버튼 영역 */
+.purchase-options {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.purchase-options button {
+    padding: 10px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.purchase-options button:hover {
+    background-color: #e6e6e6;
+}
+
+/* 장바구니 버튼 */
+.add-to-cart-btn {
+    background-color: #fff;
+    border: 1px solid #555;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #f2f2f2;
+}
+
+/* 바로구매 버튼 */
+.buy-now-btn {
+    background-color: #2ecc71;
+    color: #fff;
+    border: none;
+}
+
+.buy-now-btn:hover {
+    background-color: #27ae60;
+}
+
+/* 하단 상세정보 섹션 */
+.tab-section {
+    margin-top: 50px;
+    border-top: 2px solid #eee;
+    padding-top: 20px;
+}
+
+.tab-title-only {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .detail-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    .detail-image-area {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+    }
+    .purchase-options {
+        justify-content: center;
+    }
+}
+
+/* =========================================================================
+ * 6. 찜 버튼 관련 스타일 (GoodsList, ProductDetail 공통)
+ * ========================================================================= */
+
+/* 상품 카드 내 찜 버튼 컨테이너 (GoodsList.jsx) */
+.product-card {
+    position: relative; /* 찜 버튼 절대 위치 기준으로 설정 */
+    /* ... 기존 스타일 유지 ... */
+}
+
+.product-favorite-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+.favorite-card-btn {
+    /* 찜 버튼 오버레이 스타일 (GoodsList.jsx) */
+    background: rgba(255, 255, 255, 0.85); 
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s, border-color 0.2s;
+    padding: 0;
+    font-size: 1.1rem; /* 이모지 크기 조정 */
+}
+
+.favorite-card-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: #c9c9c9;
+}
+
+/* 찜 버튼 (ProductDetail.jsx) */
+.favorite-toggle-btn {
+    /* purchase-options 내부 버튼 스타일 상속 */
+    padding: 10px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    cursor: pointer;
+    transition: 0.2s;
+    /* 찜 버튼 고유 스타일 */
+    min-width: 140px; /* 버튼 길이 확보 */
+}
+
+.favorite-toggle-btn.active {
+    color: #e74c3c; /* 붉은색 텍스트 */
+    border-color: #e74c3c;
+    background-color: #fff0f0;
+}
+
+/* 찜 버튼 (ProductDetail) 호버 스타일 */
+.favorite-toggle-btn:not(.active):hover {
+    background-color: #e6e6e6;
+}
+
+.favorite-toggle-btn.active:hover {
+    background-color: #fcebeb; /* 활성화 시 연하게 호버 */
 }

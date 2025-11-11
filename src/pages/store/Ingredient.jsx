@@ -39,7 +39,7 @@ const Ingredient = () =>{
       <hr className="functionality-hr"/>
 
       <GoodsList
-          categoryKey="성분별" // DB 컬럼명에 맞게 조정 필요
+          categoryKey="classify" // DB 컬럼명에 맞게 조정 필요
           categoryValue={selectedCategory}
       />
     </div>
