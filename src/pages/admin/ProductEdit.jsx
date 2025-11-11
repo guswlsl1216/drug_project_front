@@ -17,6 +17,7 @@ const ProductEdit = () => {
     })
   }, [id])
 
+  
   return (
     <div>
       {initialData ? (
@@ -24,6 +25,9 @@ const ProductEdit = () => {
           title={"상품 수정"} 
           method={"put"} 
           url={`/admin/edit/${id}`}
+          initialData={initialData} 
+          imgbtn={"상품 이미지 변경"}
+          btn={"수정하기"}
         />
       ) : (
         <div className="loading">

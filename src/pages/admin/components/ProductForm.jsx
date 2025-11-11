@@ -11,7 +11,7 @@ const CATEGORIES = {
   성분별: ["밀크시슬", "칼슘 · 마그네슘 · 아연", "비타민", "오메가 · 루테인", "홍삼 · 인삼", "프로바이오틱스 · 효소", "키즈", "기타"],
 };
 
-const ProductForm = ({title, method, url, initialData, onSaved}) => {
+const ProductForm = ({title, method, url, initialData, onSaved, imgbtn, btn}) => {
   const [goods, setGoods] = useState({
     goods_name: "",
     price: "",
@@ -39,10 +39,22 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
     }
   }, [initialData])
 
+  const onChangeSelect = (e) => {
+    const { name, value } = e.target;
+    if (name === "category") {
+      setGoods(prev => ({ ...prev, category: value, classify: "" })); // 분류 리셋
+    } else if (name === "classify") {
+      setGoods(prev => ({ ...prev, classify: value }));
+    }
+  };
+
   const classifyOptions =
-  goods.category && CATEGORIES[goods.category]
-    ? CATEGORIES[goods.category]
-    : [];
+    goods.category && CATEGORIES[goods.category]
+      ? CATEGORIES[goods.category]
+      : [];
+
+  const hasLegacyClassify =
+  goods.classify && !classifyOptions.includes(goods.classify);
 
   const submit = async (e) => {
     e.preventDefault(); 
@@ -102,7 +114,7 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
 
       <form onSubmit={submit}>
         <label>카테고리</label>
-        <select name="category" value={goods.category} onChange={handleChange}>
+        <select name="category" value={goods.category} onChange={onChangeSelect}>
           <option value="">카테고리를 선택하세요</option>
           {Object.keys(CATEGORIES).map((c) => (
             <option key={c} value={c}>
@@ -115,7 +127,7 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
         <select
           name="classify"
           value={goods.classify}
-          onChange={handleChange}
+          onChange={onChangeSelect}
           disabled={!goods.category}
         >
           <option value="">
@@ -126,6 +138,11 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
               {opt}
             </option>
           ))}
+          {hasLegacyClassify && (
+            <option value={goods.classify}>
+              {goods.classify} (이전)
+            </option>
+          )}
         </select>
 
 
@@ -155,6 +172,13 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
           onChange={(e) => imageSubmit(e.target.files?.[0])}
         />
 
+        {/* 대표 이미지 미리보기 */}
+        <img
+          src={goods.image_path || "/placeholder.png"}
+          alt="대표 이미지"
+          style={{ width: 200, height: 200, objectFit: "cover", borderRadius: 8 }}
+        />
+
         <Button 
           type="button" 
           variant="outline" 
@@ -162,7 +186,7 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
           onClick={onPickImage}
           disabled={loading}
         >
-          상품 이미지 등록
+          {imgbtn}
         </Button>
         
         {goods.image_path && (
@@ -175,6 +199,7 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
         {/* ✨ Editor 사용 */}
         <div className="editor-card">
           <Editor
+            key={initialData?.id || "editor"}
             name="goods_desc"
             content={goods.goods_desc}
             onChange={handleChange}
@@ -210,7 +235,7 @@ const ProductForm = ({title, method, url, initialData, onSaved}) => {
             className="submit-btn"
             disabled={loading}
           >
-            {loading ? "저장 중..." : "등록하기"}
+            {loading ? "저장 중..." : `${btn}`}
           </Button>
         </div>
         

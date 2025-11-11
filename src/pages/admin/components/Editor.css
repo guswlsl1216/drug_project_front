@@ -16,6 +16,31 @@
   text-align: right;
 }
 
+.editor img{
+  max-width:100%;
+  height:auto;
+  display:block;
+  margin:12px 0;
+}
+
+/* 최소 높이 확보 */
+.editor .ProseMirror {
+  min-height: 280px;
+  line-height: 1.6;
+}
+
+/* 이미지가 영역에 맞게 보이도록 */
+.editor .ProseMirror img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.editor .ProseMirror-selectednode img {
+  outline: 2px solid rgba(122,92,255,.6);
+  outline-offset: 2px;
+}
+
 /* =============== ProseMirror Core =============== */
 .ProseMirror {
   outline: none;

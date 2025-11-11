@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useState } from "react"
 import {
   MdImage, MdLink, MdLinkOff, MdFormatBold, MdFormatItalic, MdFormatUnderlined,
   MdStrikethroughS, MdCode, MdFormatQuote, MdFormatListBulleted, MdFormatListNumbered,
@@ -7,11 +7,37 @@ import {
   MdMergeType, MdCallSplit, MdAdd, MdFormatColorText, MdFormatColorFill, MdBorderColor
 } from "react-icons/md"
 
-const Toolbar = ({ editor, onPickImage }) => {
-  const fileRef = useRef(null)
+const Toolbar = ({ editor, onPickImage, fileRef }) => {
   if (!editor) return null
 
+  // 🔁 selection/transaction 때마다 재렌더해서 isActive(...) 최신 반영
+  const [, setTick] = useState(0)
+  useEffect(() => {
+    if (!editor) return
+    const rerender = () => setTick(v => v + 1)
+    editor.on('selectionUpdate', rerender)
+    editor.on('transaction', rerender)
+    editor.on('focus', rerender)
+    editor.on('blur', rerender)
+    return () => {
+      editor.off('selectionUpdate', rerender)
+      editor.off('transaction', rerender)
+      editor.off('focus', rerender)
+      editor.off('blur', rerender)
+    }
+  }, [editor])
+
   const isActive = (name, attrs) => editor.isActive(name, attrs) ? "is-active" : ""
+
+  const onChangeFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      await onPickImage?.(file); // ✅ 부모의 업로드+삽입 실행
+    } finally {
+      e.target.value = ""; // 같은 파일 재선택 가능하게 초기화
+    }
+  };
 
   // 표 안에 커서가 있을 때만 true
   const inTable =
@@ -31,8 +57,26 @@ const Toolbar = ({ editor, onPickImage }) => {
         type="file"
         accept="image/*"
         hidden
-        onChange={(e) => onPickImage?.(e.target.files?.[0])}
+        onChange={onChangeFile}
       />
+
+      <button
+        type="button"
+        title="이미지 삭제"
+        disabled={!editor?.isActive('image')}
+        onClick={() => editor.chain().focus().deleteSelection().run()}
+      >
+        이미지 삭제
+      </button>
+
+      <button
+        type="button"
+        title="이미지 교체"
+        disabled={!editor?.isActive('image')}
+        onClick={() => fileRef.current?.click()}   // 기존 파일선택 재사용
+      >
+        이미지 교체
+      </button>
 
       <button
         type="button"
