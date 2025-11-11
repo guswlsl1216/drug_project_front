@@ -1,0 +1,109 @@
+.history_container li {
+  list-style-type: none;
+}
+
+.history_cardlist {
+  padding-top: 20px;
+}
+
+.history_card {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  transition: background-color 0.2s;
+}
+
+.history_card:hover {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+.history_cardInfo {
+  display: flex;
+  align-items: center;  
+  margin-right: 20px;
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.history_cardInfo_logo {
+  height: 50px;
+  width: 50px;
+  align-content: center;
+  text-align: center;
+  border-radius: 50%;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.history_cardInfo_content {
+  padding-left: 10px;
+  overflow: hidden;
+}
+
+.history_cardInfo_content > h3 {
+  padding-bottom: 5px;
+}
+
+.history_cardInfo_content span {
+  color: #666;
+}
+
+.history_cardBtn {
+  display: flex; 
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.history_pagination {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+
+.history_pagination_list {
+  display: flex;
+  gap: 10px;
+}
+
+.history_pagination_list > li {
+  padding: 5px 10px;
+  border-radius: 4px;
+  min-width: 35px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.history_pagination_list > li:hover {
+  background-color: #f0f0f0;
+  border-color: #aaa;
+  transition: background-color 0.2s;
+}
+
+.history_active {
+  color: #fff;
+  background-color: coral;
+  border-color: coral;
+  font-weight: bold;
+}
+
+.history_pagination_list > .history_active:hover {
+  background-color: coral;
+  border-color: coral;
+}
+
+.history_pagination_prev,
+.history_pagination_next {
+  font-weight: bold;
+  color: #666;
+}
+
+.history_pagination_prev:hover,
+.history_pagination_next:hover {
+  background-color: #fff;
+  color: coral;
+}
