@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import ProductForm from "./components/ProductForm"
 import { useEffect, useState } from "react"
 import requestHandler from "../../utils/requestHandler"
-import Spinner from "../../components/ui/Spinner"
+import LoadingSpinner from "../../utils/LoadingSpinner"
 
 const ProductEdit = () => {
   const {id} =  useParams()
@@ -31,7 +31,7 @@ const ProductEdit = () => {
         />
       ) : (
         <div className="loading">
-          <Spinner size={28} showLabel label="상품 정보를 불러오는 중..." />
+          <LoadingSpinner size={28} label="상품 정보를 불러오는 중..." />
         </div>
       )}
     </div>

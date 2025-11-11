@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import UseNavi from "../../utils/UseNavi"
-import Spinner from "../../components/ui/Spinner";
 import Pagination from "../../components/ui/Pagination";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import '../../styles/admin/ProductList.css'
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const ProductList = () => {
   const {goTo} = UseNavi()
@@ -130,7 +130,7 @@ const ProductList = () => {
 
       {loading ? (
         <div className="loading">
-          <Spinner size={25} showLabel label="상품 목록 불러오는 중..." />
+          <LoadingSpinner size={30} label="상품 목록 불러오는 중..." />
         </div>
       ) : goods.length ? (
         <>

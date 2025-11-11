@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import requestHandler from "../../utils/requestHandler";
 import "../../styles/admin/ProductList.css";
-import Spinner from "../../components/ui/Spinner";
 import Pagination from "../../components/ui/Pagination";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const SoldoutManage = () => {
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const SoldoutManage = () => {
 
       {loading ? (
         <div className="loading">
-          <Spinner size={25} showLabel label="품절 상품 불러오는 중..." />
+          <LoadingSpinner size={30} showLabel label="품절 상품 불러오는 중..." />
         </div>
       ) : goods.length ? (
         <>

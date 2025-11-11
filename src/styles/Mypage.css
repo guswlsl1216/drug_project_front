@@ -1,29 +1,234 @@
+/* =========================================================================
+ * 1. 마이페이지 기본 레이아웃 (기존 코드)
+ * ========================================================================= */
 .mypage-container {
-  padding: 20px;
-  padding-top: 80px;
-  max-width: 800px;
-  margin: 0 auto;
+    /* max-width를 800px에서 찜 목록에 맞게 더 넓게 설정하는 것이 좋습니다. */
+    width: 100%;
+    max-width: 1200px; /* 찜 목록 그리드를 위해 확장 */
+    margin: 40px auto;
+    padding: 20px;
+    font-family: "Noto Sans KR", sans-serif;
+    padding-top: 80px; /* 기존 코드 유지 */
 }
 
+.mypage-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #a671ec;
+    padding-bottom: 10px;
+}
+
+/* 탭 스타일 (기존 코드 수정 및 유지) */
 .mypage-tabs {
-  display: flex;
-  gap: 10px;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    border-bottom: 2px solid #ccc; /* 기존 코드 유지 */
+    margin-bottom: 20px; /* 기존 코드 유지 */
+    overflow-x: auto;
 }
 
 .mypage-tabs a {
-  padding: 10px 15px;
-  text-decoration: none;
-  color: gray;
+    padding: 10px 15px; /* 기존 코드 유지 */
+    text-decoration: none;
+    color: gray; /* 기존 코드 유지 */
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
 }
 
 .mypage-tabs a.active {
-  color: #000;
-  border-bottom: 3px solid #000;
+    color: #000; /* 기존 코드 유지 */
+    border-bottom: 3px solid #000; /* 기존 코드 유지 */
+    font-weight: 700;
 }
 
 .mypage-content {
-  margin-top: 20px;
-  padding: 10px;
+    margin-top: 20px; /* 기존 코드 유지 */
+    padding: 10px; /* 기존 코드 유지 */
+}
+
+
+/* =========================================================================
+ * 2. 찜 목록 스타일 (Favorite.jsx)
+ * ========================================================================= */
+
+.favorite-list-container {
+    padding: 0 10px; /* Mypage-content 패딩과 중복될 수 있지만, 내부 컨테이너 스타일 정의 */
+}
+
+.favorite-list-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.favorite-grid {
+    display: grid;
+    /* 250px 너비의 카드를 자동으로 채우도록 설정 */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 20px;
+}
+
+.favorite-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+    cursor: pointer;
+    background-color: #fff;
+    height: 100%; /* 그리드 아이템 높이 통일 */
+}
+
+.favorite-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+.favorite-image {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.favorite-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.favorite-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.favorite-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #a671ec;
+    margin-bottom: 15px;
+}
+
+.favorite-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto; /* 버튼을 카드 하단에 배치 */
+    padding-top: 10px; /* 정보와 버튼 사이 간격 */
+}
+
+/* 액션 버튼 (장바구니, 바로구매) */
+.favorite-actions button {
+    flex: 1;
+    padding: 8px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: 1px solid;
+}
+
+.add-to-cart-small-btn {
+    background-color: #fff;
+    border-color: #a671ec;
+    color: #a671ec;
+}
+
+.add-to-cart-small-btn:hover {
+    background-color: #f0e6ff;
+}
+
+.buy-now-small-btn {
+    background-color: #a671ec;
+    border-color: #a671ec;
+    color: white;
+}
+
+.buy-now-small-btn:hover {
+    background-color: #8c5cd8;
+}
+
+/* 찜 상품이 없을 때 */
+.no-favorites {
+    text-align: center;
+    padding: 50px 0;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.no-favorites p {
+    font-size: 18px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.go-to-store-btn {
+    padding: 10px 25px;
+    background-color: #a671ec;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.go-to-store-btn:hover {
+    background-color: #8c5cd8;
+}
+
+/* 로딩 및 에러 메시지 */
+.loading-message, .error-message {
+    text-align: center;
+    padding: 50px 0;
+    font-size: 18px;
+    color: #555;
+}
+
+.error-message {
+    color: #d9534f;
+}
+
+.favorite-toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    /* 배경을 투명하게 설정하거나 이미지 위에 띄울 경우 약간의 반투명 배경을 사용 */
+    background: none; 
+    border: none;
+    font-size: 24px; /* 하트 아이콘 크기 */
+    cursor: pointer;
+    z-index: 10;
+    padding: 0;
+    line-height: 1; /* 아이콘이 중앙에 오도록 조정 */
+}
+
+/* 찜 완료 상태 (빨간 하트) */
+.favorite-toggle-btn.active {
+    color: red; /* 빨간 하트 색상 */
+}
+
+/* 찜 해제 상태 (찜 목록에서는 항상 찜 완료 상태이므로 필요 없을 수 있으나, 일관성을 위해 추가) */
+.favorite-toggle-btn:not(.active) {
+    color: white; /* 빈 하트 아이콘 색상 (이미지 영역에선 잘 보이도록) */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 잘 보이도록 그림자 추가 */
 }

@@ -1,3 +1,4 @@
+import axiosInstance from "../utils/axiosInstance"
 import requestHandler from "../utils/requestHandler"
 
 const getRoutine = async (requestDate)=>{
@@ -10,6 +11,7 @@ const getRoutine = async (requestDate)=>{
 }
 
 const performRoutine = async (eventId, requestDate, performed_times)=>{
+  console.log(eventId, requestDate, performed_times)
   const res= await requestHandler({
     method:"post",
     url:"/routine/performed/"+eventId,
@@ -18,7 +20,6 @@ const performRoutine = async (eventId, requestDate, performed_times)=>{
       "performed_times":performed_times
     }
   })
-  
   return res.data
 }
 
