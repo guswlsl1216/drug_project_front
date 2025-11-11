@@ -2,47 +2,51 @@ import { useEffect, useState } from "react";
 import "../../styles/Store.css";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
+import useFavoriteToggle from "../../pages/store/usefavoriteToggle";
 
 
 const ProductCard = ({ product, sortKey, ProductHandler }) => {
-    // 초기 찜 상태는 product.is_favorite을 사용합니다.
-    const { isFavorite, toggleFavoriteHandler, message } = useFavoriteToggle(
-        product.is_favorite || false, // 초기 찜 상태
-        product.id // 상품 ID
-    ); 
+  const goodsId = product && product.id;
 
-    return (
-        <div className="product-card" key={product.id}>
-            
-            {/* 팝업 메시지 (카드에 오버레이) */}
-            {message && (
-                <div className="message-popup is-card-message">
-                    {message}
-                </div>
-            )}
-            
-            {/* 찜 버튼 위치 (이미지 영역에 오버레이) */}
-            <div className="product-favorite-wrapper">
-                <button 
-                    className={`favorite-card-btn ${isFavorite ? 'active' : ''}`}
-                    onClick={toggleFavoriteHandler} 
-                    aria-label={isFavorite ? '찜 해제' : '찜 하기'}
-                >
-                    {isFavorite ? '❤️' : '🤍'}
-                </button>
-            </div>
-            
-            {/* 카드 클릭 시 상세 페이지 이동 핸들러는 이미지/정보 영역에 적용 */}
-            <div onClick={() => ProductHandler(product.id)} className="product-card-clickable-area">
-                <div className="product-image"></div>
-                <div className="product-name">{product.goods_name}</div>
-                <div className="product-price">{product.price ? product.price.toLocaleString() : '가격 미정'}원</div>
-            </div>
+  // 초기 찜 상태는 product.is_favorite을 사용합니다.
+  const { isFavorite, toggleFavoriteHandler, message } = useFavoriteToggle(
+    product.is_favorite || false, // 초기 찜 상태
+    goodsId
+  ); 
 
-            {/* 판매순 정보 */}
-            {sortKey === 'sales' && product.sell_count !== undefined && <div className="product-sales-info">총 {product.sell_count}회 판매</div>}
-        </div>
-    );
+  return (
+    <div className="product-card">
+            
+      {/* 팝업 메시지 (카드에 오버레이) */}
+      {message && (
+          <div className="message-popup is-card-message">
+            {message}
+          </div>
+      )}
+            
+      {/* 찜 버튼 위치 (이미지 영역에 오버레이) */}
+      <div className="product-favorite-wrapper">
+        <button 
+          className={`favorite-card-btn ${isFavorite ? 'active' : ''}`}
+          onClick={(e) => {
+          console.log('찜 버튼 눌림')
+          toggleFavoriteHandler(e)}} 
+          aria-label={isFavorite ? '찜 해제' : '찜 하기'}>
+          {isFavorite ? '❤️' : '🤍'}
+        </button>
+      </div>
+            
+      {/* 카드 클릭 시 상세 페이지 이동 핸들러는 이미지/정보 영역에 적용 */}
+      <div onClick={() => ProductHandler(product.id)} className="product-card-clickable-area">
+        <div className="product-image"></div>
+        <div className="product-name">{product.goods_name}</div>
+        <div className="product-price">{product.price ? product.price.toLocaleString() : '가격 미정'}원</div>
+      </div>
+
+      {/* 판매순 정보 */}
+      {sortKey === 'sales' && product.sell_count !== undefined && <div className="product-sales-info">총 {product.sell_count}회 판매</div>}
+    </div>
+  );
 };
 
 
@@ -73,6 +77,7 @@ const GoodsList = ({categoryKey, categoryValue}) => {
     try {
       const response = await axiosInstance.get(apiUrl);
       setProducts(response.data.goods || []);
+      console.log('GoodsList: 상품 데이터 확인', response.data.goods);
     } catch (error) {
       console.error(error);
       setProducts([]);
@@ -127,7 +132,7 @@ const GoodsList = ({categoryKey, categoryValue}) => {
       <div className="product-grid">
         {products.map(product => (
           <ProductCard
-            kdy={product.id}
+            key={product.id}
             product={product}
             sortKey={sortKey}
             ProductHandler={ProductHandler}/>

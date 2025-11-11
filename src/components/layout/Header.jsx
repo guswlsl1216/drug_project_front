@@ -40,7 +40,6 @@ const Header = () => {
           <ul className="header_menu">
             <NavLink to="analyze">AI분석</NavLink>
             <NavLink to="medslist">의약품목록</NavLink>
-
             <NavLink to="store/allgoods">스토어</NavLink>
 
             {isLoggedIn ? (
