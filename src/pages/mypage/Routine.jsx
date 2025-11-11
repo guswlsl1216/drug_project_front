@@ -17,9 +17,9 @@ const Routine = () => {
     const routine_data = await getRoutine()
 
     if (routine_data.ok) {
-      const filterd = routine_data.routine.map((data) => ({ 'id': data.id, 'title': data.drugName, 'start': data.start_date, 'end': data.end_date+'T23:59:00'}))
+      const filterd = routine_data.routine.map((data) => ({ 'id': data.id, 'eattime' : data.eattime, 'title': data.drugName, 'start': data.start_date, 'end': data.end_date+'T23:59:00'}))
       setEvents(filterd)
-      //{id: 1, title: "오메가", start: "2025-10-31", end: '2025-10-31'}
+      //{id: 1, eattime : [true, true, true], title: "오메가", start: "2025-10-31", end: '2025-10-31'}
       setLogs(routine_data.log)
       // 체크박스 default값 설정용 {routine.id:[ {date:년월일, performed_times:[bool,bool,bool]} ]}잇음  
       // routine.id를 키값으로 하는 딕셔너리{routine.id:[]} 안에 date:string 와 performed_times:list를 가진 딕셔너리를 요소로 하는 리스트[{}]를 가짐
@@ -39,7 +39,7 @@ const Routine = () => {
   }
 
   //체크박스 생성 + 이벤트처리하여 반환
-  const makeBox = (eventId, date, index, isChecked = false) => {
+  const makeBox = (eventId, eattime, date, index, isChecked = false) => {
     const checkbox = document.createElement('input')
     checkbox.type = 'checkbox'
     checkbox.checked = isChecked
@@ -49,8 +49,8 @@ const Routine = () => {
     const m = String(today.getMonth() + 1).padStart(2, '0');
     const d = String(today.getDate()).padStart(2, '0');
     const now = `${y}-${m}-${d}`; 
-
-    if (date != now) {
+    console.log(eattime)
+    if (date != now||eattime[index]==false) {
       checkbox.disabled = true
     }
 
@@ -128,7 +128,6 @@ const Routine = () => {
               for (const [k, v] of Object.entries(counts)) {
                 classes.push(v[now])
               }
-
               if (classes.includes('warning')) {
                 classname = 'warning'
               } else if (classes.filter(el => el === 'danger').length + classes.filter(el => el === undefined).length == classes.length) {
@@ -167,7 +166,7 @@ const Routine = () => {
               const m = String(info.view.currentStart.getMonth() + 1).padStart(2, '0')
               const d = String(info.view.currentStart.getDate()).padStart(2, '0')
               const now = `${y}-${m}-${d}`
-
+              console.log(info)
               //체크박스 파트
               //루틴 삭제, 추가 후 캘린더 작업
               const checkboxContainer = document.createElement('div')
@@ -177,6 +176,7 @@ const Routine = () => {
                 const label = document.createElement('label')
                 const checkbox = makeBox(
                   info.event.id, //이벤트id
+                  info.event._def.extendedProps.eattime, // 먹는시간
                   now, //현재시각 (string)
                   index, //아침 [0] 점심 [1] 저녁[2] times의 forEach문에서 가져왔다
                   logs[info.event.id]?.[now]?.[index] || false //ischecked(체크박스 체크여부) 해당하는 log가 없으면 false반환
