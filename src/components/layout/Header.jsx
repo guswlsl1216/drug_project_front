@@ -17,6 +17,8 @@ const Header = () => {
       url: "login/logout",
       onSuccess: () => {
         setUser(null); // Context에서 로그아웃 처리 (초기화)
+        sessionStorage.removeItem('isSave');  // 세션 삭제 (분석 결과 저장 유무)
+        sessionStorage.removeItem('result');  // 세션 삭제 (분석 결과)
         alert("로그아웃 되었습니다.");
         goTo("/login"); // 로그인 페이지로 이동
       },

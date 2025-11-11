@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import requestHandler from "../../utils/requestHandler";
 import "../../styles/analyze/DrugInfo.css"
-import Spinner from "../ui/Spinner";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType  }) => {
   const [drugData, setDrugData] = useState(null);
@@ -47,16 +47,6 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType  }) => {
       body.style.overflow = 'auto'
     }
   }, [isOpen]);
-
-  const loadingSpinner = () => {
-    return (
-      <div className="drug_info_loadingSpinner">
-        <div className="overlay">
-          <Spinner size={50} color="#00e2ff" showLabel label="잠시만 기다려주세요..." />
-        </div>
-      </div>
-    )
-  }
 
   const medData = () => {
     return (
@@ -126,7 +116,7 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType  }) => {
       <div className="drug_info_popup" onClick={closePopup}>
         <section className="drug_info_content" onClick={(e) => e.stopPropagation()}>
         {loading  || !drugData
-          ? loadingSpinner()
+          ? LoadingSpinner({label:"약 정보 불러오는 중..."})
           :
           <>
           <div className="drug_info_header">

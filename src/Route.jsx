@@ -14,6 +14,7 @@ import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
 import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
+import HistoryDetail from "./pages/mypage/HistoryDetail";
 import Store from "./pages/store/Store";
 import Allgoods from "./pages/store/Allgoods";
 import Functionality from "./pages/store/Functionality";
@@ -35,6 +36,7 @@ const Routers = () => {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
           <Route path="history" element={<History />} />
+          <Route path="history/detail/:id" element={<HistoryDetail />} />
           <Route path="mymeds" element={<Mymeds />} />
           <Route path="routine" element={<Routine />} />
           <Route path="cart" element={<Cart />} />
