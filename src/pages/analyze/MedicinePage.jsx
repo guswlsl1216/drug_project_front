@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import UseNavi from "../../utils/UseNavi";
 import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MedicinePage.css";
+import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 const ResultDataKey = "ANALYSIS_RESULT_DATA"; // 결과 데이터 키 (사용하지 않더라도 일관성을 위해 유지)
 const MedicineDataKey = "MEDICINE_LIST_TO_SEND"; // 약물 목록 저장 키
@@ -19,23 +22,57 @@ const saveMedicineList = (data) => {
 
 const MedicinePage = () => {
   const navigate = useNavigate();
-  // 예시를 위한 상태 관리 (실제 로직에서는 API 호출 등으로 데이터 관리)
+  const {goTo} = UseNavi();
+  // 이미지 파일 객체 자체를 저장할 상태 추가
+  const [uploadedFile, setUploadedFile] = useState(null);
+  // 이미지 미리보기를 위한 상태 (URL)
   const [medicineImage, setMedicineImage] = useState(null);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [selectedMedicineId, setSelectedMedicineId] = useState(null);
+
   const [recognizedMedicines, setRecognizedMedicines] = useState([
     {id: 1, name: "인식된 의약품 1", ingredients: [], korName: ""},
     {id: 2, name: "인식된 의약품 2", ingredients: [], korName: ""},
     {id: 3, name: "인식된 의약품 3", ingredients: [], korName: ""},
   ]);
 
+  // ★★★ API 호출 함수 (새로 추가)
+  const callDetectApi = async (file) => {
+    const formData = new FormData();
+    // 백엔드에서 'file'이라는 키로 이미지를 받으므로, 동일하게 'file' 키를 사용합니다.
+    formData.append("file", file);
+
+    try {
+      const response = await fetch(`${API_ENDPOINT}/result/detect`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        // HTTP 오류 처리 (예: 400, 500)
+        const errorData = await response.json();
+        throw new Error(errorData.message || `API 호출 실패: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("이미지 분석 API 오류:", error.message);
+      alert(`이미지 분석 실패: ${error.message}`);
+      return null;
+    }
+  };
+
   const handleImageUpload = (event) => {
     // 이미지 업로드 로직 (선택된 파일 처리)
     const file = event.target.files[0];
     if (file) {
       setMedicineImage(URL.createObjectURL(file));
-      console.log("이미지 업로드:", file.name);
-      // 여기에 이미지 분석 API 호출 로직 추가
+
+      // ★★★ 수정: 실제 파일 객체를 저장합니다.
+      setUploadedFile(file);
+      console.log("이미지 파일 저장:", file.name);
+
     }
   };
 
@@ -51,21 +88,52 @@ const MedicinePage = () => {
 
   const handleMedicineAdd = () => {
     const newId = Math.max(...recognizedMedicines.map((med) => med.id)) + 1;
-    setRecognizedMedicines([...recognizedMedicines, {id: newId, name: "새로운 의약품" , ingredients: [], korName: ""}]);
+    setRecognizedMedicines([
+      ...recognizedMedicines,
+      {id: newId, name: "새로운 의약품", ingredients: [], korName: ""},
+    ]);
   };
 
-  const handleSearch = () => {
-    console.log("검색 버튼 클릭 - 이미지 분석 결과 기반 검색");
-    // 여기에 분석된 이미지로 의약품 정보 검색 로직 추가
+  const handleSearch = async () => {
+    console.log("✅ '검사' 버튼 클릭 - 이미지 분석 시작");
+    
+    // 1. 파일이 선택되었는지 확인
+    if (!uploadedFile) {
+        alert("이미지 파일을 먼저 업로드해주세요.");
+        return;
+    }
+    
+    // 2. API 호출
+    const result = await callDetectApi(uploadedFile); // ★★★ uploadedFile 사용
+    
+    if (result && result.ok && result.detections && result.detections.length > 0) {
+        // 3. API 응답(detections)을 recognizedMedicines 상태로 변환 및 업데이트
+        const newMedicines = result.detections.map((detection, index) => ({
+            id: detection.class_name + index, // 고유한 ID를 위해 class_name과 index 조합
+            name: detection.class_name, 
+            ingredients: [], 
+            korName: "", 
+            server_id: detection.class_name 
+        }));
+        
+        setRecognizedMedicines(newMedicines);
+        console.log("인식된 약물 목록 업데이트 완료:", newMedicines);
+        alert("이미지 분석 및 목록 업데이트가 완료되었습니다.");
+
+    } else if (result && result.ok && result.detections.length === 0) {
+        // 탐지 결과가 없을 경우
+        alert("이미지에서 인식된 약물이 없습니다. 직접 추가해 주세요.");
+        setRecognizedMedicines([]); // 목록 비우기
+    }
   };
 
   const handleNext = () => {
     // 현재 데이터를 저장하고 다음 페이지로 이동
     saveMedicineList(recognizedMedicines);
-    
+
     console.log("의약품 데이터 저장:", recognizedMedicines);
     // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
-    navigate('/analyze/supplement'); // SupplementPage로 이동
+    goTo("/analyze/supplement"); // SupplementPage로 이동
   };
 
   return (
@@ -168,7 +236,7 @@ const MedicinePage = () => {
           setSearchModalOpen(false);
         }}
         apiEndpoint="/aiAnalyze/medicine/search"
-        type='meds'
+        type="meds"
       />
     </div>
   );
