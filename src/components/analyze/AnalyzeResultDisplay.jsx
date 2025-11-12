@@ -12,6 +12,20 @@ const AnalyzeResultDisplay = ({ result, sortedInteractions }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [drugId, setDrugId] = useState(null);
   const [drugType, setDrugType] = useState(null);
+
+  // 분석 근거
+  const ANALYSIS_SOURCES = [
+    {
+      name: "건강기능식품 종합정보 서비스(식품의약품안전처)",
+      url: "https://data.mfds.go.kr/hid/main/main.do",
+      title: "건강기능식품 종합정보 서비스"
+    },
+    {
+      name: "한국의약품안전관리원",
+      url: "https://www.drugsafe.or.kr/",
+      title: "한국의약품안전관리원"
+    },
+  ];
   
   const show_interactions = () => {
     return (
@@ -162,6 +176,30 @@ const AnalyzeResultDisplay = ({ result, sortedInteractions }) => {
             drugType={drugType}
           />
         }
+
+        <div className="analysis_sources">
+          <p className='sources_disclaimer'>
+              본 분석 결과는 다음 공신력 있는 기관 및 데이터베이스를 기반으로 합니다. 자세한 내용은 각 사이트를 참조하십시오.
+          </p>
+
+          <div className='sources_list'>
+            {ANALYSIS_SOURCES.map((source, i) => (
+              <div key={i} className='source_item'>
+                  <h5 className='source_name'>{source.name}</h5>
+                  <a 
+                    href={source.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className='source_link_button'
+                    title={source.title}
+                  >
+                    사이트 바로가기
+                  </a>
+              </div>
+            ))}
+          </div>
+
+        </div>
       </section>
     </>
   )

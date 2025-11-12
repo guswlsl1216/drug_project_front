@@ -205,3 +205,64 @@
   color: #007bff;
   cursor: pointer;
 }
+
+.analysis_sources {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 2px solid #ddd;
+}
+
+.analysis_sources h4 {
+  font-size: 1.4em;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.sources_disclaimer {
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.sources_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+  gap: 20px;
+}
+
+.source_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #fff;
+  min-height: 120px;
+}
+
+.source_name {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.source_link_button {
+  display: block; 
+  width: 100%;
+  text-align: center;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.95em;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.source_link_button:hover {
+  background-color: #0056b3;
+}
