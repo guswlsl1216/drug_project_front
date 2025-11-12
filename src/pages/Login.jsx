@@ -1,11 +1,65 @@
-// 로그인 페이지
-const Login = () => {
+import UseNavi from "../utils/UseNavi";
+import Button from "../components/ui/Button";
+import requestHandler from "../utils/requestHandler";
+import Changehandler from "../utils/Changehandler";
+import { useEffect, useState } from "react";
+import { useUser } from "../components/context/UserContext";
+import axiosInstance from "../utils/axiosInstance";
 
+// 로그인 페이지
+
+const Login = () => {
+  const {goIndex, goTo, goBack} = UseNavi();
+  const [form, setForm] = useState({
+    username:"",
+    password:""
+  });
+  const [loading, setLoading] = useState(false);
+  const { user, setUser, isLoggedIn } = useUser();
   
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
+    
+    try {
+      // axiosInstance는 withCredentials: true 설정됨 -> 쿠키 전송
+      const res = await axiosInstance.post("login/login", form);
+
+      // 서버에서 보내 준 user 정보로 Context 업데이트
+      setUser(res.data.data);
+
+      // 로그인 후 인덱스로 이동
+      goIndex();
+    } catch (err) {
+      alert(err?.response?.data?.message || "로그인 실패"); // 조건문 해석 불가능 다시 알아보고 수정 필요
+
+    } finally {
+      setLoading(false);
+    }};
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <>
       <div className="wrapper">
         <h2>로그인 페이지</h2>
+
+        <form action="">
+
+          <div>
+            <h4>아이디</h4>
+            <input type="text" name="username" value={form.username} onChange={Changehandler(setForm)} />
+          </div>
+
+          <div>
+            <h4>비밀번호</h4>
+            <input type="password" name="password" value={form.password} onChange={Changehandler(setForm)} />
+          </div>
+
+          <Button variant="primary" onClick={handleSubmit}>로그인</Button>
+
+        </form>
+
       </div>
     </>
   );

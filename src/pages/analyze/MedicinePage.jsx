@@ -24,9 +24,9 @@ const MedicinePage = () => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [selectedMedicineId, setSelectedMedicineId] = useState(null);
   const [recognizedMedicines, setRecognizedMedicines] = useState([
-    {id: 1, name: "인식된 의약품 1"},
-    {id: 2, name: "인식된 의약품 2"},
-    {id: 3, name: "인식된 의약품 3"},
+    {id: 1, name: "인식된 의약품 1", ingredients: [], korName: ""},
+    {id: 2, name: "인식된 의약품 2", ingredients: [], korName: ""},
+    {id: 3, name: "인식된 의약품 3", ingredients: [], korName: ""},
   ]);
 
   const handleImageUpload = (event) => {
@@ -51,7 +51,7 @@ const MedicinePage = () => {
 
   const handleMedicineAdd = () => {
     const newId = Math.max(...recognizedMedicines.map((med) => med.id)) + 1;
-    setRecognizedMedicines([...recognizedMedicines, {id: newId, name: "새로운 의약품"}]);
+    setRecognizedMedicines([...recognizedMedicines, {id: newId, name: "새로운 의약품" , ingredients: [], korName: ""}]);
   };
 
   const handleSearch = () => {
@@ -157,9 +157,10 @@ const MedicinePage = () => {
             recognizedMedicines.map((med) =>
               med.id === selectedMedicineId
                 ? {
-                    id: selectedItem.id, 
+                    id: selectedItem.id,
                     name: selectedItem.name,
                     ingredients: selectedItem.ingredients || med.ingredients,
+                    korName: selectedItem.korName || med.korName,
                   }
                 : med
             )

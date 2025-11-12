@@ -105,7 +105,7 @@ const SupplementPage = () => {
       saveAnalysisResult(analysisResult);
 
       // 5. 결과 페이지로 이동
-      navigate("/result");
+      navigate("/analyze/result");
 
 
     } catch (error) {

@@ -128,3 +128,9 @@
   background-image: url('../images/main01.png');
   background-size: contain;
 }
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
