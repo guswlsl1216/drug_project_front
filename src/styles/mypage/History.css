@@ -107,3 +107,46 @@
   background-color: #fff;
   color: coral;
 }
+
+.no_history {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 쌓기 */
+  align-items: center; /* 가로 중앙 정렬 */
+  justify-content: center; 
+  padding: 60px 20px;
+  margin-top: 50px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #f9f9f9; 
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.no_history_title {
+  margin-bottom: 10px;
+}
+
+.no_history_title h3 {
+  font-size: 1.6rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.no_history_description {
+  margin-bottom: 30px; 
+  text-align: center;
+}
+
+.no_history_description p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+.no_history .btn-primary { 
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
