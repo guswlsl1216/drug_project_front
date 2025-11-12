@@ -4,7 +4,6 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
-import Cart from "./pages/mypage/Cart";
 import Orders from "./pages/mypage/Orders";
 import Review from "./pages/mypage/Review";
 import Userinfo from "./pages/mypage/Userinfo";
@@ -23,6 +22,8 @@ import Store from "./pages/store/Store";
 import Allgoods from "./pages/store/Allgoods";
 import Functionality from "./pages/store/Functionality";
 import Ingredient from "./pages/store/Ingredient";
+import ProductDetail from "./components/store/ProductDetail";
+import Favorite from "./pages/mypage/Favorite";
 
 const Routers = () => {
 
@@ -46,7 +47,7 @@ const Routers = () => {
           <Route path="history/detail/:id" element={<HistoryDetail />} />
           <Route path="mymeds" element={<Mymeds />} />
           <Route path="routine" element={<Routine />} />
-          <Route path="cart" element={<Cart />} />
+          <Route path="favorite" element={<Favorite />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
         </Route>
@@ -55,6 +56,7 @@ const Routers = () => {
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
+          <Route path="detail/:goodsId" element={<ProductDetail />}/>
         </Route>
       </Routes>
     </>
