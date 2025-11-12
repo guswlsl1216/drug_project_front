@@ -6,7 +6,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import DrugInfo from './DrugInfo';
 
-const AnalyzeResultDisplay = ({ result }) => {
+const AnalyzeResultDisplay = ({ result, sortedInteractions }) => {
   const { status_label, status_message, status_color, status_fontAwesome } = ANALYSIS_STATUS_MAPPING[result.status]
 
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +19,7 @@ const AnalyzeResultDisplay = ({ result }) => {
         <h4>병용섭취 주의사항</h4>
         <p>※전문적인 판단이 아니므로 자세한 내용은 전문 의약사와 상담하세요.</p>
         {
-          result.interactions.map((item, i) => {
+          sortedInteractions.map((item, i) => {
             const { status_label, status_className } = ANALYSIS_STATUS_MAPPING[item.level]
             
             return (
@@ -58,7 +58,7 @@ const AnalyzeResultDisplay = ({ result }) => {
           result.duplicates.map((item, i) => {
             return (
               <div className="duplicate_box" key={i}>
-                <p className='duplicate_ingredient'>▼ {item.ingredient}</p>
+                <p className='duplicate_ingredient'>{item.ingredient}</p>
                 <div className="duplicate_names_group">
                   {item.names.map((pdt_name, i) => {
                     return (

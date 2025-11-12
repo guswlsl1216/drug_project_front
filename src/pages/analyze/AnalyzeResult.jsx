@@ -12,7 +12,11 @@ const AnalyzeResult = () => {
   
   // 세션스토리지에서 불러오기
   const result = JSON.parse(sessionStorage.getItem('result'))
-  
+  // interactions 내림차순 정렬
+  const sortedInteractions = result.interactions.slice().sort((a, b) => {
+    return b.level - a.level;
+  });
+
   const saveResult = () => {
     requireLogin(() => {
       if (sessionStorage.getItem('isSave') === result.analysis_uid) {
@@ -58,12 +62,12 @@ const AnalyzeResult = () => {
           <h1>분석 결과</h1>
         </div>
 
-        <AnalyzeResultDisplay result={result} />
+        <AnalyzeResultDisplay result={result} sortedInteractions={sortedInteractions} />
       
         <div className='analyze_result_actions'>
           <Button variant='primary' onClick={saveResult} disabled={loading || isSave}>
             {
-              loading ? '저장 중...' : (isSave ? '저장 완료' : '마이페이지에 결과 저장')
+              loading ? '저장 중...' : (isSave ? '저장 완료' : '결과 저장')
             }
             </Button>
           <Button variant='primary' onClick={() => {
