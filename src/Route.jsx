@@ -1,8 +1,8 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import Mainpage from "./pages/Mainpage";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
-import Analyze from "./pages/Analyze";
+import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
 import Orders from "./pages/mypage/Orders";
 import Review from "./pages/mypage/Review";
@@ -11,6 +11,10 @@ import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
 import Mymeds from "./pages/mypage/Mymeds";
+import MedicinePage from "./pages/analyze/MedicinePage";
+import SupplementPage from "./pages/analyze/SupplementPage";
+
+
 import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import HistoryDetail from "./pages/mypage/HistoryDetail";
@@ -30,7 +34,10 @@ const Routers = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupComplete" element={<SignupComplete/>} />
         <Route path="/login" element={<Login />} />
-        <Route path="/analyze" element={<Analyze />} />
+        <Route path="/analyze" element={<Analyze />}>
+          <Route path="medicine" element={<MedicinePage />} />
+          <Route path="supplement" element={<SupplementPage />} />
+        </Route>
         <Route path="/analyze/result" element={<AnalyzeResult />} />
         <Route path="/medslist" element={<Medslist />} />
 
