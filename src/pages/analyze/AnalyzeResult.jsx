@@ -63,7 +63,7 @@ const AnalyzeResult = () => {
         <div className='analyze_result_actions'>
           <Button variant='primary' onClick={saveResult} disabled={loading || isSave}>
             {
-              loading ? '저장 중...' : (isSave ? '저장 완료' : '결과 저장')
+              loading ? '저장 중...' : (isSave ? '저장 완료' : '마이페이지에 결과 저장')
             }
             </Button>
           <Button variant='primary' onClick={() => {
