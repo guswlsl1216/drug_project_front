@@ -1,0 +1,72 @@
+/* 오른쪽 하단 고정 */
+.cb-fab {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 1000;
+}
+
+/* 버튼과 배지 래퍼: 배지 공간만큼 하단 패딩 확보 + z-index 컨트롤 */
+.cb-fab__stack {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding-bottom: 18px;   /* 배지가 가리지 않도록 여유 공간 */
+  isolation: isolate;     /* 내부 z-index 분리 */
+}
+
+/* 동그란 버튼 (그라디언트 보더 트릭) */
+.cb-fab__btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 9999px;
+
+  /* 투명 보더 + 두 겹 background: 안쪽 흰색 / 바깥 conic 보더 */
+  border: 2px solid transparent !important;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    conic-gradient(#ff3b30, #ff2dbb, #8a5cff, #3bbcff, #ff3b30) border-box;
+
+  color: #111;
+  box-shadow: 0 8px 20px rgba(0,0,0,.18);
+  display: grid;
+  place-items: center;
+  transition: transform .15s ease, box-shadow .15s ease;
+  position: relative;
+  z-index: 2;           /* 버튼을 배지 위로 */
+}
+
+.cb-fab__btn svg { width: 22px; height: 22px; }
+
+.cb-fab__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.22);
+}
+
+/* 겹치는 배지: 버튼을 가리지 않도록 더 아래로, z-index 낮춤 */
+.cb-fab__badge {
+  position: absolute;
+  bottom: -8px; 
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #ff2dbb, #7a5cff, #3bbcff);
+  border: 2px solid #fff;
+  box-shadow: 0 6px 16px rgba(0,0,0,.2);
+  white-space: nowrap;
+  user-select: none;
+  z-index: 3;           /* 버튼 아래 */
+  pointer-events: none; /* 클릭은 버튼으로만 */
+}
+
+/* 모바일: 라벨 숨김(원하면 유지해도 됨) */
+@media (max-width: 640px) {
+  .cb-fab__badge { display: none; }
+  .cb-fab__btn { width: 52px; height: 52px; }
+}
+
+

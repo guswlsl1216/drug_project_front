@@ -1,0 +1,113 @@
+/* ================= ProductList ================= */
+.productlist-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.productlist-header h2{
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--accent, #7a5cff);
+}
+
+/* 툴바 */
+.toolbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap: 12px;
+  background: var(--panel, #fff);
+  border:1px solid var(--border, #e8e9f3);
+  border-radius:12px;
+  box-shadow: var(--shadow, 0 6px 18px rgba(20,16,56,.06));
+  padding: 10px;
+}
+.toolbar .left, .toolbar .right{
+  display:flex; align-items:center; gap:10px;
+}
+.toolbar .perpage{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size: 13px; color: var(--muted, #8b90a0);
+}
+.toolbar .perpage select{
+  height: 32px; padding: 0 8px;
+  border:1px solid var(--border, #e8e9f3);
+  border-radius:8px; background:#fff;
+}
+
+/* 테이블 래퍼 (오버플로우 대응) */
+.table-wrap{
+  overflow-x: auto;
+  background: var(--panel, #fff);
+  border-radius: 12px;
+  box-shadow: var(--shadow, 0 6px 18px rgba(20,16,56,.06));
+}
+
+/* admin-table 공용과 조화 */
+.productlist-table thead th{
+  white-space: nowrap;
+}
+.productlist-table tbody td{
+  vertical-align: middle;
+}
+
+/* 썸네일 */
+.thumb{
+  display:inline-block;
+  width: 64px; height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  border:1px solid var(--border, #e8e9f3);
+  background: #fafbff;
+}
+.thumb.placeholder{
+  width: 72px; height: 28px;
+  border-radius: 8px;
+  font-size: 12px; color: var(--muted, #8b90a0);
+  display: inline-flex; align-items:center; justify-content:center;
+}
+
+/* 상품명 칼럼 */
+.productlist-table td.name .linklike{
+  background: none; border: none; padding: 0; margin: 0;
+  color: var(--text, #1e1f29);
+  font-weight: 700; cursor: pointer;
+}
+.productlist-table td.name .linklike:hover{
+  color: var(--accent, #7a5cff);
+}
+.productlist-table td.name .sub{
+  margin-top: 2px; font-size: 12px; color: var(--muted, #8b90a0);
+}
+
+/* 하단 총 개수 */
+.total{
+  margin-top: 6px; font-size: 13px; color: var(--muted, #8b90a0);
+}
+
+/* empty 상태 */
+.empty{
+  padding: 28px;
+  text-align:center;
+  background: var(--panel, #fff);
+  border:1px solid var(--border, #e8e9f3);
+  border-radius: 12px;
+  color: var(--muted, #8b90a0);
+}
+
+/* 로딩 */
+.loading{
+  display:flex; align-items:center; justify-content:center;
+  min-height: 160px;
+}
+
+/* 반응형 */
+@media (max-width: 960px){
+  .toolbar{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .toolbar .left, .toolbar .right{
+    justify-content: space-between;
+  }
+}

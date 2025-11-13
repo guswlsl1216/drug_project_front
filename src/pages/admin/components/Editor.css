@@ -1,0 +1,199 @@
+/* =============== Editor Layout =============== */
+.editor-wrap { margin-top: 6px; }
+
+.editor {
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 14px;
+  min-height: 220px;
+  background: #fff;
+}
+
+.editor-foot {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: .7;
+  text-align: right;
+}
+
+.editor img{
+  max-width:100%;
+  height:auto;
+  display:block;
+  margin:12px 0;
+}
+
+/* 최소 높이 확보 */
+.editor .ProseMirror {
+  min-height: 280px;
+  line-height: 1.6;
+}
+
+/* 이미지가 영역에 맞게 보이도록 */
+.editor .ProseMirror img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.editor .ProseMirror-selectednode img {
+  outline: 2px solid rgba(122,92,255,.6);
+  outline-offset: 2px;
+}
+
+/* =============== ProseMirror Core =============== */
+.ProseMirror {
+  outline: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-align: left;
+}
+
+/* placeholder */
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* =============== Tables =============== */
+.ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;   /* 열 크기 균등 */
+  margin: 8px 0;
+  background: #fff;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  vertical-align: top;
+}
+
+.ProseMirror th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+/* 선택된 셀 하이라이트 */
+.ProseMirror .selectedCell:after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: rgba(99, 102, 241, 0.08);
+  pointer-events: none;
+}
+
+/* 열 리사이즈 핸들 (resizable: true) */
+.ProseMirror .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: rgba(99, 102, 241, 0.35);
+  pointer-events: none;
+}
+
+/* =============== Toolbar =============== */
+.tiptap-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--border, #e8e9f3);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: var(--shadow, 0 6px 18px rgba(20,16,56,.06));
+  margin-bottom: 8px;
+}
+
+.tiptap-toolbar button,
+.tiptap-toolbar select {
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border, #e8e9f3);
+  background: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tiptap-toolbar button.is-active {
+  border-color: rgba(122, 92, 255, .45);
+  box-shadow: 0 0 0 2px rgba(122, 92, 255, .12);
+}
+
+.tiptap-toolbar .divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border, #e8e9f3);
+  margin: 0 4px;
+}
+
+.tiptap-toolbar .spacer { flex: 1 1 auto; }
+
+/* 색상 픽커 그룹 */
+.color-tools { display: inline-flex; gap: 6px; align-items: center; }
+
+.color-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border: 1px solid var(--border, #e7e7f1);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.color-input input[type="color"]{
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* 표 컨트롤 버튼 묶음 */
+.table-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.table-controls button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 6px;
+  background: #f9fafb;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.table-controls button:hover {
+  background: #e8f0ff;
+  border-color: #93c5fd;
+}
+
+.table-controls svg { font-size: 16px; }
+
+/* 비활성 공통 */
+.tiptap-toolbar button:disabled,
+.tiptap-toolbar .color-input input:disabled {
+  opacity: .45;
+  pointer-events: none;
+}

@@ -44,6 +44,7 @@ const Button = ({
   variant = "primary", 
   disabled = false, 
   className = "",
+  ...props 
 }) => {
   return (
     <button
@@ -51,6 +52,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       className={`btn ${variant} ${className}`}
+      {...props} 
     >
       {children}
     </button>
