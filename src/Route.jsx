@@ -15,7 +15,7 @@ import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import AdminPage from "./pages/admin/AdminPage";
 import ProductManage from "./pages/admin/ProductManage";
-import ProductList from "./pages/admin/ProductList ";
+import ProductList from "./pages/admin/ProductList";
 import ProductRegister from "./pages/admin/ProductRegister";
 import SoldoutManage from "./pages/admin/SoldoutManage";
 import OrderHistory from "./pages/admin/OrderHistory";
@@ -27,6 +27,7 @@ import Functionality from "./pages/store/Functionality";
 import Ingredient from "./pages/store/Ingredient";
 import ProductDetail from "./components/store/ProductDetail";
 import Favorite from "./pages/mypage/Favorite";
+import OrderSheet from "./pages/order/OrderSheet";
 
 const Routers = () => {
 
@@ -68,6 +69,7 @@ const Routers = () => {
           <Route path="ingredient" element={<Ingredient />}/>
           <Route path="detail/:goodsId" element={<ProductDetail />}/>
         </Route>
+        <Route path="/orders" element={<OrderSheet />} />
       </Routes>
     </>
   );

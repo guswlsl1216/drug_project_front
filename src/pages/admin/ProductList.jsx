@@ -5,6 +5,7 @@ import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import '../../styles/admin/ProductList.css'
 import LoadingSpinner from "../../utils/LoadingSpinner";
+import time from "../../utils/time";
 
 const ProductList = () => {
   const {goTo} = UseNavi()
@@ -36,11 +37,11 @@ const ProductList = () => {
     });
   };
 
-  useEffect(() => {
-    requestHandler({
+  const load = async () => {
+    await requestHandler({
       method: "get",
       url: "/admin/goods",
-      payload : {page, per_page: perPage},
+      params : {page, per_page: perPage},
       setLoading,
       onSuccess: (data) => {
         setGoods(Array.isArray(data.goods) ? data.goods : []);
@@ -57,6 +58,10 @@ const ProductList = () => {
         setSelected(new Set());
       },
     })
+  }
+
+  useEffect(() => {
+    load()
   }, [page, perPage])
 
   const formatPrice = (v) =>
@@ -85,8 +90,10 @@ const ProductList = () => {
         onError: (msg) => alert(msg || `${id}번 상품 삭제 실패`),
       })
     }
+
+    await load()
+    setSelected(new Set())
     alert("선택한 상품이 모두 삭제되었습니다.");
-    goTo("/admin/products");
   };
 
   return (
@@ -142,6 +149,8 @@ const ProductList = () => {
                 <col style={{ width: "120px" }} />
                 <col style={{ width: "96px" }} />
                 <col />
+                <col style={{ width: "150px" }} />
+                <col style={{ width: "150px" }} />
                 <col style={{ width: "120px" }} />
                 <col style={{ width: "110px" }} />
               </colgroup>
@@ -161,6 +170,8 @@ const ProductList = () => {
                   <th>카테고리</th>
                   <th>이미지</th>
                   <th>상품명</th>
+                  <th>등록일</th>
+                  <th>수정일</th>
                   <th>가격</th>
                   <th>상태</th>
                 </tr>
@@ -205,6 +216,8 @@ const ProductList = () => {
                           <div className="sub">{g.classify}</div>
                         ) : null}
                       </td>
+                      <td>{time(g.create_at)}</td>
+                      <td>{time(g.update_at)}</td>
                       <td>{formatPrice(g.price)}원</td>
                       <td>
                         {soldout ? (
