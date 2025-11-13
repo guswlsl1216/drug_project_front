@@ -36,9 +36,7 @@ const SupplementPage = () => {
 
   // 상태 초기값: ingredients는 배열(string[])로 관리
   const [recognizedSupplements, setRecognizedSupplements] = useState([
-    {id: 1, name: "영양제를 입력하세요", ingredients: []},
-    {id: 2, name: "영양제를 입력하세요", ingredients: []},
-    {id: 3, name: "영양제를 입력하세요", ingredients: []},
+    {id: 1, name: "", ingredients: []},
   ]);
 
   const handleSupplementNameChange = (id, newName) => {
@@ -60,7 +58,7 @@ const SupplementPage = () => {
 
     setRecognizedSupplements([
       ...recognizedSupplements,
-      {id: newId, name: "새로운 영양제", ingredients: []}, // ingredients는 배열로 초기화
+      {id: newId, name: "", ingredients: []}, // ingredients는 배열로 초기화
     ]);
   };
 
@@ -125,6 +123,7 @@ const SupplementPage = () => {
               <div key={supp.id} className="medicine-item">
                 <input
                   type="text"
+                  placeholder="제품명을 입력하고 체크버튼을 눌러 등록"
                   className="medicine-input"
                   value={supp.name}
                   onChange={(e) => handleSupplementNameChange(supp.id, e.target.value)}
@@ -139,7 +138,7 @@ const SupplementPage = () => {
                   ✓
                 </button>
                 <button className="button-delete" onClick={() => handleSupplementDelete(supp.id)}>
-                  🗑️
+                  x
                 </button>
               </div>
             ))}
