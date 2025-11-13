@@ -29,9 +29,11 @@ import Store from "./pages/store/Store";
 import Allgoods from "./pages/store/Allgoods";
 import Functionality from "./pages/store/Functionality";
 import Ingredient from "./pages/store/Ingredient";
-import ProductDetail from "./components/store/ProductDetail";
+import ProductDetail from "./pages/store/ProductDetail";
 import Favorite from "./pages/mypage/Favorite";
 import OrderSheet from "./pages/order/OrderSheet";
+import ProductDescription from "./pages/store/ProductDescription";
+import Reviews from "./pages/store/Reviews";
 
 const Routers = () => {
 
@@ -74,7 +76,11 @@ const Routers = () => {
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
-          <Route path="detail/:goodsId" element={<ProductDetail />}/>
+          <Route path="detail/:goodsId" element={<ProductDetail />}>
+            <Route index element={<Navigate to="desc" replace />} />
+            <Route path="desc" element={<ProductDescription />} />
+            <Route path="review" element={<Reviews />} />
+          </Route>
         </Route>
         <Route path="/orders" element={<OrderSheet />} />
       </Routes>
