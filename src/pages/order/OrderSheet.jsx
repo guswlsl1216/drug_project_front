@@ -2,6 +2,7 @@ import { useState } from "react"
 import AddressPicker from "../../components/ui/AddressPicker"
 import Button from "../../components/ui/Button"
 import "../../styles/order/OrderSheet.css"
+import PaymentsSheet from "./PaymentsSheet"
 
 const OrderSheet = () => {
   const [order, setOrder] = useState({
@@ -104,12 +105,7 @@ const OrderSheet = () => {
           <div className="card section-payments">
             <h5 className="section-title">결제수단</h5>
             <div className="pay-grid">
-              <Button variant="text" className="pay-btn" >
-                토스페이
-              </Button>
-              <Button variant="text" className="pay-btn" >
-                카카오페이
-              </Button>
+              <PaymentsSheet />
             </div>
           </div>
         </div>
