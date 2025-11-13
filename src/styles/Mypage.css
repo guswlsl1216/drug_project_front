@@ -74,21 +74,22 @@
 }
 
 .favorite-card {
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: box-shadow 0.3s, transform 0.3s;
-    cursor: pointer;
-    background-color: #fff;
-    height: 100%; /* 그리드 아이템 높이 통일 */
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  width: 250px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .favorite-card:hover {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    border-color: #c99fff;
 }
 
 .favorite-image {
@@ -206,29 +207,4 @@
 
 .error-message {
     color: #d9534f;
-}
-
-.favorite-toggle-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    /* 배경을 투명하게 설정하거나 이미지 위에 띄울 경우 약간의 반투명 배경을 사용 */
-    background: none; 
-    border: none;
-    font-size: 24px; /* 하트 아이콘 크기 */
-    cursor: pointer;
-    z-index: 10;
-    padding: 0;
-    line-height: 1; /* 아이콘이 중앙에 오도록 조정 */
-}
-
-/* 찜 완료 상태 (빨간 하트) */
-.favorite-toggle-btn.active {
-    color: red; /* 빨간 하트 색상 */
-}
-
-/* 찜 해제 상태 (찜 목록에서는 항상 찜 완료 상태이므로 필요 없을 수 있으나, 일관성을 위해 추가) */
-.favorite-toggle-btn:not(.active) {
-    color: white; /* 빈 하트 아이콘 색상 (이미지 영역에선 잘 보이도록) */
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* 잘 보이도록 그림자 추가 */
 }

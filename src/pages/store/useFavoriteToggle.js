@@ -23,7 +23,6 @@ const useFavoriteToggle = (initialIsFavorite, goodsId) => {
   const toggleFavoriteHandler = useCallback(async (e) => {
     console.log('찜 버튼 클릭', goodsId)
     // 상품 카드 전체 클릭 방지
-    e.stopPropagation();
 
     requireLogin(async () => {
 
@@ -57,7 +56,8 @@ const useFavoriteToggle = (initialIsFavorite, goodsId) => {
   return {
     isFavorite,
     toggleFavoriteHandler,
-    message
+    message,
+    setIsFavorite
   };
 };
 

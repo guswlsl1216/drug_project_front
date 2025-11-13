@@ -29,7 +29,7 @@ const ProductCard = ({ product, sortKey, ProductHandler }) => {
         <button 
           className={`favorite-card-btn ${isFavorite ? 'active' : ''}`}
           onClick={(e) => {
-          console.log('찜 버튼 눌림')
+          e.stopPropagation();
           toggleFavoriteHandler(e)}} 
           aria-label={isFavorite ? '찜 해제' : '찜 하기'}>
           {isFavorite ? '❤️' : '🤍'}
@@ -38,9 +38,13 @@ const ProductCard = ({ product, sortKey, ProductHandler }) => {
             
       {/* 카드 클릭 시 상세 페이지 이동 핸들러는 이미지/정보 영역에 적용 */}
       <div onClick={() => ProductHandler(product.id)} className="product-card-clickable-area">
-        <div className="product-image"></div>
+        <div className="product-image"><img src={product.image_path} alt="" /></div>
         <div className="product-name">{product.goods_name}</div>
         <div className="product-price">{product.price ? product.price.toLocaleString() : '가격 미정'}원</div>
+        <div className="product-actions">
+          <button>구매하기</button>
+          <button>장바구니</button>
+        </div>
       </div>
 
       {/* 판매순 정보 */}
