@@ -12,6 +12,119 @@ const AnalyzeResultDisplay = ({ result }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [drugId, setDrugId] = useState(null);
   const [drugType, setDrugType] = useState(null);
+  
+  const show_interactions = () => {
+    return (
+      <div className='analyze_result_warnings analyze_result_bg'>
+        <h4>병용섭취 주의사항</h4>
+        <p>※전문적인 판단이 아니므로 자세한 내용은 전문 의약사와 상담하세요.</p>
+        {
+          result.interactions.map((item, i) => {
+            const { status_label, status_className } = ANALYSIS_STATUS_MAPPING[item.level]
+            
+            return (
+              <div key={i} className='analyze_result_warning_item'>
+                <div className={`${status_className} warning_item_level`}>{status_label}</div>
+                <div className="warning_item_box_container">
+                  <div className='warning_item_box'>
+                    <p className="warning_item_name">{item.product1_name}</p>
+                    <p className="warning_item_ingredient">
+                      {item.ingredient1}
+                    </p>
+                  </div>
+                  <div className='warning_item_box'>
+                    <p className="warning_item_name">{item.product2_name}</p>
+                    <p className="warning_item_ingredient">
+                      {item.ingredient2}
+                    </p>
+                  </div>
+                </div>
+                <div className='warning_item_message'>{item.message}</div>
+              </div>
+            )
+          })
+        }
+      </div>
+    )
+  }
+
+  const show_duplicates = () => {
+    return (
+      <div className='analyze_result_duplicates analyze_result_bg'>
+        <h4>중복 성분</h4>
+        <p>아래 성분들을 과다 섭취하지 않도록 주의하세요.</p>
+        <div className="duplicate_container">
+        {
+          result.duplicates.map((item, i) => {
+            return (
+              <div className="duplicate_box" key={i}>
+                <p className='duplicate_ingredient'>▼ {item.ingredient}</p>
+                <div className="duplicate_names_group">
+                  {item.names.map((pdt_name, i) => {
+                    return (
+                      <p className='duplicate_names' key={i}>{pdt_name}</p>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })
+        }
+        </div>
+      </div>
+    )
+  }
+  
+  const show_meds = () => {
+    return (
+      <div className='analyze_result_meds analyze_result_bg'>
+        <h4>의약품 목록</h4>
+        <div className="drugs_box_container">
+        {
+          result.meds.map((med, i) => {
+            return (
+              <div className='drugs_box' key={i}>
+                <p className='meds_box_image'>약이미지</p>
+                <p title={med.name} className='drugs_box_name ellipsis'>{med.name}</p>
+                <p className='show_details_icon'><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => {
+                  setIsOpen(true);
+                  setDrugId(med.id);
+                  setDrugType(0);
+                }} /></p>
+              </div>
+            )
+          })
+        }
+        </div>
+      </div>
+    )
+  }
+  
+  const show_supps = () => {
+    return (
+      <div className='analyze_result_supps analyze_result_bg'>
+        <h4>영양제 목록</h4>
+        <div className="drugs_box_container">
+        {
+          result.supps.map((supp, i) => {
+            return (
+              <div className='drugs_box' key={i}>
+                <p title={supp.name} className='drugs_box_name ellipsis'>{supp.name}</p>
+                <p className='show_details_icon'><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => {
+                  setIsOpen(true);
+                  setDrugId(supp.id);
+                  setDrugType(1);
+                }} /></p>
+              </div>
+            )
+          })
+        }
+        </div>
+      </div>
+    )
+  }
+
+  const analyzeResultContent = [result.interactions, result.duplicates, result.meds, result.supps];
 
   return (
     <>
@@ -22,108 +135,33 @@ const AnalyzeResultDisplay = ({ result }) => {
           <p>{status_message}</p>
         </div>
 
-        <div className='analyze_result_warnings analyze_result_bg'>
-          <h4>병용섭취 주의사항</h4>
-          <p>※전문적인 판단이 아니므로 자세한 내용은 전문 의약사와 상담하세요.</p>
-          {
-            result.interactions.map((item, i) => {
-              const { status_label, status_className } = ANALYSIS_STATUS_MAPPING[item.level]
-
-              return (
-                <div key={i} className='analyze_result_warning_item'>
-                  <div className={`${status_className} warning_item_level`}>{status_label}</div>
-                  <div className="warning_item_box_container">
-                    <div className='warning_item_box'>
-                      <p className="warning_item_name">{item.product1_name}</p>
-                      <p className="warning_item_ingredient">
-                        {item.ingredient1}
-                      </p>
-                    </div>
-                    <div className='warning_item_box'>
-                      <p className="warning_item_name">{item.product2_name}</p>
-                      <p className="warning_item_ingredient">
-                        {item.ingredient2}
-                      </p>
-                    </div>
-                  </div>
-                  <div className='warning_item_message'>{item.message}</div>
-                </div>
-              )
-            })
-          }
-        </div>
-
-        <div className='analyze_result_duplicates analyze_result_bg'>
-          <h4>중복 성분</h4>
-          <p>아래 성분들을 과다 섭취하지 않도록 주의하세요.</p>
-          <div className="duplicate_container">
-          {
-            result.duplicates.map((item, i) => {
-              return (
-                <div className="duplicate_box" key={i}>
-                  <p className='duplicate_ingredient'>▼ {item.ingredient}</p>
-                  <div className="duplicate_names_group">
-                    {item.names.map((pdt_name, i) => {
-                      return (
-                        <p className='duplicate_names' key={i}>{pdt_name}</p>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })
-          }
-          </div>
-        </div>
-
-        <div className='analyze_result_meds analyze_result_bg'>
-          <h4>의약품 목록</h4>
-          <div className="drugs_box_container">
-          {
-            result.meds.map((med, i) => {
-              return (
-                <div className='drugs_box' key={i}>
-                  <p className='meds_box_image'>약이미지</p>
-                  <p title={med.name} className='drugs_box_name ellipsis'>{med.name}</p>
-                  <p className='show_details_icon'><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => {
-                    setIsOpen(true);
-                    setDrugId(med.id);
-                    setDrugType(0);
-                  }} /></p>
-                </div>
-              )
-            })
-          }
-          </div>
-
-        </div>
-
-        <div className='analyze_result_supps analyze_result_bg'>
-          <h4>영양제 목록</h4>
-          <div className="drugs_box_container">
-          {
-            result.supps.map((supp, i) => {
-              return (
-                <div className='drugs_box' key={i}>
-                  <p title={supp.name} className='drugs_box_name ellipsis'>{supp.name}</p>
-                  <p className='show_details_icon'><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => {
-                    setIsOpen(true);
-                    setDrugId(supp.id);
-                    setDrugType(1);
-                  }} /></p>
-                </div>
-              )
-            })
-          }
-          </div>
-        </div>
         
-        <DrugInfo
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          drugId={drugId}
-          drugType={drugType}
-        />
+        {
+          analyzeResultContent.map((content, i) => {
+            if (content.length == 0) {
+              return null
+            } else {
+              return (
+                <div key={i}>
+                  {i === 0 && show_interactions()}
+                  {i === 1 && show_duplicates()}
+                  {i === 2 && show_meds()}
+                  {i === 3 && show_supps()}
+                </div>
+              )
+            }
+          })
+        }
+        
+        {
+          isOpen &&
+          <DrugInfo
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            drugId={drugId}
+            drugType={drugType}
+          />
+        }
       </section>
     </>
   )

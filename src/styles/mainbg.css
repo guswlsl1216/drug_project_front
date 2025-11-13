@@ -1,0 +1,24 @@
+.main_bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/main01.png');
+    background-size: cover;
+    background-position: bottom;
+    width: 100%;
+    height: 40vh;
+}
+
+.bg_text{
+  text-align: center;
+  color: white;
+}
+
+.bg_main_title{
+  font-size: 4rem;
+  color: white;
+}
+.bg_sub_title{
+  font-size: 1.5rem;
+  color: white;
+}
