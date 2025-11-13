@@ -1,0 +1,193 @@
+/* OrderSheet.css */
+.order-sheet{
+  --accent: #7a5cff;
+  --accent2: #3bbcff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --bg: #ffffff;
+  --card: #ffffff;
+  --header-height: 80px; /* 상단 GNB 높이에 맞춰 조정 */
+
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  color: var(--text);
+}
+
+/* 제목: 헤더에 가리지 않게 상단 여유 */
+.order-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.2px;
+  max-width: 1040px;
+  padding: 50px 14px;
+  padding-bottom: 30px;
+  margin: 0 auto;          /* 가운데 영역 유지 */
+  text-align: left;        /* 왼쪽 정렬 */
+  padding-left: 32px;      /* 주문자 카드 안쪽과 수평 맞추기 */
+}
+
+/* 기본 카드 */
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}
+
+/* 섹션 제목 */
+.section-title{
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+/* 폼 필드 */
+.field-label{
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 10px 0 6px;
+}
+.field-input{
+  width: 100%;
+  height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f9fafb;
+  color: var(--text);
+  outline: none;
+  transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+  margin-top: 10px;
+}
+.field-input:focus{
+  border-color: transparent;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.9) inset,
+    0 0 0 2px rgba(122,92,255,.25),
+    0 0 0 6px rgba(59,188,255,.15);
+  background: #fff;
+}
+
+/* 인라인 라인(라벨+버튼) */
+.inline{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* 가격 요약 라인 */
+.price-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 14px;
+}
+.price-row:last-of-type{ border-bottom: 0; }
+.price-row.total{ font-weight: 800; font-size: 15px; padding-top: 12px; }
+.price{ font-weight: 700; }
+
+/* 동의 체크 */
+.agree{
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 12px 0 10px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.agree input{ margin-top: 2px; }
+.required{ margin-left: 6px; color: #ff3b30; font-style: normal; font-weight: 700; }
+
+/* 구매 버튼 */
+.buy-btn{
+  width: 100%;
+  height: 48px;
+  margin-top: 8px;
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+/* 주문상품 리스트 */
+.item{
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+.item:first-of-type{ border-top: 0; }
+.item-thumb{
+  width: 64px; height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #f3f4f6;
+  border: 1px solid var(--border);
+}
+.item-info{ min-width: 0; }
+.item-name{ margin: 0; font-weight: 600; }
+.item-name .muted{ margin-left: 8px; color: var(--muted); font-weight: 400; font-size: 13px; }
+.item-price{ white-space: nowrap; font-weight: 800; }
+
+/* 적립금 */
+.section-points .muted{ color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+/* 결제수단 */
+.pay-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.pay-btn{
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f9fafb;
+  font-weight: 700;
+}
+.pay-btn:hover{ filter: brightness(1.02); }
+
+/* 텍스트 버튼 톤다운 */
+.ghost{ border-radius: 10px; height: 36px; padding: 0 12px; font-weight: 600; }
+
+/* 배송지 AddressPicker 마진 */
+.address.checkout{ margin-top: 8px; }
+
+/* ===== 데스크톱 2-컬럼: 플렉스 레이아웃로 변경 ===== */
+@media (min-width: 980px){
+  .order-sheet{
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  /* 왼쪽 스택: 세로로 쌓음 + 카드 간격 */
+  .order-left{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;                 /* ← 카드 사이 간격(주문자↔배송지 포함) */
+    min-width: 0;
+  }
+
+  /* 오른쪽 요약: 고정폭 + sticky, 왼쪽과 독립 */
+  .section-summary{
+    flex: 0 0 340px;
+    position: sticky;
+    top: calc(var(--header-height) + 8px);
+    align-self: flex-start;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 979.98px){
+  .order-left .card + .card{ margin-top: 8px; } /* 모바일에서도 카드 간격 유지 */
+}
+

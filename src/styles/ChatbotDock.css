@@ -1,0 +1,361 @@
+/* src/styles/ChatbotDock.css */
+
+/* ================== 기본 레이아웃 ================== */
+.dock {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: min(92vw, 420px);
+  height: 640px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2100;
+  animation: dock-in 0.18s ease-out;
+}
+@keyframes dock-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ================== 헤더 ================== */
+.dock__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 0, 102, 0.08),
+    rgba(255, 0, 102, 0.08) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  min-height: 48px; /* 아이콘 잘림 방지 */
+}
+
+.dock__header h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+}
+
+.dock__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dock__actions {
+  display: flex;
+  gap: 6px;
+}
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.icon-btn:hover {
+  background: #0000000d;
+}
+
+/* ================== 본문 ================== */
+.dock__body {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  padding-bottom: 24px;
+  background: #fff;
+}
+.dock__suggest {
+  padding: 14px 12px;
+}
+.lead {
+  margin: 4px 0 12px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.accent {
+  font-weight: 800;
+  background: linear-gradient(90deg, #6c5ce7, #ff2dbb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ================== 카테고리 탭 (복용약 / 영양제 등) ================== */
+.cats {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 0 14px;
+}
+
+.cat-btn{
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 9px 18px;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, #ff2dbb, #7a5cff, #3bbcff) border-box;
+  color:#111;
+  font-size:13px; font-weight:700;
+  box-shadow: 0 2px 6px rgba(122,92,255,.12);
+  transition: all .2s ease;
+
+  /* ✅ 한 줄 유지 + 넘치면 말줄임 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.cat-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(122,92,255,.2);
+}
+
+/* 활성화(선택) 상태*/
+.cat-btn.active{
+  background: linear-gradient(135deg, #ff66cc 0%, #7a5cff 50%, #3bbcff 100%);
+  color:#fff;
+  border:2px solid transparent;
+  box-shadow:
+    0 0 8px rgba(122,92,255,.5),
+    0 3px 12px rgba(122,92,255,.4);
+  transform: scale(1.06);
+}
+
+/* ================== 추천 질문 ================== */
+.chips {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 6px;
+}
+.chips__title {
+  margin: 10px 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #70757e;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chips__title::before {
+  content: "•";
+  color: #aab2bb;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.chip {
+  display:inline-flex; align-items:center; gap:8px;
+  border: 1.5px dashed #cfd7ff;   /* ✨ 점선 보더로 구분감 업 */
+  background:#ffffff;             /* ✨ 하얀 바탕으로 카테고리와 대비 */
+  color:#334155;                  /* 중립 톤 텍스트 */
+  border-radius: 999px;           /* 캡슐 형태 */
+  padding: 8px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: all .2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  white-space: normal;
+  word-break: keep-all;
+  line-height: 1.45;
+}
+.chip .plus {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:18px; height:18px; border-radius:50%;
+  background:#eef1ff; color:#5a46ff; font-weight:700;
+}
+.chip:hover {
+  background:#f6f7ff;
+  border-color:#bfc7ff;
+  color:#27374d;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(122,92,255,.15);
+}
+
+.msg {
+  padding: 8px 10px;
+  background: #f7f7f8;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+/* ================== 입력창 ================== */
+.dock__input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #eee;
+  background: #fff;
+  box-shadow: 0 -6px 14px rgba(0, 0, 0, 0.03);
+}
+.dock__input input {
+  flex: 1;
+  height: 44px;
+  border-radius: 999px;
+  padding: 0 14px;
+  border: 2px solid transparent;
+  background: linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(90deg, #ff2dbb, #7a5cff, #3bbcff) border-box;
+  outline: none;
+}
+.dock__input .send {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #111;
+  color: #fff;
+}
+
+/* ================== 면책 문구 ================== */
+.dock__disclaimer {
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #6b7280;
+  background: #fff;
+  border-top: none; /* 입력창 border와 중복 제거 */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dock__disclaimer::before {
+  content: "⚠️";
+  font-size: 14px;
+}
+
+/* ================== 접근성 & 반응형 ================== */
+.icon-btn:focus-visible,
+.cat-btn:focus-visible,
+.chip:focus-visible,
+.dock__input .send:focus-visible,
+.dock__input input:focus-visible {
+  outline: 2px solid #7a5cff;
+  outline-offset: 2px;
+}
+
+/* 메시지 버블 기본 */
+.msg.assistant { background: #fff; }
+.msg.user { background: var(--bubble-user, #eef6ff); }
+
+/* 마크다운 공통 */
+.md {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #1f2937;
+  word-break: keep-all;
+}
+
+/* 한눈 요약(첫 번째 H1) */
+.md h1 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 10px 0 6px;
+  padding-left: 10px;
+  border-left: 4px solid #10b981; /* 초록 포인트 */
+}
+
+/* 섹션 제목(H2) */
+.md h2 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 14px 0 8px;
+}
+
+/* 본문/문단 */
+.md p { margin: 6px 0; }
+
+/* 목록 */
+.md ul { margin: 6px 0 10px; padding-left: 1.15rem; }
+.md li { margin: 3px 0; }
+
+/* 굵게 */
+.md strong { font-weight: 800; }
+
+/* 코드/인라인 강조가 생길 때 대비 */
+.md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: #f3f4f6;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+}
+
+/* 링크 */
+.md a { text-decoration: underline; }
+
+/* “의료 조언 아님”을 첫 번째 불릿으로 받았을 때 눈에 띄게 꾸미기 */
+.md ul:first-of-type {
+  list-style: none;          /* 맨 처음 목록은 불릿 제거 */
+  padding-left: 0;
+  margin-top: 4px;
+}
+.md ul:first-of-type > li:first-child {
+  background: #fff7ed;       /* 부드러운 주황 */
+  border-left: 4px solid #f59e0b;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin: 6px 0 10px;
+  font-weight: 700;
+}
+.md ul:first-of-type > li:first-child::before {
+  content: "⚠️ ";
+}
+
+/* 그 외 첫 목록의 나머지 항목은 일반 불릿으로 */
+.md ul:first-of-type > li:not(:first-child) { 
+  list-style: disc;
+  margin-left: 1.2rem;
+}
+
+
+@media (max-width: 480px) {
+  .dock {
+    width: 100vw;
+    height: 75vh;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px 10px 0 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .chip {
+    padding: 11px 12px;
+  }
+  .cat-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+}
+
+/* 모바일 터치감 (모바일 한정) */
+@media (hover: none) and (pointer: coarse){
+  .cat-btn:active{ transform: scale(.97); opacity:.9; }
+  .chip:active{ transform: scale(.97); opacity:.9; }
+}

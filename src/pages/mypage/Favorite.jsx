@@ -66,9 +66,6 @@ const Favorite = () => {
               key={item.id} 
               className="favorite-card"
               onClick={() => navigate(`/store/detail/${item.id}`)}>
-              <button className="favorite-toggle-btn active"
-                onClick={(e) => deleteFavorite(e, item.id)} aria-label="찜 해제">
-              </button>
               <div className="favorite-image">
                 <img src={item.image_url || 'placeholder.png'} alt={item.goods_name} />  
               </div>

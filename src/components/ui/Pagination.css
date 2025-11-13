@@ -1,0 +1,69 @@
+/* Pagination 컨테이너 레이아웃 */
+.Pagination{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+/* 페이지네이션 안의 모든 버튼 공통 보정 */
+.Pagination .btn{
+  /* 크기/모양을 페이지네이션 용도로 통일 */
+  min-width: 34px;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
+  border-radius: 10px;
+
+  /* 페이지 버튼은 그림자/부자연스러운 튀는 효과 제거 */
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 숫자 버튼(현재 페이지가 아닌 경우): outline 톤 정리 */
+.Pagination .btn.btn-outline{
+  background:#fff;
+  border-color: var(--border, #e8e9f3);
+  color: var(--text, #1e1f29);
+}
+.Pagination .btn.btn-outline:hover{
+  background: rgba(122,92,255,.08);
+  color: var(--accent, #7a5cff);
+  border-color: rgba(122,92,255,.35);
+}
+
+/* 화살표(블록/이전/다음)는 text 톤을 조금만 강조 */
+.Pagination .btn.btn-text{
+  padding: 0 8px;
+  background: transparent;
+  border-color: transparent;
+  color: var(--text, #1e1f29);
+}
+.Pagination .btn.btn-text:hover{
+  background: rgba(122,92,255,.08);
+  color: var(--accent, #7a5cff);
+}
+
+/* 현재 페이지(active) 버튼 */
+.Pagination .page-btn.active{
+  background: var(--accent, #7a5cff) !important;
+  border-color: var(--accent, #7a5cff) !important;
+  color: #fff !important;
+  pointer-events: none;     /* 이미 선택된 페이지는 클릭 방지 */
+}
+
+/* disabled 상태를 조금 더 흐리게 */
+.Pagination .btn[disabled],
+.Pagination .btn.is-disabled,
+.Pagination .btn[aria-disabled="true"]{
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* 아주 좁은 화면에서 간격/크기 축소 */
+@media (max-width: 480px){
+  .Pagination{ gap:4px; }
+  .Pagination .btn{ min-width:30px; height:30px; font-size:12px; }
+}

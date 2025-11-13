@@ -10,13 +10,14 @@ const AnalyzeResult = () => {
   const [loading, setLoading] = useState(false);
   const [isSave, setIsSave] = useState(false);  // 결과 저장 여부
   
-  // 세션스토리지에서 불러오기
-  const result = JSON.parse(sessionStorage.getItem('result'))
+  const result = JSON.parse(sessionStorage.getItem("ANALYSIS_RESULT_DATA"));
+  console.log("세션에서 불러온 분석 결과:", result);
+  
   // interactions 내림차순 정렬
   const sortedInteractions = result.interactions.slice().sort((a, b) => {
     return b.level - a.level;
   });
-
+  
   const saveResult = () => {
     requireLogin(() => {
       if (sessionStorage.getItem('isSave') === result.analysis_uid) {
