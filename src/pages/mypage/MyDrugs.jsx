@@ -24,7 +24,7 @@ const MyDrugs = ( ) => {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({
     drug_id: "",
-    type: "med",
+    type: "",
     eattime: [true,true,true],
     start_date: "",
     end_date: "",
@@ -81,20 +81,19 @@ const MyDrugs = ( ) => {
     console.log("API 응답:", res);
 
     if(res.ok){
-      const medList = [], suppList = [], logObj = {};
+      const medList = [], suppList = []
       const drugs = res.data?.drugs || [];
 
       console.log("받은 drugs:", drugs);
 
       drugs.forEach((d)=>{
-        if(d.type==="medicine") medList.push(d);
+        if(d.type==="user_meds") medList.push(d);
         else suppList.push(d);
-        logObj[d.drug_id] = {};
         console.log("받은 drugs:", drugs);
       });
-      setMeds(medList);
-      setSupps(suppList);
-      setLogs(logObj);
+      setMeds([...medList]);
+      setSupps([...suppList]);
+      
     }
   }
 
@@ -137,7 +136,7 @@ const MyDrugs = ( ) => {
           logs={logs} 
            />;
       case "med-input":
-        return <MedInput userId={userId} form={form} setForm={setForm} onSubmit={loadDrugs} setActiveTab={setActiveTab} />;
+        return <MedInput userId={userId} form={form} setForm={setForm} loadDrugs={loadDrugs} setActiveTab={setActiveTab} />;
       case "supp-input":
         return <SuppInput userId={userId} form={form} setForm={setForm} onSubmit={loadDrugs} setActiveTab={setActiveTab} />;
       case "drug-history":

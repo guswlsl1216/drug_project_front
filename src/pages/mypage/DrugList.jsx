@@ -23,7 +23,8 @@ const DrugList = ({ meds, supps, onEdit, onRemove }) => {
               {type === "med" ? "복용약" : "영양제"}
             </span>
           </div>
-          {type === "supp" && item.note && <div className="item-note">메모: {item.note}</div>}
+          {item.note && <div className="item-note">메모: {item.note}</div>}
+          
 
 
         </div>
@@ -40,7 +41,7 @@ const DrugList = ({ meds, supps, onEdit, onRemove }) => {
     <div className="med-list-view">
       <h3 className="section-heading">💊 복용약 ({meds.length}개)</h3>
       <div className="med-list-container">
-        {meds.length > 0 ? meds.map((med) => <ListItemCard key={med.drug_id} item={med} type="med" />)
+        {meds.length > 0 ? meds.map((med, i) => <ListItemCard key={i} item={med} type="med" />)
           : <p className="no-item-msg">등록된 복용약이 없습니다.</p>}
       </div>
 
@@ -48,7 +49,7 @@ const DrugList = ({ meds, supps, onEdit, onRemove }) => {
 
       <h3 className="section-heading">🌿 영양제 ({supps.length}개)</h3>
       <div className="med-list-container">
-        {supps.length > 0 ? supps.map((supp) => <ListItemCard key={supp.drug_id} item={supp} type="supp" />)
+        {supps.length > 0 ? supps.map((supp, i) => <ListItemCard key={i} item={supp} type="supp" />)
           : <p className="no-item-msg">등록된 영양제가 없습니다.</p>}
       </div>
     </div>

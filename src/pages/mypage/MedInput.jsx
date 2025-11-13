@@ -6,7 +6,7 @@ import { useUser } from "../../components/context/UserContext";
 import useLoginRedirect from "../../utils/useLoginRedirect";  
 
 
-const MedInput = ( {setActiveTab }) => {
+const MedInput = ( {setActiveTab, loadDrugs }) => {
   const { isLoggedIn } = useUser();         // ✅ 로그인 상태 확인
   const { requireLogin } = useLoginRedirect(); 
 
@@ -101,6 +101,7 @@ const MedInput = ( {setActiveTab }) => {
       alert("✅ 저장 완료! 목록으로 이동합니다.")
       resetForm();
       setActiveTab('list')
+      loadDrugs()
     }
   }
 
