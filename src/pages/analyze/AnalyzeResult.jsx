@@ -13,11 +13,6 @@ const AnalyzeResult = () => {
   const result = JSON.parse(sessionStorage.getItem("ANALYSIS_RESULT_DATA"));
   console.log("세션에서 불러온 분석 결과:", result);
   
-  // interactions 내림차순 정렬
-  const sortedInteractions = result.interactions.slice().sort((a, b) => {
-    return b.level - a.level;
-  });
-  
   const saveResult = () => {
     requireLogin(() => {
       if (sessionStorage.getItem('isSave') === result.analysis_uid) {
@@ -63,7 +58,7 @@ const AnalyzeResult = () => {
           <h1>분석 결과</h1>
         </div>
 
-        <AnalyzeResultDisplay result={result} sortedInteractions={sortedInteractions} />
+        <AnalyzeResultDisplay result={result} />
       
         <div className='analyze_result_actions'>
           <Button variant='primary' onClick={saveResult} disabled={loading || isSave}>

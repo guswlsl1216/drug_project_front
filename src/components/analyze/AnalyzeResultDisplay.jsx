@@ -3,15 +3,20 @@ import '../../styles/utils/analysisStatus.css'
 import ANALYSIS_STATUS_MAPPING from "../../utils/analysisStatus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DrugInfo from './DrugInfo';
 
-const AnalyzeResultDisplay = ({ result, sortedInteractions }) => {
+const AnalyzeResultDisplay = ({ result }) => {
   const { status_label, status_message, status_color, status_fontAwesome } = ANALYSIS_STATUS_MAPPING[result.status]
 
   const [isOpen, setIsOpen] = useState(false);
   const [drugId, setDrugId] = useState(null);
   const [drugType, setDrugType] = useState(null);
+
+  // interactions 내림차순 정렬
+  const sortedInteractions = result.interactions.slice().sort((a, b) => {
+    return b.level - a.level;
+  });
 
   // 분석 근거
   const ANALYSIS_SOURCES = [
@@ -139,6 +144,19 @@ const AnalyzeResultDisplay = ({ result, sortedInteractions }) => {
   }
 
   const analyzeResultContent = [result.interactions, result.duplicates, result.meds, result.supps];
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    }
+  }, [isOpen]);
 
   return (
     <>
