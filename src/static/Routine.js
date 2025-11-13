@@ -11,7 +11,6 @@ const getRoutine = async (requestDate)=>{
 }
 
 const performRoutine = async (eventId, requestDate, performed_times)=>{
-  console.log(eventId, requestDate, performed_times)
   const res= await requestHandler({
     method:"post",
     url:"/routine/performed/"+eventId,

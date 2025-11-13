@@ -1,0 +1,82 @@
+/* ============ ProductManage ============ */
+.productmanage-container{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 제목 */
+.productmanage-container > h3{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: .2px;
+}
+
+/* 상단 탭 바 */
+.productmanage-tabs{
+  display: flex;
+  gap: 8px;
+  background: #f7f7fe;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: var(--shadow);
+  /* 탭이 항상 보이게 하고 싶다면 주석 해제
+  position: sticky;
+  top: calc(var(--app-header-h, 0px) + 24px);
+  z-index: 2;
+  */
+}
+
+/* NavLink 기본 스타일 */
+.productmanage-tab{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all .18s ease;
+}
+
+/* hover */
+.productmanage-tab:hover{
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* active */
+.productmanage-tab.active{
+  background: #fff;
+  color: var(--accent);
+  border-color: rgba(122,92,255,.35);
+  box-shadow: 0 6px 14px rgba(122,92,255,.15);
+}
+
+/* 콘텐츠 패널 */
+.productmanage-content{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  min-height: 380px;
+}
+
+/* ── 자주 쓸 툴바(선택 사항) ───────────────── */
+.pm-toolbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; margin-bottom:14px;
+}
+
+/* 반응형 */
+@media (max-width: 768px){
+  .productmanage-tabs{ flex-wrap: wrap; }
+  .productmanage-tab{ flex: 1 0 auto; }
+}

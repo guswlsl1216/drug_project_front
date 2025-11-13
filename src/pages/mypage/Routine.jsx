@@ -49,7 +49,6 @@ const Routine = () => {
     const m = String(today.getMonth() + 1).padStart(2, '0');
     const d = String(today.getDate()).padStart(2, '0');
     const now = `${y}-${m}-${d}`; 
-    console.log(eattime)
     if (date != now||eattime[index]==false) {
       checkbox.disabled = true
     }
@@ -132,7 +131,7 @@ const Routine = () => {
                 classname = 'warning'
               } else if (classes.filter(el => el === 'danger').length + classes.filter(el => el === undefined).length == classes.length) {
                 classname = 'danger'
-              } else if (classes.filter(el => el === 'good').length == classes.length) {
+              } else if (classes.filter(el => el === 'good').length == classes.length - events.filter(el=>new Date(el.start)>new Date(now)).length) {
                 classname = 'good'
               } else {
                 classname = 'warning'
@@ -166,7 +165,6 @@ const Routine = () => {
               const m = String(info.view.currentStart.getMonth() + 1).padStart(2, '0')
               const d = String(info.view.currentStart.getDate()).padStart(2, '0')
               const now = `${y}-${m}-${d}`
-              console.log(info)
               //체크박스 파트
               //루틴 삭제, 추가 후 캘린더 작업
               const checkboxContainer = document.createElement('div')

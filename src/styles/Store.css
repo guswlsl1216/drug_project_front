@@ -1,6 +1,5 @@
 /* =========================================================================
  * 1. 기본 레이아웃 및 컨테이너 스타일
- * (이하 기존 스타일 유지)
  * ========================================================================= */
 .store-container {
     width: 100%;
@@ -19,7 +18,7 @@
     gap: 30px;
     margin-bottom: 30px;
     margin-top: 50px;
-    border-bottom: solid 2px #ccc; /* 색상 통일 */
+    border-bottom: solid 2px #ccc;
 }
 
 .store-nav .tab {
@@ -28,7 +27,7 @@
     font-weight: 500;
     color: #555;
     text-decoration: none;
-    border-radius: 8px 8px 0 0; /* 아래쪽은 뾰족하게 */
+    border-radius: 8px 8px 0 0;
     transition: all 0.2s ease;
 }
 
@@ -39,7 +38,7 @@
 .store-nav .tab.active {
     color: white;
     background-color: #a671ec;
-    box-shadow: 0 -2px 6px rgba(174, 147, 209, 0.3); /* 위쪽 그림자 */
+    box-shadow: 0 -2px 6px rgba(174, 147, 209, 0.3);
 }
 
 /* =========================================================================
@@ -69,14 +68,14 @@
 }
 
 .category-item:hover {
-    background-color: #f8f0ff; /* hover 색상 변경: 보라색 연하게 */
+    background-color: #f8f0ff;
     color: #555;
     border-color: #c99fff;
 }
 
 /* 선택된 카테고리 (active) 스타일 */
 .category-item.category-active {
-    background-color: #a671ec; /* 탭 active와 동일 색상 */
+    background-color: #a671ec;
     color: white;
     border-color: #a671ec;
     font-weight: 600;
@@ -98,7 +97,7 @@
 /* 정렬 버튼 컨테이너 */
 .sort-buttons {
     display: flex;
-    justify-content: flex-end; /* 오른쪽 정렬 */
+    justify-content: flex-end;
     margin-bottom: 20px;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
@@ -129,15 +128,15 @@
 /* 활성화된 정렬 기준 버튼 */
 .sort-buttons button.active {
     font-weight: 700;
-    color: #a671ec; /* 메인 컬러로 강조 */
+    color: #a671ec;
 }
 
 /* 상품 그리드 컨테이너 */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4열 그리드 */
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    justify-content: start; /* 왼쪽 정렬 */
+    justify-content: start;
 }
 
 /* 개별 상품 카드 */
@@ -149,8 +148,6 @@
     border: 1px solid #ddd;
     border-radius: 12px;
     text-align: center;
-    /* 💡 ProductCard 전체 클릭을 위해 div로 감싸고, 찜 버튼은 제외 */
-    /* cursor: pointer; // 찜 버튼 때문에 전체 카드에 커서 적용 제거 */
     transition: box-shadow 0.2s, border-color 0.2s;
 }
 
@@ -163,6 +160,51 @@
     align-items: center;
 }
 
+.product-card-clickable-area button {
+    width: 100%; /* 버튼이 기본적으로 꽉 차도록 */
+    padding: 8px 0;
+    margin-top: 8px; /* 위쪽 요소와 간격 */
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    border: 1px solid;
+}
+
+.product-card-clickable-area button:nth-of-type(2) { /* 두 번째 버튼 = 장바구니 */
+    background-color: #fff;
+    border-color: #a671ec;
+    color: #a671ec;
+}
+
+.product-card-clickable-area button:nth-of-type(2):hover {
+    background-color: #f0e6ff; /* 호버 시 연한 보라색 배경 */
+}
+
+/* 구매하기 버튼 스타일 (보라색 배경 + 흰색 텍스트) */
+.product-card-clickable-area button:nth-of-type(1) { /* 첫 번째 버튼 = 구매하기 */
+    background-color: #a671ec;
+    border-color: #a671ec;
+    color: white;
+}
+
+.product-card-clickable-area button:nth-of-type(1):hover {
+    background-color: #8c5cd8; /* 호버 시 진한 보라색 배경 */
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 */
+    width: 100%;
+    margin-top: 10px; /* 카드 정보와 버튼 사이 간격 */
+}
+
+.product-actions button {
+    flex: 1; /* 두 버튼이 동일한 너비를 가지도록 */
+    /* 위의 개별 버튼 스타일은 동일하게 적용됩니다. */
+}
+
 .product-card:hover {
     border-color: #c99fff;
     box-shadow: 0 4px 8px rgba(174, 147, 209, 0.2);
@@ -173,7 +215,7 @@
 .product-card .product-image {
     width: 100%;
     height: 150px;
-    background-color: #f5f5f5; /* 이미지 영역 표시 */
+    background-color: #f5f5f5;
     margin-bottom: 10px;
     border-radius: 8px;
     display: flex;
@@ -181,6 +223,14 @@
     justify-content: center;
     color: #777;
     font-size: 12px;
+    position: relative;
+}
+
+.product-card .product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 비율을 유지하면서 컨테이너 안에 맞춤 */
+    display: block;
 }
 
 .product-card .product-name {
@@ -207,7 +257,6 @@
 
 /* =========================================================================
  * 7. 상품 상세 페이지 스타일 (ProductDetail 컴포넌트)
- * (기존 스타일 유지 및 favorite-toggle-btn 추가)
  * ========================================================================= */
 .product-detail-container {
     max-width: 1100px;
@@ -219,7 +268,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     font-family: "Noto Sans KR", sans-serif;
 }
-/* ... 이하 ProductDetail 관련 CSS 유지 ... */
+
 .detail-header {
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
@@ -257,6 +306,7 @@
     color: #555;
     font-size: 18px;
     background-color: #fafafa;
+    overflow: hidden;
 }
 
 /* 상품 정보 영역 */
@@ -267,11 +317,16 @@
     gap: 12px;
 }
 
+.detail-image-area img {
+    max-width: 100%; /* 부모 너비를 넘지 않도록 */
+    max-height: 100%; /* 부모 높이를 넘지 않도록 */
+    object-fit: contain; /* 비율을 유지하면서 이미지 전체가 보이도록 (잘리지 않음) */
+    display: block;
+}
 .product-price {
     font-size: 20px;
     font-weight: 600;
 }
-/* ... 중략 ... */
 .product-category,
 .product-description,
 .product-stock {
@@ -287,6 +342,7 @@
     flex-wrap: wrap;
 }
 
+/* 버튼 공통 스타일 */
 .purchase-options button {
     padding: 10px 16px;
     font-size: 15px;
@@ -295,10 +351,18 @@
     background-color: #f8f8f8;
     cursor: pointer;
     transition: 0.2s;
+    min-width: 0; 
 }
 
 .purchase-options button:hover {
     background-color: #e6e6e6;
+}
+
+/* 장바구니 버튼과 찜/구매 그룹이 공간을 1:1로 차지하도록 설정 */
+.purchase-options .add-to-cart-btn,
+.purchase-options .buy-and-favorite-group {
+    flex: 1;
+    min-width: 0;
 }
 
 /* 장바구니 버튼 */
@@ -311,11 +375,19 @@
     background-color: #f2f2f2;
 }
 
+/* 바로구매와 찜 버튼을 묶는 그룹 */
+.buy-and-favorite-group {
+    display: flex; 
+    gap: 10px; 
+}
+
 /* 바로구매 버튼 */
 .buy-now-btn {
+    flex-grow: 1; 
     background-color: #2ecc71;
-    color: #fff;
+    color: #000000;
     border: none;
+    min-width: 0;
 }
 
 .buy-now-btn:hover {
@@ -326,13 +398,95 @@
 .tab-section {
     margin-top: 50px;
     border-top: 2px solid #eee;
-    padding-top: 20px;
+    padding-top: 0px;
+}
+
+.tab-nav {
+    margin-bottom: 0px;
+}
+
+.tab-links {
+    display: flex;
+    gap: 30px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-link {
+    text-decoration: none;
+    color: #777;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+}
+
+.tab-link .tab-title-only {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.tab-link:hover {
+  color: #333;
+  background-color: #fafafa;
 }
 
 .tab-title-only {
     font-size: 20px;
     margin-bottom: 15px;
     font-weight: 600;
+}
+
+.tab-link.active {
+    color: #a671ec;
+    background-color: #ffffff;
+    border-bottom: 3px solid #a671ec; /* 활성화 표시선 */
+    font-weight: 700;
+}
+
+.tab-link.active .tab-title-only {
+    font-weight: 700;
+}
+
+.tab-content {
+    padding: 20px 0;
+}
+
+.favorite-icon-btn {
+    /* purchase-options button 공통 스타일을 덮어씁니다. */
+    flex-shrink: 0; /* 줄어들지 않도록 고정 */
+    width: 45px; /* 작은 크기로 고정 */
+    height: 45px; /* 높이도 동일하게 고정 */
+    padding: 0;
+    font-size: 1.5rem; /* 하트 아이콘 크기 키우기 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #e74c3c; /* 기본 하트 색상 (빨간색) */
+    border: 1px solid #e74c3c;
+}
+
+.favorite-icon-btn.active {
+    background-color: #fff0f0; /* 찜했을 때 연한 빨간 배경 */
+}
+
+.favorite-icon-btn:hover {
+    background-color: #fcebeb; /* 호버 시 약간 밝게 */
+}
+
+
+/* 💡 단독 줄 버튼 (내 복용약/영양제 확인) */
+.interaction-check-btn {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0; /* 배경색 조정 */
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 10px; /* 위에 purchase-options 그룹과 간격 주기 */
 }
 
 /* 반응형 */
@@ -357,8 +511,7 @@
 
 /* 상품 카드 내 찜 버튼 컨테이너 (GoodsList.jsx) */
 .product-card {
-    position: relative; /* 찜 버튼 절대 위치 기준으로 설정 */
-    /* ... 기존 스타일 유지 ... */
+    position: relative;
 }
 
 .product-favorite-wrapper {
@@ -366,11 +519,12 @@
     top: 10px;
     right: 10px;
     z-index: 100;
+    opacity: 1; 
 }
 
 .favorite-card-btn {
     /* 찜 버튼 오버레이 스타일 (GoodsList.jsx) */
-    background: rgba(255, 255, 255, 0.85); 
+    background: white;
     border: 1px solid #ddd;
     border-radius: 50%;
     width: 36px;
@@ -379,19 +533,17 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: 0.2s, border-color 0.2s;
-    padding: 0;
-    font-size: 1.1rem; /* 이모지 크기 조정 */
+    font-size: 1.1rem;
+    color: #e74c3c;
 }
 
 .favorite-card-btn:hover {
-    background: rgba(255, 255, 255, 1);
+    background: #fff0f0;
     border-color: #c9c9c9;
 }
 
 /* 찜 버튼 (ProductDetail.jsx) */
 .favorite-toggle-btn {
-    /* purchase-options 내부 버튼 스타일 상속 */
     padding: 10px 16px;
     font-size: 15px;
     border-radius: 6px;
@@ -399,12 +551,12 @@
     background-color: #f8f8f8;
     cursor: pointer;
     transition: 0.2s;
-    /* 찜 버튼 고유 스타일 */
-    min-width: 140px; /* 버튼 길이 확보 */
+    min-width: 100px; 
+    flex-shrink: 0; 
 }
 
 .favorite-toggle-btn.active {
-    color: #e74c3c; /* 붉은색 텍스트 */
+    color: #e74c3c;
     border-color: #e74c3c;
     background-color: #fff0f0;
 }
@@ -415,5 +567,77 @@
 }
 
 .favorite-toggle-btn.active:hover {
-    background-color: #fcebeb; /* 활성화 시 연하게 호버 */
+    background-color: #fcebeb;
+}
+
+.favorite-icon-btn,
+.favorite-toggle-btn {
+    position: static !important; /* 💡 버튼이 떠 있지 않게 고정 */
+    z-index: auto !important;
+}
+
+.purchase-options,
+.detail-info-area {
+    position: static !important;
+}
+
+.purchase-quantity {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.purchase-quantity label {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0; /* 버튼과 수량 사이에 간격 제거 */
+}
+
+.quantity-controls button {
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.quantity-controls button:first-child {
+    border-radius: 6px 0 0 6px;
+}
+
+.quantity-controls button:last-child {
+    border-radius: 0 6px 6px 0;
+}
+
+.quantity-controls button:disabled {
+    cursor: not-allowed;
+    background-color: #eee;
+    color: #999;
+    border-color: #ddd;
+}
+
+.quantity-controls span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 30px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-weight: 600;
+    font-size: 15px;
+    background-color: #fff;
 }
