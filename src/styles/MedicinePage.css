@@ -1,0 +1,256 @@
+.medicine-page-container {
+  padding: 20px;
+  background-color: #f5f5f5; /* 연한 회색 배경 */
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 가운데 정렬 */
+  max-width: 800px; /* 최대 너비 설정 */
+  margin: 20px auto; /* 가운데 정렬 */
+}
+
+.content-wrapper {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 30px; /* 섹션 간 간격 */
+  margin-bottom: 30px;
+}
+
+.image-analysis-section,
+.recognized-list-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.image-analysis-section h3,
+.recognized-list-section h3 {
+  font-size: 1.2em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.image-display-box {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ddd;
+  background-color: #fff; /* 하얀색 이미지 박스 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.placeholder-text {
+  color: #999;
+  font-size: 0.9em;
+}
+
+/* 버튼 스타일 공통 */
+.button-upload,
+.button-search,
+.button-add,
+.button-save {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  width: 150px; /* 버튼 너비 통일 */
+  text-align: center;
+}
+
+.button-upload, .button-search, .button-add {
+  background-color: #ff6f61; /* 빨간색 계열 */
+  margin-top: 5px; /* 버튼 간 간격 */
+}
+
+.button-next {
+  background-color: #4CAF50; /* 초록색 계열 */
+  margin-top: 30px;
+  width: 200px; /* 다음으로 버튼은 좀 더 넓게 */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  text-align: center;
+}
+
+/* 인식된 의약품 리스트 */
+.medicine-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.medicine-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.medicine-item input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  padding: 5px;
+}
+
+.medicine-item button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 5px;
+  margin-left: 5px;
+}
+
+.button-edit {
+  color: #007bff; /* 파란색 연필 아이콘 */
+}
+
+.button-delete {
+  color: #dc3545; /* 빨간색 휴지통 아이콘 */
+}
+
+.guidance-text {
+  font-size: 0.9em;
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* 모달 스타일 */
+.search-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.search-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-modal-content {
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.search-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-result-item {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+  background-color: #f5f5f5;
+}
+
+.result-name {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.result-detail {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.medicine-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.medicine-input:hover {
+  background-color: #f5f5f5;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+/* Analyze 컴포넌트의 탭 메뉴 스타일 */
+/* TabMenu.css가 있다면 거기서 정의될 부분 */
+/* 임시로 여기에 추가하여 이미지와 유사하게 만듦 */
+.tab-container {
+    display: flex;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    overflow: hidden; /* 모서리 둥글게 처리 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.tab-item {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f0f0f0; /* 비활성 탭 배경 */
+    border-right: 1px solid #ccc; /* 탭 구분선 */
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.tab-item:last-child {
+    border-right: none;
+}
+
+.tab-item.active {
+    background-color: #d1e7ff; /* 활성 탭 배경 (하늘색 계열) */
+    color: #007bff; /* 활성 탭 텍스트 색상 */
+}
