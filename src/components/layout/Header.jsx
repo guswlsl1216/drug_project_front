@@ -1,5 +1,5 @@
 // 헤더
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import "../../styles/Header.css";
 import logoImage from "../../images/logo.png";
 import { useUser } from "../context/UserContext";
@@ -45,6 +45,7 @@ const Header = () => {
             {isLoggedIn ? (
               <>
                 <span>{user.nickname}님</span>
+                <NavLink to="routine">루틴</NavLink>
                 <Button onClick={handleLogout}>로그아웃</Button>
               </>
             ) : (
