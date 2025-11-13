@@ -1,160 +1,219 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import SearchModal from "../../components/ui/SearchModal";
-import "../../styles/MedInput.css";
+import React, { useEffect, useState } from "react";
+import "../../styles/MyDrugs.css";
+import requestHandler from "../../utils/requestHandler";
+import UseNavi from "../../utils/UseNavi";
+import { useUser } from "../../components/context/UserContext"; 
+import useLoginRedirect from "../../utils/useLoginRedirect";  
 
-const MedInput = () => {
-  const navigate = useNavigate();
-  // 예시를 위한 상태 관리 (실제 로직에서는 API 호출 등으로 데이터 관리)
-  const [medicineImage, setMedicineImage] = useState(null);
-  const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const [selectedMedicineId, setSelectedMedicineId] = useState(null);
-  const [recognizedMedicines, setRecognizedMedicines] = useState([
-    {id: 1, name: "인식된 의약품 1"},
-    {id: 2, name: "인식된 의약품 2"},
-    {id: 3, name: "인식된 의약품 3"},
-  ]);
 
-  const handleImageUpload = (event) => {
-    // 이미지 업로드 로직 (선택된 파일 처리)
-    const file = event.target.files[0];
-    if (file) {
-      setMedicineImage(URL.createObjectURL(file));
-      console.log("이미지 업로드:", file.name);
-      // 여기에 이미지 분석 API 호출 로직 추가
+const MedInput = ( {setActiveTab }) => {
+  const { isLoggedIn } = useUser();         // ✅ 로그인 상태 확인
+  const { requireLogin } = useLoginRedirect(); 
+
+  const [titleInput, settitleInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {goTo} = UseNavi();
+
+  useEffect(() => {
+    requireLogin(() => {
+    console.log("✅ 로그인 상태 확인됨");
+    }, true); // replace = true → 뒤로가기 방지
+  }, []);
+
+  const [formData, setFormData] = useState({
+       
+      name : "",
+      eattime : [false, false, false],
+      note : "",
+      start_date : "",
+      end_date : ""
+  });
+
+  const timeOptions = [
+    '아침', '점심', '저녁' ];
+
+  // 아침, 점심, 저녁 버튼 고정 핸들러 (false, false, false)
+  const handleTimeChange = (index) => {
+    setFormData((prev) => {
+      const updated = [...prev.eattime];
+      updated[index] = !updated[index];
+      return { ...prev, eattime : updated}
+    })
+  }
+
+
+  // input 변경 핸들러
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // 약 이름 입력
+  const handleTitleChange = (e) => {
+    settitleInput(e.target.value);
+    setFormData((prev) => ({
+      ...prev,
+      name : e.target.value
+    }));
+  };
+
+  // 폼 유효성 검사
+  const validateForm = () => {
+    if (!formData.name) {
+      alert("복용하시는 약을 입력해 주세요.")
+      return false;
     }
-  };
+    if (!formData.start_date || !formData.end_date)
+      alert("복용 시작일과 종료일을 모두 입력해주세요.")
+    return true;
+  }
 
-  const handleMedicineNameChange = (id, newName) => {
-    setRecognizedMedicines(
-      recognizedMedicines.map((med) => (med.id === id ? {...med, name: newName} : med))
-    );
-  };
+ const saveDrugs = async () => {
+    if (!validateForm()) return false;
 
-  const handleMedicineDelete = (id) => {
-    setRecognizedMedicines(recognizedMedicines.filter((med) => med.id !== id));
-  };
+    const drugData = {
+      
+      name : formData.name,
+      eattime : formData.eattime,
+      start_date : formData.start_date,
+      end_date : formData.end_date,
+      note : formData.note
+    }
 
-  const handleMedicineAdd = () => {
-    const newId = Math.max(...recognizedMedicines.map((med) => med.id)) + 1;
-    setRecognizedMedicines([...recognizedMedicines, {id: newId, name: "새로운 의약품"}]);
-  };
+    const res = await requestHandler({
+      method : "post",
+      url : "/routine/addRoutine",
+      payload : drugData,
+      setLoading,
+      onError : (msg) => alert("저장실패 : " + msg),
+    });
 
-  const handleSearch = () => {
-    console.log("검색 버튼 클릭 - 이미지 분석 결과 기반 검색");
-    // 여기에 분석된 이미지로 의약품 정보 검색 로직 추가
-  };
+    return res.ok;
+  }
 
-  const handleNext = () => {
-    // 현재 데이터를 저장하고 다음 페이지로 이동
-    console.log("의약품 데이터 저장:", recognizedMedicines);
-    // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
-    navigate('/analyze/supplement'); // SupplementPage로 이동
-  };
+    // 저장 후 목록 보기
+  const handleSave = async () => {
+    const success = await saveDrugs();
+    if (success) {
+      alert("✅ 저장 완료! 목록으로 이동합니다.")
+      resetForm();
+      setActiveTab('list')
+    }
+  }
+
+  // 폼 초기화 
+  const resetForm = () => {
+    setFormData({
+      name : "",
+      eattime : [false, false, false],
+      note : "",
+      start_date : "",
+      end_date : ""
+    })
+  }
+  
 
   return (
-    <>
-    <h3 className="content-title">💊 복용약 등록</h3>
-    <div className="medicine-page-container">
-      <div className="content-wrapper">
-        
-        {/* 이미지 분석 섹션 */}
-        <div className="image-analysis-section">
-          <h3>이미지 분석</h3>
-          <div
-            className="image-display-box"
-            style={{
-              backgroundImage: medicineImage ? `url(${medicineImage})` : "none",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundColor: medicineImage ? "transparent" : "#f0f0f0",
-            }}
-          >
-            {/* 이미지 미리보기가 없을 때 */}
-            {!medicineImage && <span className="placeholder-text">이미지 없음</span>}
-          </div>
-          <label className="button-upload">
-            이미지업로드
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{display: "none"}}
+  <>
+  
+    <div className="supp-input-view">
+        <h3 className="content-title">💊 복용약 등록</h3>
+        <p className="info-text">
+            복용약을 상세 설정하여 알림 설정 및 관리에 활용해보세요!
+        </p>
+
+        <form className="input-form" onSubmit={(e) => e.preventDefault()}>
+             {/* 영양제 검색 버튼  => 유저가 복용약 하는 타이틀 입력하는 버튼*/}
+            <label htmlFor="supp-name" className="input-label"> 복용하시는 약의 타이틀을 입력해주세요</label>
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+            <input 
+                type="text" 
+                id="supp-search"
+                className="input-field"
+                style={{ marginBottom: 0, flex:1 }}
+                value={titleInput}
+                onChange={handleTitleChange}              
+                placeholder="예: 감기약, 탈모약"
+                required
+                
             />
-          </label>
-          <button className="button-search" onClick={handleSearch}>
-            검사
-          </button>
-        </div>
+            </div>
 
-        {/* 인식된 의약품 리스트 섹션 */}
-        <div className="recognized-list-section">
-          <h3>인식된 의약품 리스트</h3>
-          <div className="medicine-list">
-            {recognizedMedicines.map((med) => (
-              <div key={med.id} className="medicine-item">
-                <input
-                  type="text"
-                  className="medicine-input"
-                  value={med.name}
-                  onChange={(e) => handleMedicineNameChange(med.id, e.target.value)}
+            {/* --- 복용 상세 옵션 그룹 --- */}
+            <div className="status-box mt-5 p-5">
+                <h4 className="section-heading-small">복용약 상세 설정</h4>
+
+                {/* 2. 복용 시간 선택 */}
+                <label className="input-label">복용 시간 (중복 선택 가능)</label>
+                <div className="time-options">
+                    {timeOptions.map((label, index)=> (
+                        <label key={label} 
+                               className={`time-option ${formData.eattime[index] ? "active" : ""}`}>
+                            <input type="checkbox" 
+                                checked={formData.eattime[index]} 
+                                onChange={() => handleTimeChange(index)}
+                                className="hidden-checkbox" 
+                            />
+                            {label}
+                        </label>               
+                    ))}
+                </div>
+
+                <div style={{ display: "flex", gap: "10px", margin: "20px 0" }}>
+                  <div style={{ flex: 1 }}>
+                    <label className="input-label">시작일</label>
+                    <input
+                      type="date"
+                      name="start_date"
+                      value={formData.start_date}
+                      onChange={handleChange}
+                      className="input-field"
+                    />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <label className="input-label">종료일</label>
+                    <input
+                      type="date"
+                      name="end_date"
+                      value={formData.end_date}
+                      onChange={handleChange}
+                      className="input-field"
+                    />
+                  </div>
+                </div>
+
+                <label htmlFor="supp-note" className="input-label">추가 메모 (선택 사항):</label>
+                <textarea
+                  id="supp-note"
+                  name="note"
+                  className="input-field"
+                  value={formData.note}
+                  onChange={handleChange}
+                  placeholder="주의사항, 특이사항을 입력하세요."
+                  rows="3"
                 />
-                <button
-                  className="button-edit"
-                  onClick={() => {
-                    setSelectedMedicineId(med.id);
-                    setSearchModalOpen(true);
-                  }}
-                >
-                  ✓
-                </button>
-                <button className="button-delete" onClick={() => handleMedicineDelete(med.id)}>
-                  🗑️
-                </button>
-              </div>
-            ))}
-          </div>
-          <button className="button-add" onClick={handleMedicineAdd}>
-            추가
-          </button>
-        </div>
-      </div>
 
-      {/* 안내 문구 */}
-      <p className="guidance-text">
-        ※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.
-      </p>
-
-      {/* 다음으로 버튼 */}
-      <button className="save-btn" onClick={handleNext}>
-        저장하기
-      </button>
-
-      {/* 검색 모달 */}
-      <SearchModal
-        isOpen={searchModalOpen}
-        onClose={() => setSearchModalOpen(false)}
-        searchTerm={
-          selectedMedicineId
-            ? recognizedMedicines.find((med) => med.id === selectedMedicineId)?.name
-            : ""
-        }
-        onSelect={(selectedItem) => {
-          setRecognizedMedicines(
-            recognizedMedicines.map((med) =>
-              med.id === selectedMedicineId ? {...med, name: selectedItem.name} : med
-            )
-          );
-          setSearchModalOpen(false);
-        }}
-        apiEndpoint="/routine/search"
-        type='meds'
-      />
+                <div className="button-group">
+                  <button
+                    type="button"
+                    onClick={handleSave}
+                    className="action-btn"
+                    disabled={loading} 
+                  >
+                  저장하기</button>
+                </div>
+            </div>
+        </form>
     </div>
-    </>
-  );
-};
+  
+  
 
-export default MedInput;
+  </>
+  
+  )
+}
 
-
+export default MedInput

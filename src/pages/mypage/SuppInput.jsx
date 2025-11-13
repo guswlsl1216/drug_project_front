@@ -3,34 +3,32 @@ import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MyDrugs.css";
 import requestHandler from "../../utils/requestHandler";
 import UseNavi from "../../utils/UseNavi";
+import { useUser } from "../../components/context/UserContext"; 
+import useLoginRedirect from "../../utils/useLoginRedirect";  
+
 
 
 const SuppInput = ( {setActiveTab }) => {
 
+  const { isLoggedIn } = useUser();         // ✅ 로그인 상태 확인
+  const { requireLogin } = useLoginRedirect(); 
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSeachTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const {goTo} = UseNavi();
+  
 
-  const [userid, setUserId] = useState(null);
- 
-  useEffect( () => {
-    const storedUser = sessionStorage.getItem("user");
-    if (storedUser){
-      try {
-        const parsed_user = JSON.parse(storedUser);
-        setUserId(parsed_user);
-      } catch (e) {
-        console.error("유저 정보 파싱 실패", e)
-      }
-    }
-
-  }, [])
+  useEffect(() => {
+    requireLogin(() => {
+    console.log("✅ 로그인 상태 확인됨");
+    }, true); // replace = true → 뒤로가기 방지
+  }, []);
 
 
   const [formData, setFormData] = useState({
-      author_id : 1, // 나중에 수정해야함 ( 로그인 기능 구현되면 )
+      
+      name : "",
       drug_id : "",
       eattime : [false, false, false],
       note : "",
@@ -75,7 +73,7 @@ const SuppInput = ( {setActiveTab }) => {
       drug_id : selectedItem.id,
       name : selectedItem.name
     }))
-    setSearchInput(selectedItem || "");
+    setSearchInput(selectedItem.name);
     setSearchModalOpen(false)
   } 
   // input 변경 핸들러
@@ -98,27 +96,14 @@ const SuppInput = ( {setActiveTab }) => {
     return true;
   }
 
-  // 폼 초기화 
-  const resetForm = () => {
-    setFormData({
-      author_id : 1, // 나중에 수정해야함 ( 로그인 기능 구현되면 )
-      drug_id : "",
-      eattime : [false, false, false],
-      note : "",
-      start_date : "",
-      end_date : "",
-      name : ""
-    })
-    setSearchInput("");
-  }
-
   // 저장 요청 공통 저장 ( 두 버튼이 공유 )
-  const saveSupps = async () => {
+  const saveDrugs = async () => {
     if (!validateForm()) return false;
 
-    const supplementData = {
-      author_id : 1,
+    const drugData = {
+      
       drug_id : formData.drug_id,
+      name : formData.name,
       eattime : formData.eattime,
       start_date : formData.start_date,
       end_date : formData.end_date,
@@ -128,7 +113,7 @@ const SuppInput = ( {setActiveTab }) => {
     const res = await requestHandler({
       method : "post",
       url : "/routine/addRoutine",
-      payload : supplementData,
+      payload : drugData,
       setLoading,
       onError : (msg) => alert("저장실패 : " + msg),
     });
@@ -136,8 +121,23 @@ const SuppInput = ( {setActiveTab }) => {
     return res.ok;
   }
 
+  // 폼 초기화 
+  const resetForm = () => {
+    setFormData({
+      drug_id : "",
+      name : "",
+      eattime : [false, false, false],
+      note : "",
+      start_date : "",
+      end_date : ""
+    })
+    setSearchInput("");
+  }
+
+  
+
   const handleSaveAndContinue = async () => {
-    const success = await saveSupps();
+    const success = await saveDrugs();
     if (success) {
       alert("✅ 저장 완료! 계속 입력할 수 있습니다.")
       resetForm();
@@ -145,7 +145,7 @@ const SuppInput = ( {setActiveTab }) => {
   }
   // 저장 후 목록 보기
   const handleSaveandView = async () => {
-    const success = await saveSupps();
+    const success = await saveDrugs();
     if (success) {
       alert("✅ 저장 완료! 목록으로 이동합니다.")
       setActiveTab('list')
@@ -170,7 +170,7 @@ const SuppInput = ( {setActiveTab }) => {
                 id="supp-search"
                 className="input-field"
                 style={{ marginBottom: 0, flex:1 }}
-                value={formData.name}
+                value={searchInput}
                 onChange={handleSearchInputChange}              
                 placeholder="예: 종합 비타민, 오메가3"
                 required
