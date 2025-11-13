@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Store.css";
-import { useParams } from "react-router-dom";
-import useFavoriteToggle from "../../pages/store/usefavoriteToggle";
+import { NavLink, Outlet, useParams } from "react-router-dom";
+import useFavoriteToggle from "./usefavoriteToggle";
 
 
 const ProductDetail = () => {
@@ -158,21 +158,19 @@ const ProductDetail = () => {
           
           {/* 탭 네비게이션 */}
           <div className="tab-nav">
-            <h2 className="tab-title-only">제품 상세 정보</h2>
-            <h2 className="tab-title-only">리뷰</h2>
+            <nav className="tab-links">
+              <NavLink to={`/store/detail/${goodsId}/desc`} className={({isActive}) => isActive ? 'tab-link active' : 'tab-link'}>
+                <h2 className="tab-title-only">제품 상세 정보</h2>
+              </NavLink>
+              <NavLink to={`/store/detail/${goodsId}/review`} className={({isActive}) => isActive ? 'tab-link active' : 'tab-link'}>
+                <h2 className="tab-title-only">리뷰</h2>
+              </NavLink>
+            </nav>
           </div>
 
           {/* 탭 콘텐츠 */}
           <div className="tab-content">
-            <div className="product-detail-content">
-              <div
-                className="goods-desc"
-                dangerouslySetInnerHTML={{ __html: product.goods_desc || "상세 설명이 준비되지 않았습니다." }}/>
-              <p>
-                <span className="font-semibold text-indigo-600">재고 현황:</span> {product.stock !== undefined ? `${product.stock}개` : '확인 불가'}
-              </p>
-            </div>
-
+            <Outlet context={{product}}/>
           </div>
         </div>
 

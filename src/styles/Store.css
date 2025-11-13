@@ -398,13 +398,58 @@
 .tab-section {
     margin-top: 50px;
     border-top: 2px solid #eee;
-    padding-top: 20px;
+    padding-top: 0px;
+}
+
+.tab-nav {
+    margin-bottom: 0px;
+}
+
+.tab-links {
+    display: flex;
+    gap: 30px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-link {
+    text-decoration: none;
+    color: #777;
+    padding: 10px 20px;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+}
+
+.tab-link .tab-title-only {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.tab-link:hover {
+  color: #333;
+  background-color: #fafafa;
 }
 
 .tab-title-only {
     font-size: 20px;
     margin-bottom: 15px;
     font-weight: 600;
+}
+
+.tab-link.active {
+    color: #a671ec;
+    background-color: #ffffff;
+    border-bottom: 3px solid #a671ec; /* 활성화 표시선 */
+    font-weight: 700;
+}
+
+.tab-link.active .tab-title-only {
+    font-weight: 700;
+}
+
+.tab-content {
+    padding: 20px 0;
 }
 
 .favorite-icon-btn {
