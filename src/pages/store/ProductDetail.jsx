@@ -3,6 +3,8 @@ import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Store.css";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
+import requestHandler from "../../utils/requestHandler";
+import UseNavi from "../../utils/UseNavi";
 
 
 const ProductDetail = () => {
@@ -11,42 +13,44 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const {goTo} = UseNavi()
 
   const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
 
 
   useEffect(() => {
-    const ProductDetailandFavorite = async () => {
-      try {
-        const response = await axiosInstance.get(`/goods/${goodsId}`)
-        console.log("백엔드 응답 데이터 구조:", response.data)
+    const fetchProductDetail = async () => {
+      const {ok, data} = await requestHandler({
+        method: "get",
+        url: `/goods/${goodsId}`,
+        setLoading: setLoading,
 
-        if (response.data && response.data.product) {
-          const productData = response.data.product;
+        onSuccess:(responseData) => {
+          console.log("백엔드 응답 데이터 구조:", responseData);
 
-          setProduct(productData)
-          if (productData.is_favorite !== undefined) {
-            setIsFavorite(productData.is_favorite)
+          if (responseData && responseData.product) {
+            const productData = responseData.product;
+            setProduct(productData);
+
+            setIsFavorite(productData.is_favorite !== undefined ? productData.is_favorite : false)
+            setError(null)
           } else {
-            setIsFavorite(false)
+            setError("상품 데이터를 찾을 수 없습니다.");
+            setProduct(null);
           }
-        } else {
-          setError("상품 데이터를 찾을 수 없습니다.")
-        }
+        },
 
-        setError(null);
-      } catch(err) {
-        console.error("상품 상세 정보 로딩 오류:", err);
-        setProduct(null);
-        setError("상품 정보를 불러오는 데 실패했습니다.")
-      } finally {
-        setLoading(false);
-      }
-     
+        onError: (msg, err) => {
+          console.error("상품 상세 정보 로딩 오류:", err);
+          setProduct(null);
+          setError(msg || "상품 정보를 불러오는 데 실패했습니다.");
+        }
+      });
+
     };
 
-    ProductDetailandFavorite(); // 상품 상세정보 및 찜 상태
-  }, [goodsId, setIsFavorite]); // goodsId가 변경될 때마다 재실행
+    fetchProductDetail();
+  }, [goodsId, setLoading, setProduct, setIsFavorite, setError]); // goodsId가 변경될 때마다 재실행
 
 
   const handleQuantityChange = (type) => {
