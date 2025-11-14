@@ -121,7 +121,7 @@ const MyDrugs = ( ) => {
       end_date: item.end_date,
       note: item.note || ""
     });
-    setActiveTab(item.type==="medicine" ? "med-input":"supp-input");
+    
   }
 
 
