@@ -13,7 +13,7 @@ const Mypage = () => {
           <NavLink to="mydrugs">내가복용중인약</NavLink>
           <NavLink to="routine">루틴</NavLink>
           <NavLink to="orders">주문내역</NavLink>
-          <NavLink to="cart">찜목록</NavLink>
+          <NavLink to="favorite">찜목록</NavLink>
           <NavLink to="review">리뷰</NavLink>
         </nav>
 

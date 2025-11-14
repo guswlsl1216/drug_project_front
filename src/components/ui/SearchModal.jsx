@@ -5,6 +5,7 @@ import "../../styles/SearchModal.css";
 const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/medicine/search", searchParamKey = "keyword", type }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  sessionStorage.setItem("result", JSON.stringify(searchResults));
 
   useEffect(() => {
     const searchItems = async () => {
@@ -22,7 +23,6 @@ const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/me
           });
 
           const data = response.data;
-          console.log(data)
           if (data.success) {
             // 응답 데이터의 키를 동적으로 처리할 수 있도록 수정
             const results = Array.isArray(data.medicines) ? data.medicines : [];
@@ -61,6 +61,10 @@ const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/me
           {loading ? (
             <div className="loading">검색중...</div>
           ) : (
+            searchResults.length === 0 ? (
+          // 2-1. 검색 결과가 없을 때 (배열이 비어있을 때)
+          <div className="no-results">검색 결과가 없습니다.</div>
+        ) : (
             <ul className="search-results">
               {searchResults.map(item => (
                 <li 
@@ -73,6 +77,7 @@ const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/me
                 </li>
               ))}
             </ul>
+        )
           )}
         </div>
       </div>

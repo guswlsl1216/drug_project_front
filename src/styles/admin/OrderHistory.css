@@ -1,0 +1,246 @@
+/* ==============================
+   📦 OrderHistory 전체 레이아웃
+   ============================== */
+.order-history {
+  display: grid;
+  gap: 16px;
+  padding: 4px;
+}
+
+/* ==============================
+   🔍 필터 영역
+   ============================== */
+.order-history__filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 12px 16px;
+  border: 1px solid #e7e7ef;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.order-history__filter-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b4b58;
+}
+
+.order-history__select {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #dcdce6;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.order-history__select:focus {
+  border-color: #7a5cff33;
+  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.12);
+}
+
+.order-history__search {
+  flex: 1;
+  min-width: 200px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #dcdce6;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.order-history__search:focus {
+  border-color: #7a5cff33;
+  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.12);
+}
+
+.order-history__search-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+}
+
+.order-history__perpage {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #4b4b58;
+}
+
+/* ==============================
+   📊 테이블
+   ============================== */
+.order-history__table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #ececf3;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.order-history__table thead th {
+  background: linear-gradient(180deg, #fafaff 0%, #f4f4ff 100%);
+  color: #353545;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #ececf3;
+  white-space: nowrap;
+}
+
+.order-history__table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f2f2f7;
+  color: #2f2f39;
+  vertical-align: middle;
+  transition: background 0.15s ease;
+}
+
+.order-history__row:hover {
+  background: #fafaff;
+}
+
+/* 금액 우측 정렬 */
+.order-history__cell.amount {
+  text-align: right;
+}
+
+/* 상세보기 버튼 */
+.order-history__view-btn {
+  font-size: 13px;
+  padding: 4px 10px;
+  color: #6b5cff;
+  border-radius: 6px;
+}
+
+.order-history__view-btn:hover {
+  background: #f5f3ff;
+}
+
+/* ==============================
+   💬 상태 배지 색상
+   ============================== */
+.order-history__cell.status {
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.order-history__cell.status.approved {
+  color: #166534;
+  background: #dcfce7;
+  border-color: #bbf7d0;
+}
+.order-history__cell.status.cancelled {
+  color: #7f1d1d;
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+.order-history__cell.status.refunded {
+  color: #7c2d12;
+  background: #ffedd5;
+  border-color: #fed7aa;
+}
+.order-history__cell.status.requested,
+.order-history__cell.status.pending {
+  color: #075985;
+  background: #e0f2fe;
+  border-color: #bae6fd;
+}
+
+/* ==============================
+   ⚙️ 로딩 / 비어있음 / 요약
+   ============================== */
+.order-history__loading,
+.order-history__empty {
+  padding: 40px 16px;
+  text-align: center;
+  color: #6b6b7a;
+  background: #fff;
+  border: 1px dashed #e7e7ef;
+  border-radius: 12px;
+}
+
+.order-history__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #404054;
+  font-size: 14px;
+  background: #fff;
+  padding: 10px 14px;
+  border: 1px solid #ececf3;
+  border-radius: 10px;
+}
+
+/* ==============================
+   📱 반응형
+   ============================== */
+@media (max-width: 1024px) {
+  .order-history__filter {
+    gap: 10px;
+  }
+
+  .order-history__filter-label span {
+    display: none;
+  }
+
+  .order-history__table {
+    font-size: 13px;
+  }
+
+  .order-history__table thead th:nth-child(7),
+  .order-history__table tbody td:nth-child(7) {
+    text-align: right;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-history__filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .order-history__search {
+    width: 100%;
+  }
+
+  .order-history__summary {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 430px) {
+  .order-history__table thead th:nth-child(2) {
+    width: 120px;
+  }
+
+  .order-history__cell {
+    padding: 10px 8px;
+  }
+
+  .order-history__summary {
+    font-size: 13px;
+  }
+}

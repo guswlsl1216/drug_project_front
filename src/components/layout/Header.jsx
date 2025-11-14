@@ -38,9 +38,9 @@ const Header = () => {
             </NavLink>
           </div>
           <ul className="header_menu">
-            <NavLink to="analyze">AI분석</NavLink>
+            <NavLink to="analyze/medicine">AI분석</NavLink>
             <NavLink to="medslist">의약품목록</NavLink>
-            <NavLink to="store">스토어</NavLink>
+            <NavLink to="store/allgoods">스토어</NavLink>
 
             {isLoggedIn ? (
               <>
