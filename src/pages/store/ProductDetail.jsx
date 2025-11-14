@@ -3,6 +3,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Store.css";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
+import InteractionAnalysisModal from "../../components/ui/InteractionAnalysisModal";
 
 
 const ProductDetail = () => {
@@ -13,6 +14,9 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
 
   const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
+
+  // 상호작용 분석 모달 열림 닫힘 관리 state
+  const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
 
 
   useEffect(() => {
@@ -74,52 +78,44 @@ const ProductDetail = () => {
   return (
     <div className="product-detail-container">
       {/* 팝업 메시지 (훅에서 가져옴) */}
-      {message && (
-        <div className="message-popup">
-          {message}
-        </div>
-      )}
+      {message && <div className="message-popup">{message}</div>}
 
       <div className="product-detail-card">
-        
         {/* 1. 상품 상세 정보 섹션: 이미지 + 구매 정보 (detail-section) */}
         <div className="detail-section">
-          
           {/* A. 제품 이미지 영역 */}
           <div className="detail-image-area">
             <img src={product.image_path} alt="[상품 상세 이미지]" />
           </div>
-          
+
           {/* B. 제품 정보 및 구매 액션 영역 */}
           <div className="detail-info-area">
-            
             {/* 제목 및 ID */}
-            <h1 className="product-title">
-              {product.goods_name}
-            </h1>
-            <p className="product-id">상품 ID: {product.id} | 카테고리: {product.category || '미분류'}</p>
-            
+            <h1 className="product-title">{product.goods_name}</h1>
+            <p className="product-id">
+              상품 ID: {product.id} | 카테고리: {product.category || "미분류"}
+            </p>
+
             {/* 가격 */}
             <div className="price-section">
               <p className="product-price">
-                {product.price ? product.price.toLocaleString() : '가격 미정'}원
+                {product.price ? product.price.toLocaleString() : "가격 미정"}원
               </p>
               <p>배송비 기본 2,500원 / 2만원 이상 구매 시 무료</p>
             </div>
-            
+
             {/* 수량 및 합계 */}
             <div className="purchase-quantity">
               <label>구매 수량</label>
               <div className="quantity-controls">
-                <button 
-                  onClick={() => handleQuantityChange('decrement')}
-                  disabled={quantity <= 1}>
+                <button onClick={() => handleQuantityChange("decrement")} disabled={quantity <= 1}>
                   -
                 </button>
-                <span>{quantity}</span> {/* */} 
+                <span>{quantity}</span> {/* */}
                 <button
-                  onClick={() => handleQuantityChange('increment')}
-                  disabled={quantity >= (product?.stock || Infinity)}>
+                  onClick={() => handleQuantityChange("increment")}
+                  disabled={quantity >= (product?.stock || Infinity)}
+                >
                   +
                 </button>
               </div>
@@ -128,41 +124,42 @@ const ProductDetail = () => {
 
             {/* 구매 액션 버튼 */}
             <div className="purchase-options">
+              <button className="add-to-cart-btn">장바구니 담기</button>
 
-              <button className="add-to-cart-btn">
-                장바구니 담기
-              </button>
-              
-              <div className="buy-and-favorite-group"> 
-                <button className="buy-now-btn">
-                  바로구매
-                </button>
+              <div className="buy-and-favorite-group">
+                <button className="buy-now-btn">바로구매</button>
 
-                <button 
-                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
-                  onClick={toggleFavoriteHandler}>
-                  {isFavorite ? '❤️' : '🤍'}
+                <button
+                  className={`favorite-icon-btn ${isFavorite ? "active" : ""}`}
+                  onClick={toggleFavoriteHandler}
+                >
+                  {isFavorite ? "❤️" : "🤍"}
                 </button>
               </div>
             </div>
-            
+
             {/* 복용 약물 상호작용 확인 (제품 핵심 기능) */}
-            <button className="interaction-check-btn">
+            <button className="interaction-check-btn" onClick={() => setIsAnalysisModalOpen(true)}>
               내 복용약/영양제와 섭취 여부 확인하기
             </button>
           </div>
         </div>
-        
+
         {/* 2. 상세 정보 및 리뷰 탭 섹션 */}
         <div className="tab-section">
-          
           {/* 탭 네비게이션 */}
           <div className="tab-nav">
             <nav className="tab-links">
-              <NavLink to={`/store/detail/${goodsId}/desc`} className={({isActive}) => isActive ? 'tab-link active' : 'tab-link'}>
+              <NavLink
+                to={`/store/detail/${goodsId}/desc`}
+                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
+              >
                 <h2 className="tab-title-only">제품 상세 정보</h2>
               </NavLink>
-              <NavLink to={`/store/detail/${goodsId}/review`} className={({isActive}) => isActive ? 'tab-link active' : 'tab-link'}>
+              <NavLink
+                to={`/store/detail/${goodsId}/review`}
+                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
+              >
                 <h2 className="tab-title-only">리뷰</h2>
               </NavLink>
             </nav>
@@ -170,11 +167,21 @@ const ProductDetail = () => {
 
           {/* 탭 콘텐츠 */}
           <div className="tab-content">
-            <Outlet context={{product}}/>
+            <Outlet context={{product}} />
           </div>
         </div>
-
       </div>
+
+      {/* 상호작용 분석 모달 컴포넌트 추가 */}
+      <InteractionAnalysisModal
+        isOpen={isAnalysisModalOpen}
+        onClose={() => setIsAnalysisModalOpen(false)}
+        supplementInfo={{
+          id: product.id,
+          name: product.goods_name,
+          ingredients: supplementIngredients, // 상품 성분 정보 전달
+        }}
+      />
     </div>
   );
 }

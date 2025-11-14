@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import UseNavi from "../../utils/UseNavi";
 import SearchModal from "../../components/ui/SearchModal";
@@ -8,6 +8,13 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const ResultDataKey = "ANALYSIS_RESULT_DATA"; // 결과 데이터 키 (사용하지 않더라도 일관성을 위해 유지)
 const MedicineDataKey = "MEDICINE_LIST_TO_SEND"; // 약물 목록 저장 키
+const ImageUrlKey = "ORIGINAL_IMAGE_URL";
+
+const saveImageUrl = (url) => {
+  // ⭐ 새로 추가
+  sessionStorage.setItem(ImageUrlKey, url);
+  console.log("원본 이미지 URL 세션 저장 완료.");
+};
 
 // 입력된 약물 목록을 세션에서 불러옴
 const loadMedicineList = () => {
@@ -54,6 +61,15 @@ const MedicinePage = () => {
     loadMedicineList()
   );
 
+  useEffect(() => {
+    // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
+    return () => {
+      // 컴포넌트가 사라지기 직전에 현재 데이터를 세션에 저장합니다.
+      saveMedicineList(recognizedMedicines);
+      console.log("자동 저장 완료: 탭 이동/페이지 이탈 전 의약품 데이터 저장됨.");
+    };
+  }, [recognizedMedicines]);
+
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
   // ★★★ API 호출 함수 (새로 추가)
@@ -98,7 +114,9 @@ const MedicinePage = () => {
 
   const handleMedicineNameChange = (id, newName) => {
     setRecognizedMedicines(
-      recognizedMedicines.map((med) => (med.id === id ? {...med, name: newName} : med))
+      recognizedMedicines.map((med) =>
+        med.id === id ? {...med, name: newName, isValidated: false} : med
+      )
     );
   };
 
@@ -122,6 +140,10 @@ const MedicinePage = () => {
         alert("이미지 파일을 먼저 업로드해주세요.");
         return;
     }
+
+    if (medicineImage) {
+      saveImageUrl(medicineImage);
+    }
     
     // 2. API 호출
     const result = await callDetectApi(uploadedFile); // ★★★ uploadedFile 사용
@@ -134,7 +156,8 @@ const MedicinePage = () => {
           name: detection.product_name,
           ingredients: [],
           korName: "",
-          isValidated: true
+          isValidated: true,
+          detection_box: detection.box || [],
         }));
 
         setRecognizedMedicines(newMedicines);
@@ -153,26 +176,28 @@ const MedicinePage = () => {
     console.log("--- handleNext 함수 시작 ---");
     // 유효성 검사: 등록된 의약품이 있는지 확인
     // name 필드가 공백을 제외하고 1글자 이상인 항목이 하나라도 있는지 isValidated가 true인 항목이 있는지 확인
-    const hasValidatedMedicine = recognizedMedicines.some(
-      (med) => med.name && med.name.trim().length > 0 && med.isValidated === true
-    );
+    const hasValidatedMedicine = recognizedMedicines.some((med) => med.isValidated === true);
 
-    const hasUnvalidatedMedicine = recognizedMedicines.some(
-      (med) => med.name && med.name.trim().length > 0 && med.isValidated === false
-    );
+    const hasAnyUnvalidatedMedicine = recognizedMedicines.some((med) => med.isValidated === false);
 
     console.log("유효성 검사 결과 (hasValidatedMedicine):", hasValidatedMedicine);
 
     
-    if (hasUnvalidatedMedicine) {
+    if (!hasValidatedMedicine) {
       alert(
-        "등록된 의약품 목록에 유효하지 않은 (미확정된) 항목이 남아있습니다. \n미확정 항목을 삭제하거나 '✓' 버튼을 눌러 유요한 의약품을 확정해주세요."
+        "다음 단계로 진행하려면 DB에 존재하는 의약품을 1개 이상 등록해야 합니다.\n의약품을 입력하고 '✓' 버튼을 눌러 정확한 의약품 정보를 확정해주세요."
       );
       return;
-    }
+    } // [차단 검사] 미확정 항목(isValidated: false)이 목록에 하나라도 남아있는 경우
+
+    if (hasAnyUnvalidatedMedicine) {
+      alert(
+        "등록된 의약품 목록에 유효하지 않은 (미확정된) 항목이 남아있습니다. \n모든 항목을 삭제하거나 '✓' 버튼을 눌러 의약품 정보를 확정해야 다음으로 진행할 수 있습니다."
+      );
+      return;
+    } // 모든 검사를 통과했을 때만 실행
 
     saveMedicineList(recognizedMedicines);
-
     console.log("의약품 데이터 저장:", recognizedMedicines);
     // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
     goTo("/analyze/supplement"); // SupplementPage로 이동
