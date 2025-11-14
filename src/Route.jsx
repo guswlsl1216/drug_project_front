@@ -32,6 +32,7 @@ import Favorite from "./pages/mypage/Favorite";
 import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
+import { AdminRoute } from "./hooks/AdminRoute";
 
 
 const Routers = () => {
@@ -61,7 +62,7 @@ const Routers = () => {
           <Route path="review" element={<Review />} />
         </Route>
 
-        <Route path="/admin" element={<AdminPage />}>
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>}>
           <Route index element={<Navigate to="products" replace />} />   {/* 기본: 상품관리 */}
           <Route path="products" element={<ProductManage />}>
             <Route index element={<ProductList />} /> {/* 기본: 등록된 상품 목록 */}
