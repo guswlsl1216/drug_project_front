@@ -6,6 +6,7 @@ import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
+import axios from "axios";
 
 
 const ProductDetail = () => {
@@ -77,6 +78,23 @@ const ProductDetail = () => {
 
   const totalPrice = (product?.price || 0) * quantity;
 
+  const handleCart = (e) => {
+
+    requestHandler({
+        method:"post",
+        url:`cart/${goodsId}`,
+        data:{ count: quantity }, // 수량을 data에 담아서 보냄
+        setLoading,
+        onSuccess:(data) => {
+          alert("장바구니에 담았습니다.");
+          console.log(data);
+        },
+        onError: (msg) => {
+          alert(msg);
+        }
+    });
+  };
+
 
   if (loading) return <div className="loading-message">상품 상세 정보를 불러오는 중...</div>
   if (error) return <div className="error-message">{error}</div>
@@ -140,9 +158,10 @@ const ProductDetail = () => {
             {/* 구매 액션 버튼 */}
             <div className="purchase-options">
 
-              <button className="add-to-cart-btn">
-                장바구니 담기
-              </button>
+              <div className="add-to-cart-btn">
+                <Button onClick={handleCart}>장바구니 담기</Button>
+                
+              </div>
               
               <div className="buy-and-favorite-group"> 
                 <Button

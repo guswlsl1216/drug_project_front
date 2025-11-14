@@ -33,6 +33,7 @@ import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
 import { AdminRoute } from "./hooks/AdminRoute";
+import Cart from "./pages/store/Cart";
 
 
 const Routers = () => {
@@ -73,6 +74,7 @@ const Routers = () => {
           <Route path="order" element={<OrderHistory />} />
         </Route>
         <Route path="/store" element={<Store />} >
+          <Route path="cart" element={<Cart/>} />
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
