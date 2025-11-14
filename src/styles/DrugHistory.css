@@ -1,0 +1,50 @@
+.drug-history-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.total-achievement {
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #1a73e8;
+}
+
+.history-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.history-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 15px;
+  width: 220px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.history-card .drug-name {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.history-card .drug-period {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.history-card .drug-achievement {
+  font-weight: bold;
+  color: #1a73e8;
+}
+
+.no-history {
+  font-size: 14px;
+  color: #999;
+}

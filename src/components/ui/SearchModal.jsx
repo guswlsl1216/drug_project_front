@@ -23,7 +23,6 @@ const SearchModal = ({ isOpen, onClose, searchTerm, onSelect, apiEndpoint = "/me
           });
 
           const data = response.data;
-
           if (data.success) {
             // 응답 데이터의 키를 동적으로 처리할 수 있도록 수정
             const results = Array.isArray(data.medicines) ? data.medicines : [];
