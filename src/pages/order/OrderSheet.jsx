@@ -3,8 +3,11 @@ import AddressPicker from "../../components/ui/AddressPicker"
 import Button from "../../components/ui/Button"
 import "../../styles/order/OrderSheet.css"
 import PaymentsSheet from "./PaymentsSheet"
+import { v4 as uuidv4 } from 'uuid';
+import requestHandler from "../../utils/requestHandler"
 
 const OrderSheet = () => {
+  const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState({
     total_price : "",
     total_count:"",
@@ -26,6 +29,36 @@ const OrderSheet = () => {
   // console.log(order.zipcode)
   // console.log(order.address)
   // console.log(order.address_detail)
+
+  const [amount, setAmount] = useState({
+    currency: "KRW",
+    // !!!OrderSheet 완성 후 수정!!!
+    value: 100,  // order.total_price
+  });
+  const [ready, setReady] = useState(false);
+  const [widgets, setWidgets] = useState(null);
+
+  const requestPayHandler = async (orderId) => {
+    // 결제 요청 전 서버로 orderId, amount 보내놓기 => 서버 세션 저장
+    const payInfo = {
+      orderId: orderId,
+      amount: amount
+    };
+
+    requestHandler({
+      method: "post",
+      url: "/payments/ready",
+      payload: payInfo,
+      setLoading,
+      onSuccess: (data) => {
+        // !!!구현 후 삭제!!!
+        console.log(data);
+      },
+      onError: (msg) => {
+        console.error(msg);
+      }
+    });
+  };
 
   return(
     <>
@@ -104,8 +137,15 @@ const OrderSheet = () => {
 
           <div className="card section-payments">
             <h5 className="section-title">결제수단</h5>
-            <div className="pay-grid">
-              <PaymentsSheet />
+            <div className="payments-box">
+              <PaymentsSheet
+                amount={amount}
+                setAmount={setAmount}
+                setReady={setReady}
+                widgets={widgets}
+                setWidgets={setWidgets}
+                order = {order}
+              />
             </div>
           </div>
         </div>
@@ -138,7 +178,32 @@ const OrderSheet = () => {
             </span>
           </label>
 
-          <Button variant="primary" className="buy-btn" disabled={!agree} >
+          <Button
+            variant="primary"
+            className="buy-btn"
+            disabled={!agree || !ready}
+            onClick={async () => {
+              try {
+                const orderId = uuidv4();
+                
+                await requestPayHandler(orderId);
+
+                await widgets.requestPayment({
+                  // ===== 위 form에서 받아올 정보들 =====
+                  // sdk 문서 보면서 추가할 거 있는지 확인해도 될 듯
+                  orderId: orderId,
+                  orderName: "토스 티셔츠 외 2건", // `${첫번째상품명} 외 2건`
+                  successUrl: window.location.origin + "/success",
+                  failUrl: window.location.origin + "/fail",
+                  customerName: "김토스", // order.receiver
+                  customerMobilePhone: "01012341234", // order.phone
+                })
+              } catch (e) {
+                alert(e);
+                console.error(e);
+              }
+            }}
+          >
             구매하기
           </Button>
         </div>

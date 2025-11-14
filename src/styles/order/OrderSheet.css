@@ -139,21 +139,6 @@
 /* 적립금 */
 .section-points .muted{ color: var(--muted); font-size: 13px; margin-top: 6px; }
 
-/* 결제수단 */
-.pay-grid{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-.pay-btn{
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: #f9fafb;
-  font-weight: 700;
-}
-.pay-btn:hover{ filter: brightness(1.02); }
-
 /* 텍스트 버튼 톤다운 */
 .ghost{ border-radius: 10px; height: 36px; padding: 0 12px; font-weight: 600; }
 

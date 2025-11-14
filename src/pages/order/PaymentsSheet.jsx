@@ -5,13 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 테스트키
 const customerKey = uuidv4();
 
-const PaymentsSheet = ({  }) => {
-  const [amount, setAmount] = useState({
-    currency: "KRW",
-    value: 50_000,  // OrderSheets에서 받아올 최종결제금액
-  });
-  const [ready, setReady] = useState(false);
-  const [widgets, setWidgets] = useState(null);
+const PaymentsSheet = (props) => {
+  const { amount, setAmount, setReady, widgets, setWidgets, order } = props;
   
   // 결제위젯 인스턴스 생성
   useEffect(() => {
@@ -36,12 +31,12 @@ const PaymentsSheet = ({  }) => {
       await widgets.setAmount(amount);
 
       await Promise.all([
-        // ------  결제 UI 렌더링 ------
+        // 결제 UI 렌더링
         widgets.renderPaymentMethods({
           selector: "#payment-method",
           variantKey: "DEFAULT",
         }),
-        // ------  약관 UI 렌더링 ------
+        // 약관 UI 렌더링
         widgets.renderAgreement({
           selector: "#agreement",
           variantKey: "DEFAULT"
