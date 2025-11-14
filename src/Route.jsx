@@ -10,11 +10,9 @@ import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
-import Mymeds from "./pages/mypage/Mymeds";
+import MyDrugs from "./pages/mypage/MyDrugs";
 import MedicinePage from "./pages/analyze/MedicinePage";
 import SupplementPage from "./pages/analyze/SupplementPage";
-
-
 import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import AdminPage from "./pages/admin/AdminPage";
@@ -35,6 +33,7 @@ import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
 
+
 const Routers = () => {
 
   return (
@@ -54,8 +53,8 @@ const Routers = () => {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
           <Route path="history" element={<History />} />
+          <Route path="mydrugs" element={<MyDrugs />} />
           <Route path="history/detail/:id" element={<HistoryDetail />} />
-          <Route path="mymeds" element={<Mymeds />} />
           <Route path="routine" element={<Routine />} />
           <Route path="favorite" element={<Favorite />} />
           <Route path="orders" element={<Orders />} />
