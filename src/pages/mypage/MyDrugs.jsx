@@ -7,6 +7,7 @@ import MedInput from "./MedInput";
 import SuppInput from "./SuppInput";
 import requestHandler from "../../utils/requestHandler";
 import DrugHistory from "./DrugHistory";
+import EditDrugModal from "./EditDrugModal";
 
 const MyDrugs = ( ) => {
   // 🚨 UserContext에서 사용자 정보와 로그인 상태를 가져옵니다.
@@ -29,6 +30,7 @@ const MyDrugs = ( ) => {
     start_date: "",
     end_date: "",
     note: "",
+    selectTime : ""
   });
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -186,7 +188,17 @@ if (!isLoggedIn) {
           {renderContent()}
         </div>
       </div>
+      
+      {editing && (<EditDrugModal editing={editing}
+      form={form}
+      setForm={setForm}
+      setEditing={setEditing}
+      loadDrugs={loadDrugs} 
+      setSuccessMessage={setSuccessMessage}/>
+      )}
     </div>
+
+
   )
 }
 

@@ -67,7 +67,7 @@ const Favorite = () => {
               className="favorite-card"
               onClick={() => navigate(`/store/detail/${item.id}`)}>
               <div className="favorite-image">
-                <img src={item.image_url || 'placeholder.png'} alt={item.goods_name} />  
+                <img src={item.image_path || 'placeholder.png'} alt={item.goods_name} />  
               </div>
               <div className="favorite-info">
                 <div className="favorite-name">{item.goods_name}</div>  
