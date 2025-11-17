@@ -26,8 +26,8 @@ import UseNavi from "./UseNavi";
  */
 
 const useLoginRedirect = () => {
-  const { isLoggedIn } = useUser();
-  const { goTo } = UseNavi();
+  const { isLoggedIn, user } = useUser();
+  const { goTo, goIndex } = UseNavi();
 
   const requireLogin = (callback, replace = false) => {
     if(!isLoggedIn) {
@@ -38,7 +38,18 @@ const useLoginRedirect = () => {
     callback?.(); // 로그인된 경우 실행
   };
 
-  return { requireLogin };
+  const requireAdmin = () => {
+    requireLogin(() => {
+      if (user.role === "admin") {
+        goTo("/admin/products")
+      } else{
+        alert("관리자가 아닙니다");
+        goIndex()
+      }
+    })
+  }
+
+  return { requireLogin, requireAdmin };
 };
 
 export default useLoginRedirect;

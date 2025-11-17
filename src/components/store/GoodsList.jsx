@@ -42,10 +42,10 @@ const ProductCard = ({ product, sortKey, ProductHandler }) => {
         <div className="product-image"><img src={product.image_path} alt="" /></div>
         <div className="product-name">{product.goods_name}</div>
         <div className="product-price">{product.price ? product.price.toLocaleString() : '가격 미정'}원</div>
-        <div className="product-actions">
+        {/* <div className="product-actions">
           <button>구매하기</button>
           <button>장바구니</button>
-        </div>
+        </div> */}
       </div>
 
       {/* 판매순 정보 */}
