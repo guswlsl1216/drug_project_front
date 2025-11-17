@@ -3,6 +3,7 @@ import useLoginRedirect from "../../utils/useLoginRedirect";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Mypage.css";
+import requestHandler from "../../utils/requestHandler";
 
 const Favorite = () => {
 
@@ -14,33 +15,34 @@ const Favorite = () => {
   const [error, setError] = useState(null);
 
   const fetchFavorite = async () => {
-    setLoading(true);
 
     requireLogin(async () => {
-      try {
-        const response = await axiosInstance.get('/favorite/list');
-
-        if (response.data && Array.isArray(response.data.favorites)) {
-          setFavorites(response.data.favorites);
-        } else if (response.data && Array.isArray(response.data)) {
-          setFavorites(response.data);
-        } else {
+      await requestHandler({
+        method:"get",
+        url:"/favorite/list",
+        setLoading,
+        onSuccess:(data) => {
+          if (data && Array.isArray(data.favorites)){
+            setFavorites(data.favorites);
+          } else if (data && Array.isArray(data)){
+            setFavorites(data);
+          } else {
+            setFavorites([]);
+          }
+          setError(null);
+        },
+        onError: (msg, err) => {
+          console.error("찜 목록 로딩 오류: ", err);
+          setError(msg || "찜 목록을 불러오는 데 실패했습니다.");
           setFavorites([]);
         }
-        setError(null); 
-      } catch(err) {
-        console.error("찜 목록 로딩 오류: ", err);
-        setError("찜 목록을 불러오는 데 실패했습니다. 서버 상태를 확인해주세요");
-        setFavorites([]);
-      } finally {
-        setLoading(false);
-      }
+      })
     }, true)
   }
 
   useEffect(() => {
     fetchFavorite();
-  }, [])
+  }, [setLoading, setFavorites, setError])
 
   if (loading) return <div className="loading-message">찜 목록을 불러오는 중...</div>
   if (error) return <div className="error-message">{error}</div>
