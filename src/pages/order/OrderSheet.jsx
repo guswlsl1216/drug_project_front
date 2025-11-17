@@ -4,6 +4,9 @@ import Button from "../../components/ui/Button"
 import "../../styles/order/OrderSheet.css"
 import { useLocation } from "react-router-dom"
 import Changehandler from "../../utils/Changehandler"
+import requestHandler from "../../utils/requestHandler"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
 const OrderSheet = () => {
   const location = useLocation();
@@ -33,6 +36,10 @@ const OrderSheet = () => {
   })
 
   const [agree, setAgree] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [sameAsBuyer, setSameAsBuyer] = useState(false)
+  const [point, setPoint] = useState(0)
+  const [saveAddress, setSaveAddress] = useState(false);
 
   const calcShippingFee = (price) => {
     return price >= 20000 ? 0 : 2500;
@@ -55,6 +62,81 @@ const OrderSheet = () => {
     const u = Number(order.used_points || 0);
     return p + s - u;
   };
+
+  const orderMe = async () => {
+    await requestHandler({
+      method : "get",
+      url: "/orders/user",
+      setLoading,
+      onSuccess: (data) => {
+        const u = data.user
+
+        setOrder(prev => ({
+          ...prev,
+          receiver:u.nickname || "",
+          phone: String(u.tel || ""),
+          zipcode: u.zipcode || "",
+          address: u.address || "",
+          address_detail: u.detailed_address || ""
+        }))
+      },
+      onError: (msg) => {
+        alert(msg)
+        setSameAsBuyer(false);
+      }
+    })
+  }
+
+  const fetchUserInfo = async () => {
+    await requestHandler({
+      method: "get",
+      url: "/orders/user",
+      setLoading,
+      onSuccess: (data) => {
+        const u = data.user;
+        setPoint(u.point ?? 0);   // 적립금만!
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, []);
+
+  const handleSameAsBuyeerChange = async (e) => {
+    const checked = e.target.checked;
+    setSameAsBuyer(checked)
+
+    if (checked) {
+      await orderMe()
+    } else {
+      setOrder(prev => ({
+        ...prev,
+        receiver: "",
+        phone: "",
+        zipcode: "",
+        address: "",
+        address_detail: ""
+      }))
+    }
+  }
+
+  const allPoint = () => {
+    const maxUsable = Math.min( point || 0, totalPrice || 0)
+
+    setOrder(prev => ({
+      ...prev,
+      used_points: maxUsable
+    }))
+
+  }
+
+  const resetPoint = () => {
+    setOrder(prev => ({
+      ...prev,
+      used_points: 0
+    }))
+  }
 
   return(
     <>
@@ -85,21 +167,50 @@ const OrderSheet = () => {
             <div className="inline">
               <label className="field-label">배송지 선택</label>
               <label className="switch">
-                <input type="checkbox" />
+                <input 
+                  type="checkbox" 
+                  checked={sameAsBuyer}
+                  onChange={handleSameAsBuyeerChange}
+                />
                 <span className="slider"></span>
               </label>
               <span className="switch-label">주문자 정보와 동일</span>
             </div>
 
             <label className="field-label" htmlFor="receiver">받으시는 분</label>
-            <input className="field-input" id="receiver" type="text" name="receiver" />
+            <input 
+              className="field-input" id="receiver" 
+              type="text" name="receiver" 
+              value={order.receiver}
+              onChange={Changehandler(setOrder)}
+              placeholder="받으시는 분 "
+            />
 
             <label className="field-label" htmlFor="receiver-phone">연락처</label>
-            <input className="field-input" id="receiver-phone" type="tel" name="phone" />
+            <input 
+              className="field-input" id="receiver-phone" 
+              type="tel" name="phone"
+              value={order.phone}
+              onChange={Changehandler(setOrder)}
+              placeholder="휴대폰 번호 "
+            />
 
             <label className="field-label">주소</label>
             <AddressPicker 
               className="checkout" 
+              value={{
+                postcode: order.zipcode || "",
+                road: order.address || "",
+                jibun: "",
+                extras: "",
+                local: "",
+                type: "",
+                display: {
+                  raw: order.address || "",
+                  compact: order.address || ""
+                },
+                detail: order.address_detail || ""
+              }}
               onChange={(next) => {
                 setOrder(prev => ({
                   ...prev,
@@ -109,6 +220,16 @@ const OrderSheet = () => {
                 }))
               }}
             />
+            <div className="inline save-address-inline">
+              <input 
+                type="checkbox" 
+                className="save-address-checkbox"
+                checked={saveAddress}
+                onChange={(e) => setSaveAddress(e.target.checked)}
+                id="save-address"
+              />
+              <label htmlFor="save-address" className="save-address-label">배송지 저장</label>
+            </div>
           </div>
 
           <div className="card section-items">
@@ -137,23 +258,45 @@ const OrderSheet = () => {
           <div className="card section-points">
             <h5 className="section-title">적립금</h5>
 
-            <div className="inline">
-              <label className="field-label" htmlFor="point">적립금</label>
-              <Button variant="secondary" className="ghost" >전액사용</Button>
+            <div className="inline points-inline">
+              <div className="points-box">
+                <span className="point-label">사용</span>
+                <div className="point-right">
+                  <input
+                    className="point-input"
+                    id="used_points"
+                    type="text"
+                    name="used_points"
+                    value={order.used_points}
+                    onChange={Changehandler(setOrder)}
+                    placeholder="0"
+                    disabled={!point}
+                  />
+                  <span className="point-unit">원</span>
+                  <Button 
+                    variant="text"
+                    onClick={resetPoint}
+                    className="point-reset-btn"
+                    disabled={!point}
+                  >
+                    <FontAwesomeIcon icon={faXmark} />
+                    <span className="blind">입력내용 삭제</span>
+                  </Button>
+              </div>
+              </div>
+              <Button 
+                variant="secondary" 
+                className="ghost point-use-all" 
+                onClick={allPoint}
+                disabled={!point}
+              >
+                전액사용
+              </Button>
             </div>
 
-            <input 
-              className="field-input" 
-              id="used_points" type="number" 
-              name="used_points"
-              value={order.used_points} 
-              onChange={Changehandler(setOrder)}
-              placeholder="적립금" 
-            />
 
             <p className="muted">
-              보유 적립금 
-              <strong>&nbsp;0원</strong>
+              보유 적립금 <strong>&nbsp;{(point ?? 0).toLocaleString()}원</strong>
             </p>
           </div>
 
@@ -199,7 +342,7 @@ const OrderSheet = () => {
           </label>
 
           <Button variant="primary" className="buy-btn" disabled={!agree} >
-            구매하기
+            {loading ? "구매중..." : "구매하기"}
           </Button>
         </div>
 
