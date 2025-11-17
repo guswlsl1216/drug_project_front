@@ -53,14 +53,14 @@ const Header = () => {
                 </div>
               </li>
               <li className="main_menu">
-                <NavLink to="medslist">루틴</NavLink>
+                <NavLink to="/routine">루틴</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
-                      <NavLink>루틴</NavLink>
+                      <NavLink to="/routine">루틴</NavLink>
                     </li>
                     <li>
-                      <NavLink>복용약</NavLink>
+                      <NavLink to="/mydrugs">복용약</NavLink>
                     </li>
                   </ul>
                 </div>
