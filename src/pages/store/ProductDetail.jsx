@@ -82,12 +82,25 @@ const ProductDetail = () => {
 
   const totalPrice = (product?.price || 0) * quantity;
 
-  const handleCart = (e) => {
+  const handleCart = () => { // 재고 이상으로 계속 담겨서 수정 필요 일단 재고는 넘어가니까 다음 작업 
+    if (!product) return;
 
+    if (product.stock === 0) {
+      alert("재고가 없습니다.");
+      return;
+    }
+
+    const countSend = Math.min(quantity, product.stock); // 재고 이상이면 stock으로 제한
+
+    if (countSend <= 0 ){
+      alert("재고가 없습니다.");
+      return;
+    }
+    
     requestHandler({
         method:"post",
         url:`cart/${goodsId}`,
-        data:{ count: quantity }, // 수량을 data에 담아서 보냄
+        data:{ count: countSend }, // 수량을 data에 담아서 보냄
         setLoading,
         onSuccess:(data) => {
           alert("장바구니에 담았습니다.");
@@ -96,7 +109,7 @@ const ProductDetail = () => {
         onError: (msg) => {
           alert(msg);
         }
-    });
+    });  
   };
 
 
