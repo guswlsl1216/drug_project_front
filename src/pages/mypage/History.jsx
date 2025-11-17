@@ -105,7 +105,7 @@ const History = () => {
                   <p>지금 복용 중인 영양제와 약을 입력하고,</p>
                   <p>성분 간의 상호작용 위험을 확인해 보세요!</p>
                 </div>
-                <Button variant='primary' onClick={() => goTo("/analyze")}>분석하러 가기</Button>
+                <Button variant='primary' onClick={() => goTo("/analyze/medicine")}>분석하러 가기</Button>
               </div>
               :
               <ul className="history_cardlist">

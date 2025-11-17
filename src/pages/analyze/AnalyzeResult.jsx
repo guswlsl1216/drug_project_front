@@ -10,7 +10,6 @@ const AnalyzeResult = () => {
   const [loading, setLoading] = useState(false);
   const [isSave, setIsSave] = useState(false);  // 결과 저장 여부
   
-  // 세션스토리지에서 불러오기
   const result = JSON.parse(sessionStorage.getItem("ANALYSIS_RESULT_DATA"));
   console.log("세션에서 불러온 분석 결과:", result);
   
@@ -64,7 +63,7 @@ const AnalyzeResult = () => {
         <div className='analyze_result_actions'>
           <Button variant='primary' onClick={saveResult} disabled={loading || isSave}>
             {
-              loading ? '저장 중...' : (isSave ? '저장 완료' : '마이페이지에 결과 저장')
+              loading ? '저장 중...' : (isSave ? '저장 완료' : '결과 저장')
             }
             </Button>
           <Button variant='primary' onClick={() => {

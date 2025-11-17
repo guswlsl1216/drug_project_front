@@ -4,6 +4,7 @@ import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import "../../styles/order/Payments.css"
 import UseNavi from "../../utils/UseNavi";
+import useLoginRedirect from "../../utils/useLoginRedirect";
 
 const PaySuccess = () => {
   // 더미데이터
@@ -27,6 +28,7 @@ const PaySuccess = () => {
   ];
 
   const { goIndex, goTo } = UseNavi();
+  const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
 
   const [searchParams] = useSearchParams();
@@ -34,6 +36,7 @@ const PaySuccess = () => {
   const amount = Number(searchParams.get("amount"));
   const paymentKey = searchParams.get("paymentKey");
 
+  // 주문 내역 미리보기 (개수 조절)
   const [orderItems, setOrderItems] = useState(dummyOrderItems);
   const DISPLAY_LIMIT = 1; // 화면에 보여줄 주문 목록 개수
   const itemsToDisplay = orderItems.slice(0, DISPLAY_LIMIT);
@@ -50,20 +53,22 @@ const PaySuccess = () => {
     // 서버 세션에 저장했던 orderId, amount와 비교하여 결과 프론트로 전송
     
     const payApprove = async () => {
-      const response = requestHandler({
-        method: "post",
-        url: "/payments/approve",
-        payload: requestData,
-        setLoading,
-        onSuccess: (data) => {
-          console.log(data)
-          // 여기서 받아온 payment 객체로 뿌려줘도 될 것 같은데...
-        },
-        onError: (msg) => {
-          alert(msg);
-          console.error(msg);
-          goTo("/fail");
-        }
+      requireLogin(async () => {
+        const response = requestHandler({
+          method: "post",
+          url: "/payments/approve",
+          payload: requestData,
+          setLoading,
+          onSuccess: (data) => {
+            console.log(data)
+            // 여기서 받아온 payment 객체로 뿌려주기
+          },
+          onError: (msg) => {
+            alert(msg);
+            console.error(msg);
+            goTo("/fail");
+          }
+        })
       })
     }
     payApprove();
@@ -88,7 +93,6 @@ const PaySuccess = () => {
               {
                 itemsToDisplay.map((item) => (
                   <div key={item.id} className="order_item_card">
-                    <p>상품썸네일?</p>
                     <p className="item_name">{item.name}</p>
                     <p className="item_details">
                       {item.price} / {item.quantity}개
