@@ -47,7 +47,7 @@ const Header = () => {
                       <NavLink to="analyze/medicine">분석하기</NavLink>
                     </li>
                     <li>
-                      <NavLink>분석 결과 내역</NavLink>
+                      <NavLink to="history">분석 결과 내역</NavLink>
                     </li>
                   </ul>
                 </div>

@@ -61,22 +61,24 @@ const HistoryDetail = () => {
 
   return (
     <>
-      <div className='analyze_result_header'>
-        <h1>분석 결과</h1>
-        {result && <p>{result.analysis_date}</p>}
-      </div>
+      <div className="wrapper analyze_result">
+        <div className='analyze_result_header'>
+          <h1>분석 결과</h1>
+          {result && <p>{result.analysis_date}</p>}
+        </div>
 
-      {
-        result
-        ?
-        <AnalyzeResultDisplay result={result} />
-        :
-        LoadingSpinner({size:70})
-      }
+        {
+          result
+          ?
+          <AnalyzeResultDisplay result={result} />
+          :
+          LoadingSpinner({size:70})
+        }
 
-      <div className='analyze_result_actions'>
-        <Button variant='danger' onClick={deleteHistory} disabled={loading}>{loading ? "삭제 중..." : "결과 내역 삭제"}</Button>
-        <Button variant='primary' onClick={() => goTo("/mypage/history")}>목록</Button>
+        <div className='analyze_result_actions'>
+          <Button variant='danger' onClick={deleteHistory} disabled={loading}>{loading ? "삭제 중..." : "결과 내역 삭제"}</Button>
+          <Button variant='primary' onClick={() => goTo("/history")}>목록</Button>
+        </div>
       </div>
     </>
   )
