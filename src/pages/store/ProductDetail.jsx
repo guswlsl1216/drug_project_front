@@ -2,14 +2,11 @@ import { useEffect, useState } from "react";
 import "../../styles/Store.css";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
-<<<<<<< HEAD
 import InteractionAnalysisModal from "../../components/ui/InteractionAnalysisModal";
-=======
 import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
->>>>>>> develop
 
 
 const ProductDetail = () => {
