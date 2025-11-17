@@ -75,6 +75,11 @@ const ProductDetail = () => {
   if (error) return <div className="error-message">{error}</div>
   if (!product) return <div className="no-data">상품 정보를 찾을 수 없습니다.</div>
 
+  const supplementIngredients = product.ingredients || [
+    {name: "비타민C", amount: "1000mg"},
+    {name: "징코", amount: "50mg"},
+  ];
+  
   return (
     <div className="product-detail-container">
       {/* 팝업 메시지 (훅에서 가져옴) */}

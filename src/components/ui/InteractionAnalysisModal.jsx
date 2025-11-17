@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import axiosInstance from "../../utils/axiosInstance.js";
-import SearchModal from "./SearchModal"; // 기존 SearchModal 재사용
 import MedicineRegistrationStep from "./MedicineRegistrationStep"; // 1단계 약물 등록 컴포넌트 (아래에 정의)
-import "../../../styles/Modal.css"; // 모달 스타일은 별도 파일로 관리
+import "./InteractionAnalysisModal.css"; // 모달 스타일은 별도 파일로 관리
 
 const InteractionAnalysisModal = ({isOpen, onClose, supplementInfo}) => {
   if (!isOpen) return null;
@@ -117,8 +116,8 @@ const InteractionAnalysisModal = ({isOpen, onClose, supplementInfo}) => {
         <button className="modal-close-btn" onClick={handleClose}>
           ×
         </button>
-        <h2>상호작용 섭취 여부 확인</h2>
-
+        <h2 className="shop-modal-header">상호작용 섭취 여부 확인</h2>
+        <p className="shop-modal-subtitle">상호작용 분석을 위해 의약품을 등록 해 주세요</p>
         {loading && <div className="loading-overlay">분석 중...</div>}
 
         {renderContent()}

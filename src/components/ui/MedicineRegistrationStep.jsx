@@ -1,19 +1,26 @@
-// components/modals/MedicineRegistrationStep.jsx (새 파일)
+// components/modals/MedicineRegistrationStep.jsx
 import React, {useState} from "react";
 import axios from "axios";
-import SearchModal from "../ui/SearchModal";
-// 기존 MedicinePage 로직을 최대한 활용하여 필요한 상태/함수만 남깁니다.
+import SearchModal from "./SearchModal";
+import "../../styles/SearchModal.css";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
-const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, onNext}) => {
-  // 기존 MedicinePage 상태를 모달 컴포넌트 내부에서 관리
+const MedicineRegistrationStep = ({onNext}) => {
+  // 상태 관리
   const [uploadedFile, setUploadedFile] = useState(null);
   const [medicineImage, setMedicineImage] = useState(null);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [selectedMedicineId, setSelectedMedicineId] = useState(null);
+  const [recognizedMedicines, setRecognizedMedicines] = useState([
+    {
+      id: 1,
+      name: "",
+      isValidated: false,
+    },
+  ]);
 
-  // ★★★ API 호출 함수 (기존 MedicinePage의 callDetectApi와 동일)
+  // API 호출 함수
   const callDetectApi = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -31,8 +38,7 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
     }
   };
 
-  // ... (기존 MedicinePage의 handleImageUpload, handleMedicineNameChange, handleMedicineDelete, handleMedicineAdd 함수 로직을 여기에 그대로 가져옴)
-
+  // 이미지 업로드 핸들러
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     event.target.value = null;
@@ -44,6 +50,7 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
     }
   };
 
+  // 약 이름 변경 핸들러
   const handleMedicineNameChange = (id, newName) => {
     setRecognizedMedicines(
       recognizedMedicines.map((med) =>
@@ -52,21 +59,29 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
     );
   };
 
+  // 약 항목 삭제 핸들러
   const handleMedicineDelete = (id) => {
     setRecognizedMedicines(recognizedMedicines.filter((med) => med.id !== id));
   };
 
+  // 약 항목 추가 핸들러
   const handleMedicineAdd = () => {
-    const newId =
-      recognizedMedicines.length > 0
-        ? Math.max(...recognizedMedicines.map((med) => med.id)) + 1
-        : 1;
-    setRecognizedMedicines([
-      ...recognizedMedicines,
-      {id: newId, name: "", ingredients: [], korName: "", isValidated: false},
+    // 1. 새로운 약 객체 생성
+    const newMedicine = {
+      id: Date.now(), // 고유 ID 생성
+      name: "",
+      isValidated: false,
+      
+    };
+
+    // 2. 새로운 항목을 기존 배열의 맨 앞에 추가하고 상태 업데이트
+    setRecognizedMedicines((prevMedicines) => [
+      ...prevMedicines, // 기존 항목을 먼저
+      newMedicine,
     ]);
   };
 
+  // 이미지 검사/분석 핸들러
   const handleSearch = async () => {
     if (!uploadedFile) {
       alert("이미지 파일을 먼저 업로드해주세요.");
@@ -94,14 +109,15 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
     }
   };
 
+  // 분석 시작 핸들러
   const handleAnalyzeStart = () => {
-    // 유효성 검사 (기존 MedicinePage의 handleNext 로직 활용)
+    // 유효성 검사
     const hasValidatedMedicine = recognizedMedicines.some((med) => med.isValidated === true);
     const hasAnyUnvalidatedMedicine = recognizedMedicines.some((med) => med.isValidated === false);
 
     if (!hasValidatedMedicine) {
       alert(
-        "분석을 시작하려면 DB에 존재하는 의약품을 1개 이상 등록해야 합니다.\n의약품을 입력하고 '✓' 버튼을 눌러 정확한 의약품 정보를 확정해주세요."
+        "분석을 시작하려면 의약품을 1개 이상 등록해야 합니다.\n의약품을 입력하고 '✓' 버튼을 눌러 정확한 의약품 정보를 확정해주세요."
       );
       return;
     }
@@ -119,15 +135,10 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
 
   return (
     <div className="medicine-registration-step">
-      <p className="guidance-text-top">
-        영양제와의 상호작용 분석을 위해 현재 복용 중인 **의약품** 또는 **다른 영양제**를 등록해
-        주세요.
-      </p>
       <div className="content-wrapper">
-        {/* 이미지 분석 섹션 (기존 MedicinePage와 동일) */}
+        {/* 이미지 분석 섹션 */}
         <div className="image-analysis-section">
           <h3>1. 이미지 분석</h3>
-          {/* ... (이미지 표시 및 업로드 버튼) ... */}
           <div
             className="image-display-box"
             style={{
@@ -154,7 +165,7 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
           </button>
         </div>
 
-        {/* 인식된 의약품 리스트 섹션 (기존 MedicinePage와 동일) */}
+        {/* 인식된 의약품 리스트 섹션 */}
         <div className="recognized-list-section">
           <h3>2. 의약품 리스트 확정</h3>
           <div className="medicine-list">
@@ -164,12 +175,11 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
                 className={`medicine-item ${med.isValidated ? "validated" : "unvalidated"}`}
               >
                 <input
-                  placeholder="의약품/영양제 이름을 입력하고 체크버튼을 눌러 확정"
+                  placeholder="이름을 입력하고 체크버튼을 눌러 확정"
                   type="text"
                   className="medicine-input"
                   value={med.name}
                   onChange={(e) => handleMedicineNameChange(med.id, e.target.value)}
-                  // 확정된 항목은 수정 불가능하게 처리
                   disabled={med.isValidated}
                 />
 
@@ -181,7 +191,7 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
                   }}
                   disabled={med.isValidated}
                 >
-                  {med.isValidated ? "✓" : "확정"}
+                  {med.isValidated ? "✓" : "✓"}
                 </button>
                 <button className="button-delete" onClick={() => handleMedicineDelete(med.id)}>
                   x
@@ -195,15 +205,15 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
           </button>
         </div>
       </div>
+      <div className="bottom-box">
+        <p className="guidance-text-bottom">
+          ※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.
+        </p>
 
-      <p className="guidance-text-bottom">
-        ※ 정확한 분석을 위해 약물 정보를 **확정(✓)**해야 합니다.
-      </p>
-
-      {/* 다음으로 버튼 -> 분석 시작 버튼으로 변경 */}
-      <button className="button-next" onClick={handleAnalyzeStart}>
-        상호작용 분석 시작
-      </button>
+        <button className="button-next" onClick={handleAnalyzeStart}>
+          상호작용 분석 시작
+        </button>
+      </div>
 
       {/* 검색 모달 (기존 SearchModal 재사용) */}
       <SearchModal
@@ -215,8 +225,6 @@ const MedicineRegistrationStep = ({recognizedMedicines, setRecognizedMedicines, 
             : ""
         }
         onSelect={(selectedItem) => {
-          // 선택된 항목의 ID가 기존 항목의 ID와 다를 경우, 새로운 고유 ID를 생성하여 덮어쓰지 않도록 주의합니다.
-          // 여기서는 기존 id를 유지하고 데이터만 업데이트하는 방식으로 처리합니다.
           setRecognizedMedicines(
             recognizedMedicines.map((med) =>
               med.id === selectedMedicineId
