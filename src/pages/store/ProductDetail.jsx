@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Store.css";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
+<<<<<<< HEAD
 import InteractionAnalysisModal from "../../components/ui/InteractionAnalysisModal";
+=======
+import UseNavi from "../../utils/UseNavi";
+import requestHandler from "../../utils/requestHandler";
+import Button from "../../components/ui/Button";
+import { useUser } from "../../components/context/UserContext";
+>>>>>>> develop
 
 
 const ProductDetail = () => {
@@ -14,6 +20,8 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
 
   const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
+  const {goTo} = UseNavi()
+  const {isLoggedIn, user} = useUser()
 
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
@@ -21,36 +29,42 @@ const ProductDetail = () => {
 
   useEffect(() => {
     const ProductDetailandFavorite = async () => {
-      try {
-        const response = await axiosInstance.get(`/goods/${goodsId}`)
-        console.log("백엔드 응답 데이터 구조:", response.data)
+      await requestHandler({
+        method: "get",
+        url: `/goods/${goodsId}`,
+        setLoading,
+        onSuccess: (data) => {
+          console.log("백엔드 응답 데이터 구조:", data)
 
-        if (response.data && response.data.product) {
-          const productData = response.data.product;
+          if (data && data.product) {
+            const productData = data.product;
 
-          setProduct(productData)
-          if (productData.is_favorite !== undefined) {
-            setIsFavorite(productData.is_favorite)
+            setProduct(productData);
+
+            // 찜 상태 세팅
+            if (productData.is_favorite !== undefined) {
+              setIsFavorite(productData.is_favorite);
+            } else {
+              setIsFavorite(false);
+            }
+
+            setError(null); // 에러 초기화
           } else {
+            setProduct(null)
             setIsFavorite(false)
+            setError("상품 데이터를 찾을 수 없습니다.");
           }
-        } else {
-          setError("상품 데이터를 찾을 수 없습니다.")
+        },
+        onError: (msg, err) => {
+          console.error("상품 상세 정보 로딩 오류:", err);
+          setProduct(null);
+          setError(msg || "상품 정보를 불러오는 데 실패했습니다.");
         }
-
-        setError(null);
-      } catch(err) {
-        console.error("상품 상세 정보 로딩 오류:", err);
-        setProduct(null);
-        setError("상품 정보를 불러오는 데 실패했습니다.")
-      } finally {
-        setLoading(false);
-      }
-     
+      })
     };
 
-    ProductDetailandFavorite(); // 상품 상세정보 및 찜 상태
-  }, [goodsId, setIsFavorite]); // goodsId가 변경될 때마다 재실행
+    ProductDetailandFavorite();
+  }, [goodsId, setLoading, setProduct, setIsFavorite, setError]); // goodsId가 변경될 때마다 재실행
 
 
   const handleQuantityChange = (type) => {
@@ -131,14 +145,44 @@ const ProductDetail = () => {
             <div className="purchase-options">
               <button className="add-to-cart-btn">장바구니 담기</button>
 
-              <div className="buy-and-favorite-group">
-                <button className="buy-now-btn">바로구매</button>
-
-                <button
-                  className={`favorite-icon-btn ${isFavorite ? "active" : ""}`}
-                  onClick={toggleFavoriteHandler}
+              <button className="add-to-cart-btn">
+                장바구니 담기
+              </button>
+              
+              <div className="buy-and-favorite-group"> 
+                <Button
+                  variant="text"
+                  className="buy-now-btn"
+                  onClick={() => {
+                    if (!isLoggedIn) {
+                      goTo("/login")
+                      return
+                    }
+                    goTo("/orders", {
+                      buyer: {
+                        nickname: user?.nickname ?? "",
+                        tel: user?.tel ?? ""
+                      },
+                      items: [
+                        {
+                          goods_id: product.id,
+                          goods_name: product.goods_name,
+                          image_path: product.image_path,
+                          unit_price: product.price,
+                          count: quantity
+                        }
+                      ],
+                      total_price: totalPrice
+                    })
+                  }}
                 >
-                  {isFavorite ? "❤️" : "🤍"}
+                  바로구매
+                </Button>
+                
+                <button 
+                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
+                  onClick={toggleFavoriteHandler}>
+                  {isFavorite ? '❤️' : '🤍'}
                 </button>
               </div>
             </div>

@@ -27,38 +27,52 @@ function scopeHint(scope) {
 }
 
 const STYLE_SYSTEM = `
-  너는 한국어로 약/영양제 정보를 안전하게 안내한다.
-  항상 아래 "출력 형식"을 엄격히 지켜라.
+  너는 한국어 약물·영양제 안전 안내 챗봇이다. 모든 답변은 한국 사용자를 대상으로 구조적·안전하게 작성한다.
+
+  [원칙]
+  - 의약품·건강기능식품 정보를 근거 기반으로 설명.
+  - 진단·치료 확정 금지. 과한 위험 단정 금지.
+  - 상황에 따라 “의사·약사 상담 필요할 수 있음” 자연스럽게 안내.
+  - 내부 파일/ID/환경변수 등 언급 금지.
 
   [출력 형식]
   # 한눈 요약
-  - 효능/효과 한줄 요약
-  - 성인 1회/1일 권장 용량(있으면 범위), 최대용량(숫자 g)
-  - 주요 위험 조합 1~3개 (예: 와파린, 알코올 등)
+  - 효능·효과 한줄
+  - 성인 1회/1일 용량, **1일 최대 용량**
+  - 위험 병용 1~3개 (예: **와파린**, **알코올**)
 
   ## 용도
   - 불릿 3~6개
 
   ## 복용 방법·용량
-  - 1회 용량, 1일 최대용량(숫자 강조), 간질환/음주 시 주의
+  - 1회·1일 용량(숫자), **최대 용량**
+  - 간질환·음주·신장질환 주의
 
   ## 주의·상호작용
-  - 불릿 3~6개 (와파린·알코올 등 구체 예시 포함)
+  - 불릿 3~6개 (항응고제·알코올 등 구체적)
 
   ## 금기·주의 대상
-  - 불릿 3~6개 (임신/수유, 간질환 등)
+  - 임신/수유, 소아, 고령자, 간·신장질환 등
 
   ## 흔한 부작용 / 위급 징후
   - 흔한 부작용 2~5개
-  - 즉시 진료가 필요한 징후 2~4개
+  - 위급 증상 2~4개
 
   ## 복용 팁·보관
-  - 복용 팁 1~3개, 보관 1~2개
+  - 팁 1~3개, 보관 1~2개
 
   [스타일]
-  - 마크다운 제목과 불릿을 사용하고, 핵심 수치는 굵게(**굵게**) 표기한다.
-  - 절대 내부 리소스나 파일명, 환경변수 언급 금지.
-  - 답변은 간결하고 중복 없이 작성하라.
+  - 마크다운 제목/불릿 사용.
+  - **숫자·중요 주의는 굵게(**)**.
+  - 중복 없이 간결하게 작성.
+  - 확정 표현 금지(“반드시 위험” → “주의 필요”).
+
+  [데이터 사용]
+  - RAG 문서가 있으면 우선 반영.
+  - 모호하면 일반 지식 보완.
+  - 오류 가능성 보이면 “추가 확인 필요” 안내.
+
+  너의 역할은 “약물·영양제 안전 안내 챗봇”이며, 위 규칙을 항상 지켜라.
 `;
 
 export default async function handler(arg) {
@@ -66,21 +80,17 @@ export default async function handler(arg) {
   // 객체 또는 단일 문자열 둘다 받을수있게 함
   const text = typeof arg === "object" ? arg.text : arg;
   const scope = typeof arg === "object" ? (arg.scope ?? "all") : "all";
+
+  const FINAL_SYSTEM = `${STYLE_SYSTEM}\n\n${scopeHint(scope)}`;
+
   try {
     const r = await client.responses.create({
-      model: "gpt-5-nano",
+      model: "gpt-5-mini",
       input: [
         // 전체 규칙
         {
           role: "system" , 
-          content: STYLE_SYSTEM
-        },
-        // 추가 지침
-        {
-          role: "system",
-          content:
-            // scopeHint() 함수에서 “어떤 범위(scope)”의 대화인지 알려주는 것
-            scopeHint(scope)
+          content: FINAL_SYSTEM
         },
         // 질문 내용
         {
@@ -91,7 +101,8 @@ export default async function handler(arg) {
     })
     // ChatbotDock에서 const { answer } = await handler(...)로 받기 때문에,
     // { answer: "..."} 형태로 리턴
-    return { answer: r.output_text ?? "응답을 생성하지 못했어요." };
+    const answer = r.output_text?.trim();
+    return { answer: answer && answer.length > 0 ? answer : "응답을 생성하지 못했어요." };
   } catch (e) {
     console.error(e)
     return { answer: "서버 오류가 발생했어요." };

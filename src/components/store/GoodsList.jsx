@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "../../styles/Store.css";
-import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../utils/axiosInstance";
 import useFavoriteToggle from "../../pages/store/usefavoriteToggle";
+import UseNavi from "../../utils/UseNavi";
+import requestHandler from "../../utils/requestHandler";
+import Pagination from "../ui/Pagination";
 
 
 const ProductCard = ({ product, sortKey, ProductHandler }) => {
@@ -41,10 +42,10 @@ const ProductCard = ({ product, sortKey, ProductHandler }) => {
         <div className="product-image"><img src={product.image_path} alt="" /></div>
         <div className="product-name">{product.goods_name}</div>
         <div className="product-price">{product.price ? product.price.toLocaleString() : '가격 미정'}원</div>
-        <div className="product-actions">
+        {/* <div className="product-actions">
           <button>구매하기</button>
           <button>장바구니</button>
-        </div>
+        </div> */}
       </div>
 
       {/* 판매순 정보 */}
@@ -57,43 +58,85 @@ const ProductCard = ({ product, sortKey, ProductHandler }) => {
 const GoodsList = ({categoryKey, categoryValue}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+  const {goTo} = UseNavi()
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(1)
+  const [total, setTotal] = useState(0)
+  const [perPage, setPerPage] = useState(20)
 
   // 정렬 키 상태 (기본 값: 신상품순)
   const [sortKey, setSortKey] = useState('newest');
 
   const ProductHandler = (goodsId) => {
-    navigate(`/store/detail/${goodsId}`);
+    goTo(`/store/detail/${goodsId}`);
   }
 
   // 상품 데이터를 서버에서 불러오는 함수
-  const fetchProducts = async(currentSortKey, currentCategoryValue) => {
+  const fetchProducts = useCallback(async(currentPage, currentSortKey, currentCategoryValue, currentCategoryKey, currentPerPage) => {
     setLoading(true);
 
-    // api 호출 시 카테고리 값과 키를 쿼리 파라미터로 전달
-    let apiUrl = `/goods?category_key=${categoryKey}&category_value=${currentCategoryValue}&sort_by=${currentSortKey }`;
+    const baseUrl = "/goods"
 
-    // 인기순일 경우 서버에 정렬 위임
-    if (currentSortKey === 'popularity') {
-      apiUrl += `&sort_by=popularity&order=desc`;
+    let params = {
+      sort_by: currentSortKey,
+      page: currentPage,
+      per_page: currentPerPage,
+      category_key: 'category',
+      category_value: 'All',
     }
 
-    try {
-      const response = await axiosInstance.get(apiUrl);
-      setProducts(response.data.goods || []);
-      console.log('GoodsList: 상품 데이터 확인', response.data.goods);
-    } catch (error) {
-      console.error(error);
-      setProducts([]);
-    } finally {
-      setLoading(false);
+
+    if (currentCategoryKey !== '전체') {
+      const KEY_MAP = {
+        '기능성':'category',
+        '성분별':'classify'
+      }
+
+      // '기능성'/'성분별' 탭을 선택했을 때는 DB 필드명으로 변환
+      params.category_key = KEY_MAP[currentCategoryKey] || currentCategoryKey; 
+
+      // 'All'이 아닐 경우 (세부 카테고리가 선택된 경우) 한글 값 전송
+      if (currentCategoryValue !== 'All') {
+        params.category_value = currentCategoryValue; 
+      }
+
+      // 인기순일 경우 서버에 정렬 위임
+      if (currentSortKey === 'popularity') {
+        params.order = 'desc'
+      }
     }
-  };
+
+    await requestHandler({
+      method: "get",
+      url: baseUrl,
+      params: params,
+      setLoading,
+      onSuccess: (data) => {
+        setProducts(Array.isArray(data.goods) ? data.goods : [])
+        setTotal(typeof data.total_count === "number" ? data.total_count : 0)
+        setPages(typeof data.total_pages === "number" ? data.total_pages : 1)
+        if(typeof data.current_page === "number") {
+          setPage(data.current_page)
+        }
+      },
+      onError:(msg) => {
+        alert(msg),
+        setProducts([]),
+        setPages(0),
+        setTotal(0)
+      }
+    })
+  }, [requestHandler, setLoading, setProducts, setTotal, setPages, setPage]);
 
   useEffect(() => {
-    // categoryValue나 sortKey가 변경되면 데이터를 다시 불러오기
-    fetchProducts(sortKey, categoryValue);
+    // sortKey, categoryValue, categoryKey 중 하나라도 변경되면 페이지를 1로 리셋
+    setPage(1); 
   }, [sortKey, categoryValue, categoryKey]);
+
+  useEffect(() => {
+    // page, sortKey, categoryValue, categoryKey, perPage 중 하나라도 변경되면 호출
+    fetchProducts(page, sortKey, categoryValue, categoryKey, perPage);
+  }, [page, sortKey, categoryValue, categoryKey, perPage, fetchProducts]); // fetchProducts가 useCallback으로 감싸져 있으므로 안전하게 사용 가능
 
 
   if (loading) return <div className="loading-message">상품 목록을 불러오는 중...</div>
@@ -116,7 +159,7 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   return(
     <>
     <div className="goods-list-container">
-      <h3 className="goods-list-title">{categoryValue === 'All' ? '전체 상품' : `${categoryValue} 상품`} ({products.length}개)</h3>
+      <h3 className="goods-list-title">{categoryValue === 'All' ? '전체 상품' : `${categoryValue} 상품`} ({total}개)</h3>
 
       <div className="sort-buttons">
         <button onClick={() => handleSortChange('popularity')} className={sortKey === 'popularity' ? 'active' : ''}>
@@ -142,6 +185,12 @@ const GoodsList = ({categoryKey, categoryValue}) => {
             ProductHandler={ProductHandler}/>
         ))}
       </div>
+      <Pagination
+        page={page}
+        pages={pages}
+        onChange={(num) => setPage(num)}
+        loading={loading}
+      />
     </div>
     </>
   )
