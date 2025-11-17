@@ -9,7 +9,6 @@ const Mypage = () => {
 
         <nav className="mypage-tabs">
           <NavLink to="userinfo">회원정보</NavLink>
-          <NavLink to="history">분석결과내역</NavLink>
           <NavLink to="mydrugs">내가복용중인약</NavLink>
           <NavLink to="routine">루틴</NavLink>
           <NavLink to="orders">주문내역</NavLink>
