@@ -6,11 +6,14 @@ import { useEffect, useRef, useState } from "react"
 import handler from "../../../api/apiChat"
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import LoadingSpinner from "../../utils/LoadingSpinner"
 
 const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
   const [input, setInput] = useState("")
   const [scope, setScope] = useState("health")
   const [loading, setLoading] = useState(false)
+  const [progress, setProgress] = useState(0);
+  const timerRef = useRef(null)
   const bodyRef = useRef(null)
 
   useEffect(() => {
@@ -32,6 +35,17 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
 
     try {
       setLoading(true);
+      setProgress(0);
+
+      timerRef.current = setInterval(() => {
+        setProgress((p) => {
+          if (p < 50) return p + Math.random() * 4 + 2;    // 0~50: 매우 빠르게
+          if (p < 70) return p + Math.random() * 2 + 1.5;    // 50~70: 빠르게
+          if (p < 90) return p + Math.random() * 0.8;        // 70~90: 보통
+          if (p < 99) return p + Math.random() * 0.2;      // 90~99: 매우 느리게
+          return 99;
+        });
+      }, 120);
 
       const { answer } = await handler ({ text, scope }); 
       setMessages((prev) => [...prev, { role: "assistant", text: answer }]);
@@ -42,7 +56,13 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
         { role: "assistant", text: "죄송해요. 응답을 가져오지 못했어요." },
       ]);
     } finally {
+      clearInterval(timerRef.current);
       setLoading(false);
+      setProgress(100);
+
+      setTimeout(() => {
+        setProgress(0);
+      }, 200);  
     }
   };
 
@@ -130,7 +150,12 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
                   <span className="user-text">{m.text}</span>
                 )}
               </div>))}
-              {loading && <div className="msg assistant">응답 생성 중...</div>}
+              {loading && (
+                <div className="msg assistant loading-box">
+                  <LoadingSpinner size={20} />
+                  <span className="loading-text">응답 생성 중... {Math.floor(progress)}%</span>
+                </div>
+              )}
           </div>
         )}
       </div>

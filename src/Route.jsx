@@ -10,11 +10,9 @@ import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
 import Medslist from "./pages/Medslist";
-import Mymeds from "./pages/mypage/Mymeds";
+import MyDrugs from "./pages/mypage/MyDrugs";
 import MedicinePage from "./pages/analyze/MedicinePage";
 import SupplementPage from "./pages/analyze/SupplementPage";
-
-
 import SignupComplete from "./pages/SignupComplete"
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import AdminPage from "./pages/admin/AdminPage";
@@ -34,6 +32,8 @@ import Favorite from "./pages/mypage/Favorite";
 import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
+import { AdminRoute } from "./hooks/AdminRoute";
+
 
 const Routers = () => {
 
@@ -54,15 +54,15 @@ const Routers = () => {
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
           <Route path="history" element={<History />} />
+          <Route path="mydrugs" element={<MyDrugs />} />
           <Route path="history/detail/:id" element={<HistoryDetail />} />
-          <Route path="mymeds" element={<Mymeds />} />
           <Route path="routine" element={<Routine />} />
           <Route path="favorite" element={<Favorite />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
         </Route>
 
-        <Route path="/admin" element={<AdminPage />}>
+        <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>}>
           <Route index element={<Navigate to="products" replace />} />   {/* 기본: 상품관리 */}
           <Route path="products" element={<ProductManage />}>
             <Route index element={<ProductList />} /> {/* 기본: 등록된 상품 목록 */}
