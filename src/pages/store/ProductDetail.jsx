@@ -140,8 +140,6 @@ const ProductDetail = () => {
 
             {/* 구매 액션 버튼 */}
             <div className="purchase-options">
-              <button className="add-to-cart-btn">장바구니 담기</button>
-
               <button className="add-to-cart-btn">
                 장바구니 담기
               </button>
