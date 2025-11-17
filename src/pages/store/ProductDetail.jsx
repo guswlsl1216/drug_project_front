@@ -56,8 +56,8 @@ const ProductDetail = () => {
       })
     };
 
-    ProductDetailandFavorite(); // 상품 상세정보 및 찜 상태
-  }, [goodsId, setIsFavorite]); // goodsId가 변경될 때마다 재실행
+    ProductDetailandFavorite();
+  }, [goodsId, setLoading, setProduct, setIsFavorite, setError]); // goodsId가 변경될 때마다 재실행
 
 
   const handleQuantityChange = (type) => {
