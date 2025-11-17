@@ -4,8 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Star } from 'lucide-react';
 import { useParams } from "react-router-dom";
 import requestHandler from "../../utils/requestHandler";
+import { useOutletContext } from 'react-router-dom';
 
-// 댓글 등록시 부모 컴포넌트 리렌더링
+//모델 붙이면 완료인듯
 function Review() {
   const { goodsId } = useParams();
   const [comments, setComments] = useState([]); // 댓글 목록
@@ -23,6 +24,7 @@ function Review() {
   const [updateHoverRating, setUpdateHoverRating] = useState(0);
   const [updateFile, setUpdateFile] = useState(null);
   const [updateFileName, setUpdateFileName] = useState("");
+  const { product, reviewUpdate, handleReviewUpdated } = useOutletContext();
 
   const [sortType, setSortType] = useState(() => {
     return localStorage.getItem('sortType') || '';
@@ -66,7 +68,7 @@ function Review() {
     } catch (error) {
       console.error('Error:', error);
     }
-    setUpdateMode('')
+    handleReviewUpdated()
   };
 
   // 댓글 추가
@@ -114,6 +116,7 @@ function Review() {
       console.error('Error:', error);
     }
     setUpdateMode('')
+    handleReviewUpdated()
   }
 
   const deleteReview = async (review_id) => {
@@ -127,7 +130,7 @@ function Review() {
     catch (error) {
       console.log(error)
     }
-    setUpdateMode('')
+    handleReviewUpdated()
   }
 
   const handleSort = (type) => {
@@ -157,12 +160,12 @@ function Review() {
       if (sortType === 'rating') {
         newComments.sort((a, b) => b.rating - a.rating);
       } else if (sortType === 'latest') {
-        newComments.sort((a, b) => new Date(b.date) - new Date(a.date));
+        newComments.sort((a, b) => new Date(b.create_at) - new Date(a.create_at));
       }
       setComments(newComments);
       await getUser();
     })();
-  }, [updateMode])
+  }, [reviewUpdate])
 
   return (
     <Container className="mt-4" style={{ maxWidth: "600px" }}>

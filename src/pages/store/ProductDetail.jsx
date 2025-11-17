@@ -13,6 +13,7 @@ const ProductDetail = () => {
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [reviewInfo, setReviewInfo] = useState({ 'length': 0, 'star_avg': 0 });
+  const [reviewUpdate, setReviewUpdate] = useState(false)
 
   const { isFavorite, toggleFavoriteHandler, message, setIsFavorite } = useFavoriteToggle(false, goodsId);
 
@@ -46,9 +47,13 @@ const ProductDetail = () => {
       }
 
     };
-
+    getInfo()
     ProductDetailandFavorite(); // 상품 상세정보 및 찜 상태
-  }, [goodsId, setIsFavorite]); // goodsId가 변경될 때마다 재실행
+  }, [goodsId, setIsFavorite, reviewUpdate]); // goodsId가 변경될 때마다 재실행
+
+  const handleReviewUpdated = () => {
+    setReviewUpdate(prev => !prev);
+  };
 
   const getInfo = async () => {
     const res = await requestHandler({
@@ -58,9 +63,6 @@ const ProductDetail = () => {
     console.log(res.data['info'])
     setReviewInfo(res.data['info'])
   }
-  useEffect(() => {
-    getInfo()
-  }, [])
 
   const handleQuantityChange = (type) => {
     setQuantity(prevQuantity => {
@@ -188,7 +190,7 @@ const ProductDetail = () => {
 
           {/* 탭 콘텐츠 */}
           <div className="tab-content">
-            <Outlet context={{ product }} />
+            <Outlet context={{ product, reviewUpdate, handleReviewUpdated }} />
           </div>
         </div>
 
