@@ -47,7 +47,7 @@ const HistoryDetail = () => {
           setLoading,
           onSuccess: (data) => {
             alert(data.message);
-            goTo("/mypage/history", null, true)
+            goTo("/history", null, true)
           },
           onError: (msg) => {
             alert(msg);
