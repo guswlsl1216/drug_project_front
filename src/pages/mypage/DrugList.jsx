@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../components/ui/Button";
+import { formatDateKorean } from '../../utils/dateFormatter';
 
 const DrugList = ({ meds, supps, onEdit, onRemove }) => {
 
@@ -19,17 +20,20 @@ const DrugList = ({ meds, supps, onEdit, onRemove }) => {
         <div className="item-details">
           <div className="item-name">{item.drugName}</div>
           <div className="intem-seltime" style={{ fontSize: "0.75rem" , margin : "4px 0"}}>
-            내가 설정한 하루 복용량 : {item.selectTime}</div>
+            - 내가 설정한 하루 복용량 : {item.selectTime}</div>
+
+           <div className="intem-seltime" style={{ fontSize: "0.65rem" , margin : "4px 0"}}>
+            - 설정된 복용 기간 : {formatDateKorean(item.start_date)} ~ {formatDateKorean(item.end_date)}</div>         
 
           {/* 영양제 일때만 섭취 방법 표시 */} 
           {type === "supp" && item.method && (
             <div className="item-howto" style={{ fontSize: "0.70rem", color: "#555" }} >
-            섭취 방법 : {item.method}
+            - 섭취 방법 : {item.method}
           </div> 
         )} 
   
           {item.note && <div className="item-note"  style={{ fontSize: "0.65rem", color: "#555" }}
-          >메모: {item.note}</div>}
+          >- 메모: {item.note}</div>}
 
             <span className={`item-type-tag ${type}` }>
               {type === "med" ? "복용약" : "영양제"}

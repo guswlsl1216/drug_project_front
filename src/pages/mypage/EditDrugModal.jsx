@@ -43,8 +43,12 @@ const EditDrugModal = ({
 
   /** 유효성 검사 */
   const validateForm = () => {
-    if (!form.start_date || !form.end_date) {
-      alert("시작일/종료일을 입력해 주세요.");
+    if (!form.start_date?.trim() || !form.end_date?.trim()) {
+      alert("시작일/종료일을 모두 입력해 주세요.");
+      return false;
+    }
+    if (new Date(form.start_date) > new Date(form.end_date)) {
+      alert("시작일은 종료일보다 이전이여야 합니다.");
       return false;
     }
     return true;
@@ -61,13 +65,14 @@ const EditDrugModal = ({
         eattime: form.eattime,
         start_date: form.start_date,
         end_date: form.end_date,
-        note: form.note,
+        note: form.note || "",
       },
       setLoading,
     });
 
     if (res.ok) {
       setSuccessMessage("수정 완료!");
+      setTimeout(() => setSuccessMessage(""), 3000);
       setEditing(null);
       loadDrugs();
     }
@@ -128,7 +133,7 @@ const EditDrugModal = ({
         <label className="input-label">메모</label>
         <textarea
           name="note"
-          value={form.note}
+          value={form.note || ""}
           onChange={handleChange}
           className="input-field"
           rows="3"
@@ -137,7 +142,7 @@ const EditDrugModal = ({
         {/* 버튼 */}
         <div className="button-group">
           <button type="button" onClick={handleSave} disabled={loading}>
-            저장
+             {loading ? "저장 중..." : "저장"}
           </button>
           <button type="button" onClick={() => setEditing(null)}>
             취소

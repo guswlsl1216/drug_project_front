@@ -26,11 +26,10 @@ const MyDrugs = ( ) => {
   const [form, setForm] = useState({
     drug_id: "",
     type: "",
-    eattime: [true,true,true],
+    eattime: [false,false,false],
     start_date: "",
     end_date: "",
     note: "",
-    selectTime : ""
   });
   const [successMessage, setSuccessMessage] = useState(null);
 
@@ -115,12 +114,10 @@ const MyDrugs = ( ) => {
 
   const handleEdit = (item) => {
     setEditing(item);
-    setForm({
-      drug_id: item.drug_id,
-      type: item.type === "medicine" ? "med" : "supp",
-      eattime: item.eattime,
-      start_date: item.start_date,
-      end_date: item.end_date,
+    setForm({  
+      eattime: item.eattime || [false, false, false],
+      start_date: item.start_date || "",
+      end_date: item.end_date || "",
       note: item.note || ""
     });
     
