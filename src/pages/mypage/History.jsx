@@ -8,6 +8,7 @@ import UseNavi from '../../utils/UseNavi';
 import { useLocation } from 'react-router-dom';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import useLoginRedirect from '../../utils/useLoginRedirect';
+import '../../styles/analyze.css'
 
 const History = () => {
   const { requireLogin } = useLoginRedirect();
@@ -73,7 +74,7 @@ const History = () => {
         </div>
         <div className="history_cardBtn">
           <Button variant="primary" onClick={() => {
-            goTo(`/mypage/history/detail/${history.id}`, {history: history} )
+            goTo(`/history/detail/${history.id}`, {history: history} )
           }}>상세보기</Button>
         </div>
       </article>
@@ -82,11 +83,16 @@ const History = () => {
   
   return (
     <>
-      <main>
-        <section className="history_container">
-          <div className="history_title">
-            <h2>분석 결과 내역</h2>
+      <main className="wrapper">
+        <section className="main_bg">
+          <div className="bg_text">
+            <h1 className="bg_main_title">분석 결과 내역</h1>
           </div>
+        </section>
+        <section className="history_container analyze-tab-content">
+          {/* <div className="history_title">
+            <h2>분석 결과 내역</h2>
+          </div> */}
 
           {
             loading

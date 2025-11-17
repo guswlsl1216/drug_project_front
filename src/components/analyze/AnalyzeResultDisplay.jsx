@@ -3,8 +3,65 @@ import '../../styles/utils/analysisStatus.css'
 import ANALYSIS_STATUS_MAPPING from "../../utils/analysisStatus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DrugInfo from './DrugInfo';
+
+const ImageUrlKey = "ORIGINAL_IMAGE_URL";
+
+const loadImageUrl = () => {
+  return sessionStorage.getItem(ImageUrlKey) || null;
+};
+
+const DrugImageCropper = ({box}) => {
+  const canvasRef = useRef(null);
+  const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+
+  useEffect(() => {
+    if (!originalImageUrl || !box || box.length !== 4) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.src = originalImageUrl;
+
+    img.onload = () => {
+      const [x_min, y_min, x_max, y_max] = box;
+      const width = x_max - x_min;
+      const height = y_max - y_min;
+
+      // 캔버스 크기를 자를 영역 크기에 맞춥니다.
+      canvas.width = width;
+      canvas.height = height;
+
+      // 원본 이미지에서 [x_min, y_min] 위치에서 width, height 크기만큼 잘라,
+      // 캔버스에 그립니다.
+      ctx.drawImage(
+        img,
+        x_min,
+        y_min,
+        width,
+        height, // 원본 이미지의 소스 영역
+        0,
+        0,
+        width,
+        height // 캔버스에 그릴 대상 영역
+      );
+    };
+
+    img.onerror = () => {
+      console.error("이미지 로드 실패 또는 CORS 오류");
+      // 이미지 로드 실패 시 대체 텍스트나 아이콘을 표시할 수 있습니다.
+    };
+  }, [originalImageUrl, box]); // 원본 URL이나 좌표가 바뀌면 다시 그림
+
+  // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
+  if (!originalImageUrl || box.length !== 4) {
+    return <p className="meds_box_image">이미지 없음</p>;
+  }
+
+  return <canvas ref={canvasRef} className="meds_box_image" />;
+};
 
 const AnalyzeResultDisplay = ({ result }) => {
   const { status_label, status_message, status_color, status_fontAwesome } = ANALYSIS_STATUS_MAPPING[result.status]
@@ -12,6 +69,7 @@ const AnalyzeResultDisplay = ({ result }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [drugId, setDrugId] = useState(null);
   const [drugType, setDrugType] = useState(null);
+  const [drugBox, setDrugBox] = useState(null);
 
   // interactions 내림차순 정렬
   const sortedInteractions = result.interactions.slice().sort((a, b) => {
@@ -102,16 +160,26 @@ const AnalyzeResultDisplay = ({ result }) => {
         {
           result.meds.map((med, i) => {
             return (
-              <div className='drugs_box' key={i}>
-                <p className='meds_box_image'>약이미지</p>
-                <p title={med.name} className='drugs_box_name ellipsis'>{med.name}</p>
-                <p className='show_details_icon'><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => {
-                  setIsOpen(true);
-                  setDrugId(med.id);
-                  setDrugType(0);
-                }} /></p>
+              <div className="drugs_box" key={i}>
+                <DrugImageCropper
+                  box={med.detection_box} // MedicinePage에서 추가한 좌표 사용
+                />
+                <p title={med.name} className="drugs_box_name ellipsis">
+                  {med.name}
+                </p>
+                <p className="show_details_icon">
+                  <FontAwesomeIcon
+                    icon={faMagnifyingGlass}
+                    onClick={() => {
+                      setIsOpen(true);
+                      setDrugId(med.id);
+                      setDrugType(0);
+                      setDrugBox(med.detection_box);
+                    }}
+                  />
+                </p>
               </div>
-            )
+            );
           })
         }
         </div>
@@ -192,6 +260,7 @@ const AnalyzeResultDisplay = ({ result }) => {
             setIsOpen={setIsOpen}
             drugId={drugId}
             drugType={drugType}
+            drugBox={{drugBox}}
           />
         }
 

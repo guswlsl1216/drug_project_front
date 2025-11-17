@@ -1,4 +1,4 @@
-.search-modal-overlay {
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,12 +11,12 @@
   z-index: 1000;
 }
 
-.search-modal {
+.modal-content.large-modal {
   background-color: white;
   border-radius: 8px;
   width: 90%;
-  max-width: 500px;
   max-height: 80vh;
+  padding: 50px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -28,20 +28,32 @@
   border-bottom: 1px solid #eee;
 }
 
+.shop-modal-header{
+  text-align: center;
+  margin-bottom: 5px;
+}
+.shop-modal-subtitle{
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 14px;
+  color: #666;
+}
+
 .search-modal-header h3 {
   margin: 0;
   font-size: 1.2rem;
 }
 
-.close-button {
+.modal-close-btn {
   background: none;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0 0.5rem;
+  position: relative;
+  left: 100%;
 }
 
-.close-button:hover {
+.modal-close-btn:hover {
   color: #666;
 }
 
@@ -87,35 +99,3 @@
   font-size: 0.9rem;
   color: #666;
 }
-
-/* 쇼핑몰 상호작용 검사 모달 부분 */
-
-.medicine-registration-step{
-  display: flex;
-  flex-wrap: wrap;
-  
-}
-
-.button-next{
-  margin: 0 auto;
-}
-
-.content-wrapper{
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.guidance-text-bottom{
-  font-size: 14px;
-  text-align: center;
-  color: #666;
-}
-
-.bottom-box{
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex-direction: column;
-}
-

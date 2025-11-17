@@ -51,13 +51,14 @@ const Routers = () => {
         </Route>
         <Route path="/analyze/result" element={<AnalyzeResult />} />
         <Route path="/medslist" element={<Medslist />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/history/detail/:id" element={<HistoryDetail />} />
+
+        <Route path="mydrugs" element={<MyDrugs />} />
+        <Route path="routine" element={<Routine />} />
 
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
-          <Route path="history" element={<History />} />
-          <Route path="mydrugs" element={<MyDrugs />} />
-          <Route path="history/detail/:id" element={<HistoryDetail />} />
-          <Route path="routine" element={<Routine />} />
           <Route path="favorite" element={<Favorite />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />

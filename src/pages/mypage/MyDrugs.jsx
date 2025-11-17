@@ -7,6 +7,7 @@ import MedInput from "./MedInput";
 import SuppInput from "./SuppInput";
 import requestHandler from "../../utils/requestHandler";
 import DrugHistory from "./DrugHistory";
+import EditDrugModal from "./EditDrugModal";
 
 const MyDrugs = ( ) => {
   // 🚨 UserContext에서 사용자 정보와 로그인 상태를 가져옵니다.
@@ -25,7 +26,7 @@ const MyDrugs = ( ) => {
   const [form, setForm] = useState({
     drug_id: "",
     type: "",
-    eattime: [true,true,true],
+    eattime: [false,false,false],
     start_date: "",
     end_date: "",
     note: "",
@@ -113,12 +114,10 @@ const MyDrugs = ( ) => {
 
   const handleEdit = (item) => {
     setEditing(item);
-    setForm({
-      drug_id: item.drug_id,
-      type: item.type === "medicine" ? "med" : "supp",
-      eattime: item.eattime,
-      start_date: item.start_date,
-      end_date: item.end_date,
+    setForm({  
+      eattime: item.eattime || [false, false, false],
+      start_date: item.start_date || "",
+      end_date: item.end_date || "",
       note: item.note || ""
     });
     
@@ -186,7 +185,17 @@ if (!isLoggedIn) {
           {renderContent()}
         </div>
       </div>
+      
+      {editing && (<EditDrugModal editing={editing}
+      form={form}
+      setForm={setForm}
+      setEditing={setEditing}
+      loadDrugs={loadDrugs} 
+      setSuccessMessage={setSuccessMessage}/>
+      )}
     </div>
+
+
   )
 }
 

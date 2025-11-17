@@ -37,25 +37,74 @@ const Header = () => {
               <h1 className="logo">Home</h1>
             </NavLink>
           </div>
-          <ul className="header_menu">
-            <NavLink to="analyze/medicine">AI분석</NavLink>
-            <NavLink to="medslist">의약품목록</NavLink>
-            <NavLink to="store/allgoods">스토어</NavLink>
+          <div className="header_main_menu">
+            <ul className="main_menu_container">
+              <li className="main_menu">
+                <NavLink to="analyze/medicine">AI분석</NavLink>
+                <div className="sub_menu_container">
+                  <ul className="sub_menu">
+                    <li>
+                      <NavLink to="analyze/medicine">분석하기</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="history">분석 결과 내역</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li className="main_menu">
+                <NavLink to="/routine">루틴</NavLink>
+                <div className="sub_menu_container">
+                  <ul className="sub_menu">
+                    <li>
+                      <NavLink to="/routine">루틴</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="/mydrugs">복용약</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li className="main_menu">
+                <NavLink to="store/allgoods">스토어</NavLink>
+                <div className="sub_menu_container">
+                  <ul className="sub_menu">
+                    <li>
+                      <NavLink to="store/allgoods">상품 목록</NavLink>
+                    </li>
+                    <li>
+                      <NavLink>찜 목록</NavLink>
+                    </li>
+                    <li>
+                      <NavLink>주문 내역</NavLink>
+                    </li>
+                    <li>
+                      <NavLink>나의 리뷰</NavLink>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div className="header_user_menu">
+            <ul className="user_menu_container">
+              <li className="user_menu">
+                {isLoggedIn ? (
+                  <>
+                    <span>{user.nickname}님</span>
+                    <Button onClick={handleLogout}>로그아웃</Button>
+                  </>
+                ) : (
+                  <>               
+                    <NavLink to="login">로그인</NavLink>
+                    <NavLink to="signup">회원가입</NavLink>
+                  </>
+                )}
 
-            {isLoggedIn ? (
-              <>
-                <span>{user.nickname}님</span>
-                <Button onClick={handleLogout}>로그아웃</Button>
-              </>
-            ) : (
-              <>               
-                <NavLink to="login">로그인</NavLink>
-                <NavLink to="signup">회원가입</NavLink>
-              </>
-            )}
-
-            <NavLink to="mypage">마이페이지(임시)</NavLink>
-          </ul>
+                <NavLink to="mypage">마이페이지(임시)</NavLink>
+              </li>
+            </ul>
+          </div>
         </nav>
       </header>
     </>
