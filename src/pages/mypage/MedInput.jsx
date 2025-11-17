@@ -127,12 +127,12 @@ const MedInput = ( {setActiveTab, loadDrugs }) => {
         </p>
 
         <form className="input-form" onSubmit={(e) => e.preventDefault()}>
-             {/* 영양제 검색 버튼  => 유저가 복용약 하는 타이틀 입력하는 버튼*/}
+             
             <label htmlFor="supp-name" className="input-label"> 복용하시는 약의 타이틀을 입력해주세요</label>
             <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
             <input 
                 type="text" 
-                id="supp-search"
+                id="med-title"
                 className="input-field"
                 style={{ marginBottom: 0, flex:1 }}
                 value={titleInput}

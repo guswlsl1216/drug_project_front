@@ -5,6 +5,7 @@ import requestHandler from "../../utils/requestHandler";
 import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext"; 
 import useLoginRedirect from "../../utils/useLoginRedirect";  
+import Button from "../../components/ui/Button";
 
 
 
@@ -176,17 +177,19 @@ const SuppInput = ( {setActiveTab }) => {
                 required
                 
             />
-            <button 
+
+            {/* <Button variant="primary" className="action-btn" onClick={() => onEdit(item)}>✍️ 수정</Button> */}
+            <Button 
               type="button"
               onClick={handleSearchClick}
-              className="action-btn primary"
+              className="action-btn"
               disabled={loading}
               style={{
                 whiteSpace: 'rowrap',
                 padding : '10px 20px',
                 height : 'fit-content'
               }}
-            >   🔍 검색 </button>
+            >   🔍 검색 </Button>
             </div>
 
             {/* --- 복용 상세 옵션 그룹 --- */}

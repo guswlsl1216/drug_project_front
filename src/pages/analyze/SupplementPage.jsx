@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MedicinePage.css";
@@ -7,6 +7,8 @@ import requestHandler from "../../utils/requestHandler";
 // --- 세션 관리 유틸리티 ---
 const ResultDataKey = "ANALYSIS_RESULT_DATA";
 const MedicineDataKey = "MEDICINE_LIST_TO_SEND";
+const SupplementDataKey = "SUPPLEMENT_LIST_TO_SEND";
+
 
 const saveAnalysisResult = (data) => {
   try {
@@ -14,6 +16,33 @@ const saveAnalysisResult = (data) => {
     console.log("분석 결과 데이터 세션 저장 완료.");
   } catch (error) {
     console.error("세션 저장 오류:", error);
+  }
+};
+
+// 영양제 목록을 세션에 저장하는 함수 추가
+const saveSupplementList = (data) => {
+  try {
+    sessionStorage.setItem(SupplementDataKey, JSON.stringify(data));
+    console.log("영양제 목록 세션 저장 완료.");
+  } catch (error) {
+    console.error("세션 저장 오류:", error);
+  }
+};
+
+const loadSupplementList = () => {
+  try {
+    const serializedData = sessionStorage.getItem(SupplementDataKey);
+    if (serializedData) {
+      const loadedData = JSON.parse(serializedData);
+      // isValidated 필드가 없으면 false로 초기화
+      return loadedData.length > 0
+        ? loadedData.map((supp) => ({...supp, isValidated: supp.isValidated || false}))
+        : [{id: 1, name: "", ingredients: [], isValidated: false}];
+    }
+    return [{id: 1, name: "", ingredients: [], isValidated: false}];
+  } catch (error) {
+    console.error("영양제 목록 세션 불러오기 오류:", error);
+    return [{id: 1, name: "", ingredients: [], isValidated: false}];
   }
 };
 
@@ -35,15 +64,21 @@ const SupplementPage = () => {
   const [selectedSupplementId, setSelectedSupplementId] = useState(null);
 
   // 상태 초기값: ingredients는 배열(string[])로 관리
-  const [recognizedSupplements, setRecognizedSupplements] = useState([
-    {id: 1, name: "영양제를 입력하세요", ingredients: []},
-    {id: 2, name: "영양제를 입력하세요", ingredients: []},
-    {id: 3, name: "영양제를 입력하세요", ingredients: []},
-  ]);
+  const [recognizedSupplements, setRecognizedSupplements] = useState(loadSupplementList());
+
+  useEffect(() => {
+    // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
+    return () => {
+      saveSupplementList(recognizedSupplements);
+      console.log("자동 저장 완료: 탭 이동/페이지 이탈 전 영양제 데이터 저장됨.");
+    };
+  }, [recognizedSupplements]);
 
   const handleSupplementNameChange = (id, newName) => {
     setRecognizedSupplements(
-      recognizedSupplements.map((supp) => (supp.id === id ? {...supp, name: newName} : supp))
+      recognizedSupplements.map((supp) =>
+        supp.id === id ? {...supp, name: newName, isValidated: false} : supp
+      )
     );
   };
 
@@ -60,15 +95,50 @@ const SupplementPage = () => {
 
     setRecognizedSupplements([
       ...recognizedSupplements,
-      {id: newId, name: "새로운 영양제", ingredients: []}, // ingredients는 배열로 초기화
+      {id: newId, name: "", ingredients: [], isValidated: false}, // ingredients는 배열로 초기화
     ]);
   };
 
   const handleNext = async () => {
-    // 1. MedicinePage에서 임시 저장된 약물 목록 불러오기
     const medicineList = loadMedicineList();
+    const hasUnvalidatedMedicineInSession = medicineList.some((med) => med.isValidated === false);
 
-    // ⭐ 2. 서버에 전송할 최종 데이터 구성:
+    if (hasUnvalidatedMedicineInSession) {
+      alert(
+        "의약품 목록에  등록되지 않은 (미확정된) 항목이 남아있습니다. \n\n이전 단계로 돌아가 모든 의약품을 삭제하거나 '✓' 버튼을 눌러 확정해야 분석 결과를 볼 수 있습니다."
+      );
+      // 의약품 목록에 문제가 있으면 페이지 이동을 중단하고 의약품 페이지로 돌려보내는 것을 고려해볼 수 있습니다.
+      // navigate("/analyze/medicine");
+      return;
+    }
+    // 1. 유효한(DB 등록된) 영양제(isValidated: true)가 목록에 하나라도 있는지 확인
+    const hasValidatedSupplement = recognizedSupplements.some((supp) => supp.isValidated === true);
+
+    // 2. 미확정 항목 (isValidated: false)이 하나라도 남아있는지 확인
+    const hasAnyUnvalidatedSupplement = recognizedSupplements.some(
+      (supp) => supp.isValidated === false
+    );
+
+    // [필수 검사] 유효한 항목이 아예 없는 경우
+    if (!hasValidatedSupplement) {
+      alert(
+        "다음 단계로 진행하려면 영양제를 1개 이상 등록해야 합니다.\n영양제를 입력하고 '✓' 버튼을 눌러 정확한 영양제 정보를 확정해주세요."
+      );
+      return;
+    }
+
+    // [차단 검사] 미확정 항목(isValidated: false)이 목록에 하나라도 남아있는 경우
+    if (hasAnyUnvalidatedSupplement) {
+      alert(
+        "등록된 영양제 목록에 유효하지 않은 (미확정된) 항목이 남아있습니다. \n모든 항목을 삭제하거나 '✓' 버튼을 눌러 영양제 정보를 확정해야 결과보기가 가능합니다."
+      );
+      return;
+    }
+
+    // 유효성 검사 로직 추가 끝
+    
+
+    // 2. 서버에 전송할 최종 데이터 구성:
     // 백엔드의 analyze_result 함수는 영양제 ingredients가 '문자열'인 것을 가정하므로,
     // 여기서 배열을 쉼표로 구분된 문자열로 변환해야 합니다.
     const suppsToSend = recognizedSupplements
@@ -98,7 +168,7 @@ const SupplementPage = () => {
       });
 
       const analysisResult = response.data; // 서버에서 받은 분석 결과
-      
+
       console.log("--- 서버 수신 분석 결과 ---", analysisResult);
 
       // 4. 분석 결과를 세션에 저장
@@ -106,8 +176,6 @@ const SupplementPage = () => {
 
       // 5. 결과 페이지로 이동
       navigate("/analyze/result");
-
-
     } catch (error) {
       console.error("분석 결과 요청 중 오류 발생:", error);
       alert("분석 요청 중 오류가 발생했습니다. 콘솔을 확인해 주세요.");
@@ -122,9 +190,10 @@ const SupplementPage = () => {
           <h3>영양제 리스트</h3>
           <div className="medicine-list">
             {recognizedSupplements.map((supp) => (
-              <div key={supp.id} className="medicine-item">
+              <div key={supp.id} className={`medicine-item ${supp.isValidated ? "validated" : "unvalidated"}`}>
                 <input
                   type="text"
+                  placeholder="제품명을 입력하고 체크버튼을 눌러 등록"
                   className="medicine-input"
                   value={supp.name}
                   onChange={(e) => handleSupplementNameChange(supp.id, e.target.value)}
@@ -139,7 +208,7 @@ const SupplementPage = () => {
                   ✓
                 </button>
                 <button className="button-delete" onClick={() => handleSupplementDelete(supp.id)}>
-                  🗑️
+                  x
                 </button>
               </div>
             ))}
@@ -181,6 +250,7 @@ const SupplementPage = () => {
                     name: selectedItem.name,
                     // 성분 정보를 배열로 업데이트
                     ingredients: selectedItem.ingredients,
+                    isValidated: true,
                   }
                 : supp
             )
