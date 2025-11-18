@@ -47,20 +47,20 @@ const Header = () => {
                       <NavLink to="analyze/medicine">분석하기</NavLink>
                     </li>
                     <li>
-                      <NavLink>분석 결과 내역</NavLink>
+                      <NavLink to="history">분석 결과 내역</NavLink>
                     </li>
                   </ul>
                 </div>
               </li>
               <li className="main_menu">
-                <NavLink to="medslist">루틴</NavLink>
+                <NavLink to="/routine">루틴</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
-                      <NavLink>루틴</NavLink>
+                      <NavLink to="/routine">루틴</NavLink>
                     </li>
                     <li>
-                      <NavLink>복용약</NavLink>
+                      <NavLink to="/mydrugs">복용약</NavLink>
                     </li>
                   </ul>
                 </div>

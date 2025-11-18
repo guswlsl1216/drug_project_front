@@ -13,19 +13,25 @@ const Analyze = () => {
             <p className="bg_sub_title">AI가 분석합니다.</p>
           </div>
         </section>
-        <section className='analyze-tab-contents'>
+        <section className="analyze-tab-contents">
           <nav className="analyze-tabs">
-            <NavLink 
-              to="medicine" 
-              className={({ isActive }) => `medicine-tab${isActive ? ' active' : ''}`}
+            <NavLink
+              to="medicine"
+              className={({isActive}) => `medicine-tab${isActive ? " active" : ""}`}
             >
               의약품
             </NavLink>
-            <NavLink 
-              to="supplement" 
-              className={({ isActive }) => `supplement-tab${isActive ? ' active' : ''}`}
+            <NavLink
+              to="supplement"
+              className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
             >
               영양제
+            </NavLink>
+            <NavLink
+              to="/analyze/result"
+              className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
+            >
+              분석결과
             </NavLink>
           </nav>
 

@@ -1,3 +1,7 @@
+.history_container {
+  padding: 20px;
+}
+
 .history_container li {
   list-style-type: none;
 }

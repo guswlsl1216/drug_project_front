@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import "../../styles/order/Payments.css"
 import UseNavi from "../../utils/UseNavi";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const PayFail = () => {
   const { goBack } = UseNavi();
@@ -16,7 +17,7 @@ const PayFail = () => {
         <div className="payments_wrapper">
           <section className="payments_box_section">
             <div className="payments_title">
-              <h2 className="payFail_title">결제 실패</h2>
+              <h2 className="payFail_title">결제가 완료되지 않았습니다</h2>
             </div>
             <dl className="payments_description">
               <dt>에러 코드</dt>

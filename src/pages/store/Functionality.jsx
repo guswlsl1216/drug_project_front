@@ -14,7 +14,7 @@ const Functionality = () => {
     "여성",
     "장 건강 · 면역",
     "피로 개선 · 활력",
-    "피부·미용",
+    "피부 · 미용",
     "혈당 · 혈압 · 콜레스테롤"
   ]
   const [selectedCategory, setSelectedCategory] = useState(categories[0]); 
