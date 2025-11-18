@@ -3,6 +3,7 @@ import Button from "../../components/ui/Button";
 import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
 import requestHandler from "../../utils/requestHandler";
+import "../../styles/cart/Cart.css";
 
 const Cart = () => {
   
@@ -101,31 +102,77 @@ const Cart = () => {
     setCartItem(prev => prev.filter(item => !item.check));
   };
 
+  // 총 결제 금액
+  const totalPrice = cartItem.reduce((acc, item) => acc + item.price * item.count, 0 );
+
+  // 배송비
+  const shipping = totalPrice >= 20000 ? 0 : 2500;
+
+
   return (
-    <>
-      <h3>장바구니 페이지</h3>
-      <Button onClick={toggleAll}>{allCheck ? "전체 해제" : "전체 선택"}</Button>
-      <Button onClick={() => deleteGoods()}>삭제</Button>
+    <div className="cart-container">
+      <h3>장바구니</h3>
+
+      <div className="top-buttons">
+        <Button onClick={toggleAll}>{allCheck ? "전체 해제" : "전체 선택"}</Button>
+        <Button onClick={() => deleteGoods()}>삭제</Button>
+      </div>
+
       {cartItem.map((item, i) => (
 
-        <form action="" key={item.cart_id}>
+        <form action="" key={item.cart_id} className="cart-item">
           <input type="checkbox" checked={item.check || false} onChange={() => toggleCheck(i)}/>
-          <div>
+          <div className="cart-info">
             <p>{i+1}</p>
             <img src={item.image_path} alt="상품이미지" />
             <p>{item.goods_name}</p>
           </div>
-          <div>
+
+          <div className="count-box">
             <Button onClick={() => cahngeCount(i, 'minus')} disabled={item.count == 1}>-</Button>
             <div>{item.count}</div>
             <Button onClick={() => cahngeCount(i, 'plus')}>+</Button>
           </div>
-          <div>가격 {item.price} 총 가격 {item.price*item.count} 원</div>
+
+          <div className="price-box">
+            가격 {item.price}<br/>
+            총 가격 {item.price*item.count} 원
+          </div>
         </form>
       ))}
-      <h3>총 구매 수량 : {cartItem.reduce((acc, item) => acc + item.count, 0)}개</h3>
-      <h3>전체 제품 총 가격 : {cartItem.reduce((acc, item) => acc + item.price * item.count, 0 )}원</h3>
-    </>
+
+      <div className="summary">
+        <div>
+          <p className="summary-title">주문 예정 금액</p>
+          
+          <div className="summary-subtext">
+            <span>총 상품금액 : </span>
+            <h3 className="summary-price">{totalPrice}원</h3>
+          </div>
+            
+          <div className="summary-subtext">
+            <span>총 배송비 : </span>
+            <h3 className="summary-price">{shipping}원 </h3>
+          </div>        
+        </div>
+
+        <div className="summary-divider"></div>
+
+        <div className="summary-final-section">
+          <p className="summary-title">결제 예정 금액</p>
+          <h2 className="summary-final-price">{totalPrice + shipping}원</h2>
+          <p className="summary-info">
+            ⓘ 쿠폰 및 적립금은 구매하기 버튼을 누른 후 주문서에서 적용하실 수 있습니다.
+          </p>
+        </div>
+
+        <div className="summary-button-box">
+          <Button onClick={()=>{goTo("/orders")}}>구매하기</Button>
+        </div>
+
+      </div>
+
+    </div>
   )
 } 
 

@@ -83,16 +83,9 @@ const ProductDetail = () => {
   const totalPrice = (product?.price || 0) * quantity;
 
   const handleCart = () => { // 재고 이상으로 계속 담겨서 수정 필요 일단 재고는 넘어가니까 다음 작업 
-    if (!product) return;
+    // 여기 수정 후 에러남
 
-    if (product.stock === 0) {
-      alert("재고가 없습니다.");
-      return;
-    }
-
-    const countSend = Math.min(quantity, product.stock); // 재고 이상이면 stock으로 제한
-
-    if (countSend <= 0 ){
+    if (product.stock === 0 ) {
       alert("재고가 없습니다.");
       return;
     }
@@ -100,10 +93,10 @@ const ProductDetail = () => {
     requestHandler({
         method:"post",
         url:`cart/${goodsId}`,
-        data:{ count: countSend }, // 수량을 data에 담아서 보냄
+        payload:{ count: quantity }, // 수량을 data에 담아서 보냄
         setLoading,
         onSuccess:(data) => {
-          alert("장바구니에 담았습니다.");
+          alert(`${data.count}개가 장바구니에 담겼습니다.`);
           console.log(data);
         },
         onError: (msg) => {
@@ -171,12 +164,7 @@ const ProductDetail = () => {
 
             {/* 구매 액션 버튼 */}
             <div className="purchase-options">
-              <button className="add-to-cart-btn">장바구니 담기</button>
-
-              <div className="add-to-cart-btn">
-                <Button onClick={handleCart}>장바구니 담기</Button>
-                
-              </div>
+              <button className="add-to-cart-btn" onClick={handleCart}>장바구니 담기</button>
               
               <div className="buy-and-favorite-group"> 
                 <Button

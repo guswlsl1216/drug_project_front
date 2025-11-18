@@ -81,6 +81,9 @@ const Header = () => {
                     <li>
                       <NavLink>나의 리뷰</NavLink>
                     </li>
+                    <li>
+                      <NavLink to="store/cart">장바구니</NavLink>
+                    </li>
                   </ul>
                 </div>
               </li>
