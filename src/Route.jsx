@@ -33,6 +33,8 @@ import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
 import { AdminRoute } from "./hooks/AdminRoute";
+import MyOrderList from "./pages/order/MyOrderList";
+import MyOrderDetail from "./pages/order/MyOrderDetail";
 
 
 const Routers = () => {
@@ -84,6 +86,8 @@ const Routers = () => {
           </Route>
         </Route>
         <Route path="/orders" element={<OrderSheet />} />
+        <Route path="/myOrderList" element={<MyOrderList />} />
+        <Route path="/myOrderDetail" element={<MyOrderDetail />} />
       </Routes>
     </>
   );
