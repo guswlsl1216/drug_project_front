@@ -35,6 +35,8 @@ import Reviews from "./pages/store/Reviews";
 import PaySuccess from "./pages/order/PaySuccess";
 import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
+import ContactUs from "./pages/store/ContactUs";
+import QnA from "./pages/store/QnA";
 
 
 const Routers = () => {
@@ -60,7 +62,6 @@ const Routers = () => {
 
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
-          <Route path="favorite" element={<Favorite />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
         </Route>
@@ -79,11 +80,14 @@ const Routers = () => {
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
+          <Route path="favorite" element={<Favorite />} />
           <Route path="detail/:goodsId" element={<ProductDetail />}>
             <Route index element={<Navigate to="desc" replace />} />
             <Route path="desc" element={<ProductDescription />} />
             <Route path="review" element={<Reviews />} />
+            <Route path="qna" element={<QnA/>}/>
           </Route>
+          <Route path="contactUs" element={<ContactUs />} />
         </Route>
         <Route path="/orders" element={<OrderSheet />} />
         <Route path="/success" element={<PaySuccess />} />
