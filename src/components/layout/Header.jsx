@@ -73,13 +73,16 @@ const Header = () => {
                       <NavLink to="store/allgoods">상품 목록</NavLink>
                     </li>
                     <li>
-                      <NavLink>찜 목록</NavLink>
+                      <NavLink to="store/favorite">찜 목록</NavLink>
                     </li>
                     <li>
                       <NavLink to="/myOrderList">주문 내역</NavLink>
                     </li>
                     <li>
                       <NavLink>나의 리뷰</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="store/contactUs">문의하기</NavLink>
                     </li>
                   </ul>
                 </div>
