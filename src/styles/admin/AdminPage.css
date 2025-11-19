@@ -19,17 +19,20 @@
   background: var(--bg);
   color: var(--text);
 
-  /* 명시적 영역 배치 */
   display: grid;
-  grid-template-columns: 260px 1fr;                /* sidebar | content */
-  grid-template-rows: auto 1fr;                    /* title | body */
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
     "title   title"
     "sidebar content";
   gap: 24px;
 
-  /* 상단 고정 헤더 여백 보정 (없으면 0으로 바꿔도 됨) */
   padding: calc(var(--app-header-h) + 24px) 24px 24px;
+
+  /* 🔥 여기 추가 */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* 상단 타이틀 */
@@ -122,9 +125,13 @@
   box-shadow: var(--shadow);
   padding: 20px;
 
-  /* 스크롤 여유 */
   min-height: calc(100vh - 48px);
   padding-bottom: 32px;
+
+  /* 🔥 혹시 모를 오버플로우 방지용 */
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* 공통 유틸 */
@@ -198,16 +205,23 @@
       "title"
       "sidebar"
       "content";
+
+    /* 🔥 모바일에서 좌우 패딩 살짝 줄이기 */
+    padding: calc(var(--app-header-h) + 16px) 12px 16px;
   }
 
   .adminpage-tabs{
     position: static;
-    flex-direction: row;    /* 모바일은 가로 스크롤 탭 */
+    flex-direction: row;
     padding: 10px;
     gap: 8px;
     border-radius: 12px;
     overflow-x: auto;
     white-space: nowrap;
+  }
+
+  .adminpage-content{
+    padding: 16px 12px 24px;
   }
 
   .adminpage-tab{ height: 40px; padding: 0 12px; }
