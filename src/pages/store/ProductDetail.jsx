@@ -9,21 +9,19 @@ import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
 import LoadingSpinner from "../../utils/loadingSpinner";
 
-
 const ProductDetail = () => {
-  const {goodsId} = useParams();
+  const { goodsId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
-  const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
-  const {goTo} = UseNavi()
-  const {isLoggedIn, user} = useUser()
+  const { isFavorite, toggleFavoriteHandler, message, setIsFavorite } = useFavoriteToggle(false, goodsId);
+  const { goTo } = UseNavi();
+  const { isLoggedIn, user } = useUser();
 
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
-
 
   useEffect(() => {
     const ProductDetailandFavorite = async () => {
@@ -32,7 +30,6 @@ const ProductDetail = () => {
         url: `/goods/${goodsId}`,
         setLoading,
         onSuccess: (data) => {
-
           if (data && data.product) {
             const productData = data.product;
 
@@ -47,8 +44,8 @@ const ProductDetail = () => {
 
             setError(null); // 에러 초기화
           } else {
-            setProduct(null)
-            setIsFavorite(false)
+            setProduct(null);
+            setIsFavorite(false);
             setError("상품 데이터를 찾을 수 없습니다.");
           }
         },
@@ -56,41 +53,39 @@ const ProductDetail = () => {
           console.error("상품 상세 정보 로딩 오류:", err);
           setProduct(null);
           setError(msg || "상품 정보를 불러오는 데 실패했습니다.");
-        }
-      })
+        },
+      });
     };
 
     ProductDetailandFavorite();
   }, [goodsId, setLoading, setProduct, setIsFavorite, setError]); // goodsId가 변경될 때마다 재실행
 
-
   const handleQuantityChange = (type) => {
-    setQuantity(prevQuantity => {
-      if(type === 'increment') { 
+    setQuantity((prevQuantity) => {
+      if (type === "increment") {
         // 재고가 있을 경우에만 증가(재고가 없으면 무한정 증가 방지)
         // 재고 상태 : product.stock
         const maxStock = product?.stock || Infinity;
         return prevQuantity < maxStock ? prevQuantity + 1 : prevQuantity;
-      } else if (type === 'decrement') {
+      } else if (type === "decrement") {
         // 최소 수량 1 미만으로 감소 방지
         return prevQuantity > 1 ? prevQuantity - 1 : 1;
       }
       return prevQuantity;
-    })
-  }
+    });
+  };
 
   const totalPrice = (product?.price || 0) * quantity;
 
-
-  if (loading) return <LoadingSpinner label="상품 상세 정보를 불러오는 중..." />
-  if (error) return <div className="error-message">{error}</div>
-  if (!product) return <div className="no-data">상품 정보를 찾을 수 없습니다.</div>
+  if (loading) return <LoadingSpinner label="상품 상세 정보를 불러오는 중..." />;
+  if (error) return <div className="error-message">{error}</div>;
+  if (!product) return <div className="no-data">상품 정보를 찾을 수 없습니다.</div>;
 
   const supplementIngredients = product.ingredients || [
-    {name: "비타민C", amount: "1000mg"},
-    {name: "징코", amount: "50mg"},
+    { name: "비타민C", amount: "1000mg" },
+    { name: "징코", amount: "50mg" },
   ];
-  
+
   return (
     <div className="product-detail-container">
       {/* 팝업 메시지 (훅에서 가져옴) */}
@@ -114,9 +109,7 @@ const ProductDetail = () => {
 
             {/* 가격 */}
             <div className="price-section">
-              <p className="product-price">
-                {product.price ? product.price.toLocaleString() : "가격 미정"}원
-              </p>
+              <p className="product-price">{product.price ? product.price.toLocaleString() : "가격 미정"}원</p>
               <p>배송비 기본 2,500원 / 2만원 이상 구매 시 무료</p>
             </div>
 
@@ -128,10 +121,7 @@ const ProductDetail = () => {
                   -
                 </button>
                 <span>{quantity}</span> {/* */}
-                <button
-                  onClick={() => handleQuantityChange("increment")}
-                  disabled={quantity >= (product?.stock || Infinity)}
-                >
+                <button onClick={() => handleQuantityChange("increment")} disabled={quantity >= (product?.stock || Infinity)}>
                   +
                 </button>
               </div>
@@ -142,23 +132,21 @@ const ProductDetail = () => {
             <div className="purchase-options">
               <button className="add-to-cart-btn">장바구니 담기</button>
 
-              <button className="add-to-cart-btn">
-                장바구니 담기
-              </button>
-              
-              <div className="buy-and-favorite-group"> 
+              <button className="add-to-cart-btn">장바구니 담기</button>
+
+              <div className="buy-and-favorite-group">
                 <Button
                   variant="text"
                   className="buy-now-btn"
                   onClick={() => {
                     if (!isLoggedIn) {
-                      goTo("/login")
-                      return
+                      goTo("/login");
+                      return;
                     }
                     goTo("/orders", {
                       buyer: {
                         nickname: user?.nickname ?? "",
-                        tel: user?.tel ?? ""
+                        tel: user?.tel ?? "",
                       },
                       items: [
                         {
@@ -166,20 +154,18 @@ const ProductDetail = () => {
                           goods_name: product.goods_name,
                           image_path: product.image_path,
                           unit_price: product.price,
-                          count: quantity
-                        }
+                          count: quantity,
+                        },
                       ],
-                      total_price: totalPrice
-                    })
+                      total_price: totalPrice,
+                    });
                   }}
                 >
                   바로구매
                 </Button>
-                
-                <button 
-                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
-                  onClick={toggleFavoriteHandler}>
-                  {isFavorite ? '❤️' : '🤍'}
+
+                <button className={`favorite-icon-btn ${isFavorite ? "active" : ""}`} onClick={toggleFavoriteHandler}>
+                  {isFavorite ? "❤️" : "🤍"}
                 </button>
               </div>
             </div>
@@ -196,22 +182,13 @@ const ProductDetail = () => {
           {/* 탭 네비게이션 */}
           <div className="tab-nav">
             <nav className="tab-links">
-              <NavLink
-                to={`/store/detail/${goodsId}/desc`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
+              <NavLink to={`/store/detail/${goodsId}/desc`} className={({ isActive }) => (isActive ? "tab-link active" : "tab-link")}>
                 <h2 className="tab-title-only">제품 상세 정보</h2>
               </NavLink>
-              <NavLink
-                to={`/store/detail/${goodsId}/review`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
+              <NavLink to={`/store/detail/${goodsId}/review`} className={({ isActive }) => (isActive ? "tab-link active" : "tab-link")}>
                 <h2 className="tab-title-only">리뷰</h2>
               </NavLink>
-              <NavLink
-                to={`/store/detail/${goodsId}/qna`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
+              <NavLink to={`/store/detail/${goodsId}/qna`} className={({ isActive }) => (isActive ? "tab-link active" : "tab-link")}>
                 <h2 className="tab-title-only">Q&A</h2>
               </NavLink>
             </nav>
@@ -219,7 +196,7 @@ const ProductDetail = () => {
 
           {/* 탭 콘텐츠 */}
           <div className="tab-content">
-            <Outlet context={{product}} />
+            <Outlet context={{ product }} />
           </div>
         </div>
       </div>
@@ -236,6 +213,6 @@ const ProductDetail = () => {
       />
     </div>
   );
-}
+};
 
 export default ProductDetail;
