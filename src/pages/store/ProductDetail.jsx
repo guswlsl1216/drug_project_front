@@ -7,7 +7,11 @@ import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
+<<<<<<< HEAD
 import axios from "axios";
+=======
+import LoadingSpinner from "../../utils/loadingSpinner";
+>>>>>>> develop
 
 
 const ProductDetail = () => {
@@ -32,7 +36,6 @@ const ProductDetail = () => {
         url: `/goods/${goodsId}`,
         setLoading,
         onSuccess: (data) => {
-          console.log("백엔드 응답 데이터 구조:", data)
 
           if (data && data.product) {
             const productData = data.product;
@@ -110,7 +113,7 @@ const ProductDetail = () => {
   };
 
 
-  if (loading) return <div className="loading-message">상품 상세 정보를 불러오는 중...</div>
+  if (loading) return <LoadingSpinner label="상품 상세 정보를 불러오는 중..." />
   if (error) return <div className="error-message">{error}</div>
   if (!product) return <div className="no-data">상품 정보를 찾을 수 없습니다.</div>
 
@@ -231,6 +234,12 @@ const ProductDetail = () => {
                 className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
               >
                 <h2 className="tab-title-only">리뷰</h2>
+              </NavLink>
+              <NavLink
+                to={`/store/detail/${goodsId}/qna`}
+                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
+              >
+                <h2 className="tab-title-only">Q&A</h2>
               </NavLink>
             </nav>
           </div>

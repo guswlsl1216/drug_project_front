@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import { useNavigate } from "react-router-dom";
+import requestHandler from "../../utils/requestHandler";
 
 
 const useFavoriteToggle = (initialIsFavorite, goodsId) => {
@@ -22,34 +23,36 @@ const useFavoriteToggle = (initialIsFavorite, goodsId) => {
 
   const toggleFavoriteHandler = useCallback(async (e) => {
     console.log('찜 버튼 클릭', goodsId)
-    // 상품 카드 전체 클릭 방지
 
     requireLogin(async () => {
+      await requestHandler({
+        method: "post",
+        url: `/favorite/${goodsId}`,
+        setLoading: undefined,
+        onSuccess: (data) => {
+          if (data.ok) {
+            const newFavoriteStatus = data.is_favorite;
+            setIsFavorite(newFavoriteStatus);
+            setMessage(data.message);
+          
+            if (newFavoriteStatus === true) {
+              navigate('/store/favorite');
+            }
 
-      try {
-        const response = await axiosInstance.post(`/favorite/${goodsId}`);
-
-        if (response.data.ok) {
-          const newFavoriteStatus = response.data.is_favorite;
-          setIsFavorite(newFavoriteStatus);
-          setMessage(response.data.message);
-
-          if (newFavoriteStatus === true) {
-            navigate('/mypage/favorite');
+          } else {
+            setMessage("찜 처리 실패: " + data.message);
           }
 
-        } else {
-            setMessage("찜 처리 실패: " + response.data.message);
+          setTimeout(() => setMessage(''), 3000); // 팝업 메시지 3초 후 제거
+        },
+        onError: (msg) => {
+          console.error("찜 토글 오류:", msg);
+          setMessage("찜 상태 변경 중 서버 오류가 발생했습니다.");
+          setTimeout(() => setMessage(''), 3000);
         }
-        setTimeout(() => setMessage(''), 3000); // 팝업 메시지 3초 후 제거
-      }
-      catch (error) {
-        console.error("찜 토글 오류:", error);
-        setMessage("찜 상태 변경 중 서버 오류가 발생했습니다.");
-        setTimeout(() => setMessage(''), 3000);
-      }
-    }, true)
+      }) 
 
+    }, true)    
     
   }, [goodsId, requireLogin, navigate]);
 
