@@ -96,7 +96,11 @@ const ProductDetail = () => {
         payload:{ count: quantity }, // 수량을 data에 담아서 보냄
         setLoading,
         onSuccess:(data) => {
-          alert(`${data.count}개가 장바구니에 담겼습니다.`);
+          if (data.message) {
+            alert(`${data.message}`);
+          } else {
+            alert(`총 ${data.count}개가 장바구니에 담겼습니다.`); 
+          }
           console.log(data);
         },
         onError: (msg) => {
