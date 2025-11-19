@@ -2,13 +2,17 @@ import { useEffect, useState } from "react"
 import AddressPicker from "../../components/ui/AddressPicker"
 import Button from "../../components/ui/Button"
 import "../../styles/order/OrderSheet.css"
+import PaymentsSheet from "./PaymentsSheet"
+import requestHandler from "../../utils/requestHandler"
 import { useLocation } from "react-router-dom"
 import Changehandler from "../../utils/Changehandler"
-import requestHandler from "../../utils/requestHandler"
+import useLoginRedirect from '../../utils/useLoginRedirect';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faXmark } from "@fortawesome/free-solid-svg-icons"
 
 const OrderSheet = () => {
+  const { requireLogin } = useLoginRedirect();
+
   const location = useLocation();
   const state = location.state || {};
 
@@ -19,7 +23,7 @@ const OrderSheet = () => {
   const [order, setOrder] = useState({
     items_total: "", // 상품 총합
     shipping_fee: "", // 배송비
-    used_points:"", // 사용 포인트
+    used_points: 0, // 사용 포인트
     final_amount: "", // 최종 결제 금액
     total_count:"",
     zipcode:"",
@@ -29,12 +33,8 @@ const OrderSheet = () => {
     phone: ""
   })
 
-  const [orderItem, setOrderItem] = useState({
-    unit_price : "",
-    count : "",
-    subtotal : ""
-  })
-
+  // db 저장용 orderItem 스테이트
+  const [orderItem, setOrderItem] = useState([]);
   const [agree, setAgree] = useState(false)
   const [loading, setLoading] = useState(false);
   const [sameAsBuyer, setSameAsBuyer] = useState(false)
@@ -44,6 +44,32 @@ const OrderSheet = () => {
   const calcShippingFee = (price) => {
     return price >= 20000 ? 0 : 2500;
   };
+  
+  const calcFinalAmount = () => {
+    const p = Number(order.items_total || 0);
+    const s = Number(order.shipping_fee || 0);
+    const u = Number(order.used_points || 0);
+    return p + s - u;
+  };
+
+  const [amount, setAmount] = useState({
+    currency: "KRW",
+    value: calcFinalAmount(),
+  });
+  const [ready, setReady] = useState(false);
+  const [widgets, setWidgets] = useState(null);
+  
+    useEffect(() => {
+      const processedItems = items.map(item => {
+        return {
+          goods_id: item.goods_id,
+          count: item.count,
+          unit_price: item.unit_price,
+          subtotal: item.count * item.unit_price
+        };
+      });
+      setOrderItem(processedItems)
+    }, [items]);
 
   useEffect(() => {
     const fee = calcShippingFee(totalPrice);
@@ -52,15 +78,61 @@ const OrderSheet = () => {
       ...prev,
       items_total: totalPrice,
       shipping_fee: fee,
-      final_amount: totalPrice + fee - (prev.used_points || 0)
+      final_amount: totalPrice + fee - (prev.used_points || 0),
     }));
-  }, [totalPrice]);
 
-  const calcFinalAmount = () => {
-    const p = Number(order.items_total || 0);
-    const s = Number(order.shipping_fee || 0);
-    const u = Number(order.used_points || 0);
-    return p + s - u;
+    setAmount({
+      currency: "KRW",
+      value: calcFinalAmount(),
+    });
+  }, [totalPrice, calcFinalAmount()]);
+
+  const requestPayHandler = async (orderId) => {
+    return new Promise((resolve, reject) => {
+      requireLogin(async () => {
+        if(!agree) {
+          alert("결제 정보 확인 및 동의가 필요합니다.");
+          return resolve(false);
+        } else if(!order.receiver || !order.phone) {
+          alert("수령인 정보를 입력해 주세요.");
+          return resolve(false);
+        } else if(!order.zipcode || !order.address || !order.address_detail) {
+          alert("배송지 정보를 입력해 주세요.");
+          return resolve(false);
+        }
+    
+        const payInfo = {
+          // 서버 세션에 저장 (검증용)
+          orderId: orderId,
+          amount: amount,
+          // 주문 정보, 주문 항목
+          order: order,
+          orderItem: orderItem,
+          // 배송지 저장 여부
+          saveAddress : saveAddress
+        };
+    
+        try {
+          await requestHandler({
+            method: "post",
+            url: "/payments/ready",
+            payload: payInfo,
+            setLoading,
+            onSuccess: (data) => {
+              if (data && data.ok === false) {
+                return reject(new Error(data.message || "주문 정보 저장 실패"));
+              }
+            },
+            onError: (msg) => {
+              return reject(new Error(msg));
+            }
+          });
+          resolve(true);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    })
   };
 
   const orderMe = async () => {
@@ -122,7 +194,7 @@ const OrderSheet = () => {
   }
 
   const allPoint = () => {
-    const maxUsable = Math.min( point || 0, totalPrice || 0)
+    const maxUsable = Math.min( point || 0, calcFinalAmount() || 0)
 
     setOrder(prev => ({
       ...prev,
@@ -302,13 +374,15 @@ const OrderSheet = () => {
 
           <div className="card section-payments">
             <h5 className="section-title">결제수단</h5>
-            <div className="pay-grid">
-              <Button variant="text" className="pay-btn" >
-                토스페이
-              </Button>
-              <Button variant="text" className="pay-btn" >
-                카카오페이
-              </Button>
+            <div className="payments-box">
+              <PaymentsSheet
+                amount={amount}
+                setAmount={setAmount}
+                setReady={setReady}
+                widgets={widgets}
+                setWidgets={setWidgets}
+                order = {order}
+              />
             </div>
           </div>
         </div>
@@ -341,7 +415,41 @@ const OrderSheet = () => {
             </span>
           </label>
 
-          <Button variant="primary" className="buy-btn" disabled={!agree} >
+          <Button
+            variant="primary"
+            className="buy-btn"
+            disabled={!agree || !ready}
+            onClick={async () => {
+              try {
+                // 주문번호 생성 (날짜시간 + 랜덤번호)
+                const now = new Date();
+                const datePart = [
+                  now.getFullYear(),
+                  String(now.getMonth() + 1).padStart(2, '0'),
+                  String(now.getDate()).padStart(2, '0'),
+                  String(now.getHours()).padStart(2, '0'),
+                  String(now.getMinutes()).padStart(2, '0'),
+                  String(now.getSeconds()).padStart(2, '0')
+                ].join('');
+                const randomPart = String(Math.floor(Math.random() * 9000) + 1000);
+                const orderId = datePart + randomPart;
+                
+                const isReady = await requestPayHandler(orderId);
+
+                if (isReady) {
+                  await widgets.requestPayment({
+                    orderId: orderId, // 주문번호
+                    orderName: `${items[0].goods_name} 외 ${items.length}건`,
+                    successUrl: window.location.origin + "/success",
+                    failUrl: window.location.origin + "/fail",
+                  })
+                }
+              } catch (e) {
+                alert(e);
+                console.error(e);
+              }
+            }}
+          >
             {loading ? "구매중..." : "구매하기"}
           </Button>
         </div>

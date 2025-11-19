@@ -32,6 +32,8 @@ import Favorite from "./pages/mypage/Favorite";
 import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
+import PaySuccess from "./pages/order/PaySuccess";
+import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
@@ -88,6 +90,8 @@ const Routers = () => {
           <Route path="contactUs" element={<ContactUs />} />
         </Route>
         <Route path="/orders" element={<OrderSheet />} />
+        <Route path="/success" element={<PaySuccess />} />
+        <Route path="/fail" element={<PayFail />} />
       </Routes>
     </>
   );
