@@ -4,6 +4,11 @@
   right: max(16px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 /* 버튼과 배지 래퍼: 배지 공간만큼 하단 패딩 확보 + z-index 컨트롤 */
@@ -61,6 +66,58 @@
   user-select: none;
   z-index: 3;           /* 버튼 아래 */
   pointer-events: none; /* 클릭은 버튼으로만 */
+}
+
+.to_top {
+  display: flex;
+  justify-content: center;
+
+  /* ✨ 초기 상태: 숨김 */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px); /* 살짝 아래에 위치했다가 올라오도록 */
+  pointer-events: none; /* 투명할 때 클릭 안 되게 방지 (중요!) */
+
+  /* ✨ 애니메이션 설정 */
+  transition: 
+    opacity 0.3s ease, 
+    transform 0.3s ease, 
+    visibility 0.3s;
+}
+
+.to_top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0); /* 제자리로 */
+  pointer-events: auto; /* 다시 클릭 가능하게 복구 */
+}
+
+.top_btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 18px;
+  
+  background-color: #fff;
+  color: #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.top_btn:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  color: #111;
+}
+
+.top_btn:active {
+  transform: scale(0.95);
 }
 
 /* 모바일: 라벨 숨김(원하면 유지해도 됨) */
