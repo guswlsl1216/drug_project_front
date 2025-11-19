@@ -5,12 +5,12 @@ import "../../styles/Store.css"
 const Ingredient = () =>{
   
   const ingredients = [
-    "밀크씨슬",
-    "칼슘·마그네슘·아연",
+    "밀크시슬",
+    "칼슘 · 마그네슘 · 아연",
     "비타민",
-    "오메가·루테인",
-    "홍삼·인삼",
-    "프리바이오틱스·효소",
+    "오메가 · 루테인",
+    "홍삼 · 인삼",
+    "프로바이오틱스 · 효소",
     "키즈",
     "기타"
   ]
@@ -39,7 +39,7 @@ const Ingredient = () =>{
       <hr className="functionality-hr"/>
 
       <GoodsList
-          categoryKey="성분별" // DB 컬럼명에 맞게 조정 필요
+          categoryKey="classify" // DB 컬럼명에 맞게 조정 필요
           categoryValue={selectedCategory}
       />
     </div>

@@ -3,23 +3,16 @@ header{
   width: 100%;
   height: 50px;
   position: fixed;
+  z-index: 999;
 }
 
 .header_container{
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-}
-.header_menu{
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.header_menu a {
-  text-decoration: none;
-  color: inherit;
+  height: 100%;
 }
 
 .header_logo a{
@@ -30,4 +23,112 @@ header{
 .logo img{
   width: 50px;
   height: 50px;
+}
+
+.header_main_menu{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.main_menu_container,
+.user_menu_container {
+  list-style: none;
+  display: flex;
+  height: 100%;
+}
+
+.main_menu_container a,
+.user_menu_container a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.main_menu {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.main_menu > a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 18px;
+  font-weight: 500;
+  padding-inline: clamp(18px, 4vw, 90px);
+  transition: color 0.3s ease;
+  background-color: #fff;
+  z-index: 1001;
+}
+
+.main_menu:hover > a {
+  color: #7a5cff;
+  font-weight: 600;
+}
+
+.main_menu > a.active {
+  color: #7a5cff;
+  font-weight: 600;
+  border-bottom: 2px solid #7a5cff;
+}
+
+.sub_menu_container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  text-align: center;
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main_menu:hover .sub_menu_container {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sub_menu {
+  list-style: none;
+}
+
+.sub_menu > li > a {
+  display: inline-block;
+  background-color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  padding: 15px 0;
+}
+
+.sub_menu > li:hover a {
+  background-color: #f6f6f6;
+  color: #7a5cff;
+}
+
+.header_user_menu {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.user_menu {
+  display: flex;
+  align-content: center;
+}
+
+/* !!! 임시 !!! */
+.user_menu > a {
+  padding-left: 5px;
 }

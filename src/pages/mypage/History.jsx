@@ -4,12 +4,14 @@ import requestHandler from '../../utils/requestHandler';
 import { useEffect, useState } from 'react';
 import '../../styles/utils/analysisStatus.css';
 import ANALYSIS_STATUS_MAPPING from '../../utils/analysisStatus';
-import Spinner from '../../components/ui/Spinner';
 import UseNavi from '../../utils/UseNavi';
-import { replace, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import LoadingSpinner from '../../utils/LoadingSpinner';
+import useLoginRedirect from '../../utils/useLoginRedirect';
+import '../../styles/analyze.css'
 
 const History = () => {
+  const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   const [historyList, setHistoryList] = useState([]); // 분석 결과 목록
 
@@ -27,24 +29,26 @@ const History = () => {
   const [currentPage, setCurrentPage] = useState(safeInitialPage);  // 현재 페이지 번호
   
   useEffect(() => {
-    requestHandler({
-      method: "get",
-      url: "/result/history",
-      params: { page: currentPage },
-      setLoading,
-      onSuccess: (data) => {
-        if(data.history.length === 0 && currentPage !== 1) {
-          setCurrentPage(1);
-          goTo("/mypage/history", null, true);
-          return;
-        }
-        setHistoryList(data.history);
-        setHas_prev(data.has_prev);
-        setHas_next(data.has_next);
-        setPageNumbers(data.pageNumbers);
-      },
-      onError: (msg) => alert(msg),
-    })
+    requireLogin(() => {
+      requestHandler({
+        method: "get",
+        url: "/result/history",
+        params: { page: currentPage },
+        setLoading,
+        onSuccess: (data) => {
+          if(data.history.length === 0 && currentPage !== 1) {
+            setCurrentPage(1);
+            goTo("/mypage/history", null, true);
+            return;
+          }
+          setHistoryList(data.history);
+          setHas_prev(data.has_prev);
+          setHas_next(data.has_next);
+          setPageNumbers(data.pageNumbers);
+        },
+        onError: (msg) => alert(msg),
+      })
+    }, true)
   }, [currentPage, location]);
   
   const historyCard = (history) => {
@@ -70,7 +74,7 @@ const History = () => {
         </div>
         <div className="history_cardBtn">
           <Button variant="primary" onClick={() => {
-            goTo(`/mypage/history/detail/${history.id}`, {history: history} )
+            goTo(`/history/detail/${history.id}`, {history: history} )
           }}>상세보기</Button>
         </div>
       </article>
@@ -79,11 +83,16 @@ const History = () => {
   
   return (
     <>
-      <main>
-        <section className="history_container">
-          <div className="history_title">
-            <h2>분석 결과 내역</h2>
+      <main className="wrapper">
+        <section className="main_bg">
+          <div className="bg_text">
+            <h1 className="bg_main_title">분석 결과 내역</h1>
           </div>
+        </section>
+        <section className="history_container analyze-tab-content">
+          {/* <div className="history_title">
+            <h2>분석 결과 내역</h2>
+          </div> */}
 
           {
             loading
@@ -91,16 +100,31 @@ const History = () => {
             LoadingSpinner({size:70})
             :
             <>
-            <ul className="history_cardlist">
-              {
-                historyList.map((history, i) => {
+            {
+              historyList.length == 0
+              ?
+              <div className='no_history'>
+                <div className="no_history_title">
+                  <h3>아직 분석 결과가 없어요...</h3>
+                </div>
+                <div className="no_history_description">
+                  <p>지금 복용 중인 영양제와 약을 입력하고,</p>
+                  <p>성분 간의 상호작용 위험을 확인해 보세요!</p>
+                </div>
+                <Button variant='primary' onClick={() => goTo("/analyze/medicine")}>분석하러 가기</Button>
+              </div>
+              :
+              <ul className="history_cardlist">
+                {
+                  historyList.map((history, i) => {
 
-                  return (
-                    <li key={i}>{historyCard(history)}</li>
-                  )
-                })
-              }
-            </ul>
+                    return (
+                      <li key={i}>{historyCard(history)}</li>
+                    )
+                  })
+                }
+              </ul>
+            }
 
             <div className="history_pagination">
               <ul className="history_pagination_list">

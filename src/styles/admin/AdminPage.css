@@ -1,0 +1,215 @@
+/* ============ Theme ============ */
+:root{
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --text: #1e1f29;
+  --muted: #8b90a0;
+  --border: #e8e9f3;
+  --accent: #7a5cff;
+  --accent-2: #3bbcff;
+  --accent-soft: rgba(122, 92, 255, 0.12);
+  --shadow: 0 6px 18px rgba(20, 16, 56, 0.07);
+  --app-header-h: 64px;
+}
+
+/* ============ Layout ============ */
+.adminpage-container{
+  box-sizing: border-box;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+
+  /* 명시적 영역 배치 */
+  display: grid;
+  grid-template-columns: 260px 1fr;                /* sidebar | content */
+  grid-template-rows: auto 1fr;                    /* title | body */
+  grid-template-areas:
+    "title   title"
+    "sidebar content";
+  gap: 24px;
+
+  /* 상단 고정 헤더 여백 보정 (없으면 0으로 바꿔도 됨) */
+  padding: calc(var(--app-header-h) + 24px) 24px 24px;
+}
+
+/* 상단 타이틀 */
+.adminpage-container > h2{
+  grid-area: title;
+  margin: 0 0 8px;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: var(--accent);
+
+  /* 사이드바 sticky가 겹칠 수 있어 항상 위로 */
+  position: relative;
+  z-index: 2;
+}
+
+/* ============ Sidebar (Nav) ============ */
+.adminpage-tabs{
+  grid-area: sidebar;
+
+  position: sticky;
+  top: calc(var(--app-header-h) + 24px);
+  align-self: start;
+
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;       /* 세로 탭 */
+  gap: 12px;
+
+  height: fit-content;
+  z-index: 1;                   /* 타이틀보다 낮게 */
+}
+
+/* NavLink 기본 스타일 */
+.adminpage-tab{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  /* 텍스트 좌측 정렬 */
+  width: 100%;                  /* pill이 가로 꽉 차게 */
+  gap: 10px;
+
+  height: 44px;
+  padding: 0 14px;
+
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: #fff;
+
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: .2px;
+  text-decoration: none;
+
+  transition: all .18s ease;
+}
+
+.adminpage-tab:hover{
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.adminpage-tab.active{
+  background: linear-gradient(0deg, var(--accent-soft), var(--accent-soft));
+  border-color: rgba(122,92,255,.35);
+  box-shadow: 0 4px 12px rgba(122,92,255,.15);
+  color: var(--accent);
+}
+
+/* 선택적으로 섹션 라벨 사용할 때 */
+.adminpage-tabs .section-label{
+  margin: 8px 6px 2px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* ============ Content Panel ============ */
+.adminpage-content{
+  grid-area: content;
+
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+
+  /* 스크롤 여유 */
+  min-height: calc(100vh - 48px);
+  padding-bottom: 32px;
+}
+
+/* 공통 유틸 */
+.admin-card{
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+.admin-grid{ display: grid; gap: 16px; }
+.admin-grid-2{ grid-template-columns: repeat(2, 1fr); }
+.admin-grid-3{ grid-template-columns: repeat(3, 1fr); }
+.section-title{ font-size: 18px; font-weight: 800; margin: 6px 0 14px; }
+
+.stat{
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px; border-radius:12px; border:1px solid var(--border);
+  background:#fafbff;
+}
+.stat .dot{ width:10px; height:10px; border-radius:50%; background: var(--accent); }
+
+/* 테이블 공용 */
+.admin-table{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  background: var(--panel);
+}
+.admin-table thead th{
+  background: #f7f7fe;
+  color: #4b4f65;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.admin-table tbody td{
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.admin-table tbody tr:hover{ background: #fafbff; }
+
+/* 툴바 */
+.toolbar{
+  display:flex; gap:10px; align-items:center; justify-content:space-between;
+  margin-bottom: 14px;
+}
+
+/* 배지 */
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 700;
+  border: 1px solid var(--border); color: var(--text); background: #fafbff;
+}
+.badge.soldout{ color:#aa1d1d; background:#fff4f4; border-color:#ffdede; }
+.badge.on{ color:#1f7a4d; background:#f1fff6; border-color:#d9f4e5; }
+
+/* ============ Responsive ============ */
+@media (max-width: 1024px){
+  .adminpage-container{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "title"
+      "sidebar"
+      "content";
+  }
+
+  .adminpage-tabs{
+    position: static;
+    flex-direction: row;    /* 모바일은 가로 스크롤 탭 */
+    padding: 10px;
+    gap: 8px;
+    border-radius: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .adminpage-tab{ height: 40px; padding: 0 12px; }
+  .admin-grid-2, .admin-grid-3{ grid-template-columns: 1fr; }
+}
