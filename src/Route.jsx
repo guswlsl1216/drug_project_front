@@ -35,6 +35,7 @@ import Reviews from "./pages/store/Reviews";
 import PaySuccess from "./pages/order/PaySuccess";
 import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
+import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
 
@@ -77,6 +78,7 @@ const Routers = () => {
           <Route path="order" element={<OrderHistory />} />
         </Route>
         <Route path="/store" element={<Store />} >
+          <Route path="cart" element={<Cart/>} />
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
