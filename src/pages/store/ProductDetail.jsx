@@ -7,11 +7,7 @@ import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
-<<<<<<< HEAD
-import axios from "axios";
-=======
 import LoadingSpinner from "../../utils/loadingSpinner";
->>>>>>> develop
 
 
 const ProductDetail = () => {
