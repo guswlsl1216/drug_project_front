@@ -6,6 +6,7 @@ import { useState } from 'react'
 import ChatbotButton from './components/ui/ChatbotButton'
 import ChatbotDock from './components/chatbot/ChatbotDock'
 import { UserProvider, useUser } from './components/context/UserContext'
+import useScrollToTop from './utils/useScrollToTop'
 
 const AppContent = () => {
   const {loading} = useUser();
@@ -32,6 +33,7 @@ const AppContent = () => {
 };
 
 const App = () => {
+  useScrollToTop();
   return (
     <UserProvider>
       <AppContent/>

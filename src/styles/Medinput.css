@@ -1,0 +1,225 @@
+/* --- 메인 페이지 컨테이너 --- */
+.medicine-page-container {
+  padding: 20px;
+  background-color: var(--light-bg, #F8F8F8);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+/* --- 콘텐츠 레이아웃 --- */
+.content-wrapper {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.image-analysis-section,
+.recognized-list-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  flex : 1 1 45%;
+}
+
+.image-analysis-section h3,
+.recognized-list-section h3 {
+  font-size: 1.2em;
+  color: var(--main-color, #333);
+  margin-bottom: 10px;
+}
+
+/* --- 이미지 표시 박스 --- */
+.image-display-box {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #DDD;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.placeholder-text {
+  color: #999;
+  font-size: 0.9em;
+}
+
+/* --- 공통 버튼 --- */
+.button-upload,
+.button-search,
+.button-add,
+.button-save {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  width: 150px;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.button-upload,
+.button-search,
+.button-add,
+.button-save {
+  background-color: var(--main-color, #333);
+}
+
+.button-upload:hover,
+.button-search:hover,
+.button-add:hover,
+.button-save:hover {
+  background-color: var(--hover-color, #555);
+}
+
+/* 저장 버튼만 조금 넓게 */
+.button-save {
+  width: 200px;
+  margin-top: 30px;
+}
+
+/* --- 인식된 의약품 리스트 --- */
+.medicine-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.medicine-item {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #DDD;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.medicine-item input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  padding: 5px;
+}
+
+.medicine-item button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 5px;
+  margin-left: 5px;
+}
+
+.button-edit {
+  color: #007bff;
+}
+
+.button-delete {
+  color: #dc3545;
+}
+
+.guidance-text {
+  font-size: 0.9em;
+  color: #666;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* --- 탭 메뉴 (가로 정렬 수정 & 흑백 톤 통일) --- */
+.tab-container {
+  display: flex;
+  flex-direction: row; /* ✅ 세로 정렬 → 가로 정렬로 변경 */
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  background-color: #f9f9f9;
+  margin-bottom: 25px;
+}
+
+.tab-item {
+  padding: 12px 25px;
+  font-weight: 600;
+  color: #555;
+  background-color: transparent;
+  border-right: 1px solid #ddd;
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.tab-item:last-child {
+  border-right: none;
+}
+
+.tab-item:hover {
+  background-color: #eee;
+}
+
+.tab-item.active {
+  background-color: #333; /* 강조 탭 배경 */
+  color: white;
+}
+
+/* --- 상세 옵션 (SuppInput 등) --- */
+.dosage-frequency-options, .time-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.dosage-option, .time-option {
+  padding: 8px 12px;
+  border: 1px solid #DDD;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: white;
+  color: #444;
+  user-select: none;
+}
+
+.dosage-option:hover, .time-option:hover {
+  background-color: #F0F0F0;
+}
+
+.dosage-option.active {
+  background-color: var(--main-color, #333);
+  color: white;
+}
+
+.time-option.active {
+  background-color: var(--hover-color, #555);
+  color: white;
+}
+
+/* --- 반응형 --- */
+@media (max-width: 600px) {
+  .tab-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .tab-item {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    font-size: 0.9em;
+  }
+}

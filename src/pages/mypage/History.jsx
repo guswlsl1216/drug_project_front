@@ -8,6 +8,7 @@ import UseNavi from '../../utils/UseNavi';
 import { useLocation } from 'react-router-dom';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import useLoginRedirect from '../../utils/useLoginRedirect';
+import '../../styles/analyze.css'
 
 const History = () => {
   const { requireLogin } = useLoginRedirect();
@@ -73,7 +74,7 @@ const History = () => {
         </div>
         <div className="history_cardBtn">
           <Button variant="primary" onClick={() => {
-            goTo(`/mypage/history/detail/${history.id}`, {history: history} )
+            goTo(`/history/detail/${history.id}`, {history: history} )
           }}>상세보기</Button>
         </div>
       </article>
@@ -82,11 +83,16 @@ const History = () => {
   
   return (
     <>
-      <main>
-        <section className="history_container">
-          <div className="history_title">
-            <h2>분석 결과 내역</h2>
+      <main className="wrapper">
+        <section className="main_bg">
+          <div className="bg_text">
+            <h1 className="bg_main_title">분석 결과 내역</h1>
           </div>
+        </section>
+        <section className="history_container analyze-tab-content">
+          {/* <div className="history_title">
+            <h2>분석 결과 내역</h2>
+          </div> */}
 
           {
             loading
@@ -105,7 +111,7 @@ const History = () => {
                   <p>지금 복용 중인 영양제와 약을 입력하고,</p>
                   <p>성분 간의 상호작용 위험을 확인해 보세요!</p>
                 </div>
-                <Button variant='primary' onClick={() => goTo("/analyze")}>분석하러 가기</Button>
+                <Button variant='primary' onClick={() => goTo("/analyze/medicine")}>분석하러 가기</Button>
               </div>
               :
               <ul className="history_cardlist">

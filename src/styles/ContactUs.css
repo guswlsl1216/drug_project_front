@@ -1,0 +1,157 @@
+/* src/styles/ContactUs.css */
+
+/* --- CSS Variables (선택 사항: 색상 팔레트 정의) --- */
+:root {
+  --primary-color: #007bff; /* 주 색상 (버튼 등) */
+  --secondary-color: #6c757d; /* 보조 색상 */
+  --success-color: #28a745; /* 성공 메시지 */
+  --error-color: #dc3545; /* 에러 메시지 */
+  --border-color: #ced4da; /* 입력 필드 테두리 */
+  --background-light: #f8f9fa; /* 밝은 배경 */
+  --text-color: #343a40; /* 기본 텍스트 색상 */
+  --text-light: #6a6a6a; /* 밝은 텍스트 (설명 등) */
+}
+
+/* --- 컨테이너 스타일 --- */
+.contact-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color);
+}
+
+.contact-container h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-size: 2.2em;
+  font-weight: 700;
+}
+
+.contact-description {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-size: 1.05em;
+}
+
+/* --- 메시지 스타일 --- */
+.success-message {
+  background-color: #d4edda;
+  color: var(--success-color);
+  border: 1px solid #c3e6cb;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: var(--error-color);
+  border: 1px solid #f5c6cb;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* --- 폼 그룹 스타일 --- */
+.inquiry-form .form-group {
+  margin-bottom: 25px;
+}
+
+.inquiry-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 1.05em;
+}
+
+.inquiry-form input[type="text"],
+.inquiry-form input[type="email"],
+.inquiry-form select,
+.inquiry-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1em;
+  color: var(--text-color);
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
+.inquiry-form input:focus,
+.inquiry-form select:focus,
+.inquiry-form textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.inquiry-form select {
+  -webkit-appearance: none; /* 기본 select 스타일 제거 */
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.7-6.4H18.5a17.6%2017.6%200%200%200-13.7%206.4c-4.5%204.6-4.5%2012%200%2016.5l128.5%20129.2c4.5%204.6%2011.9%204.6%2016.4%200l128.5-129.2c4.5-4.5%204.5-11.9%200-16.5z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 10px;
+  padding-right: 30px; /* 화살표 공간 */
+}
+
+.inquiry-form textarea {
+  resize: vertical; /* 세로 크기만 조절 가능 */
+  min-height: 120px;
+}
+
+/* 비활성화된 필드 */
+.inquiry-form input:disabled,
+.inquiry-form select:disabled,
+.inquiry-form textarea:disabled {
+  background-color: var(--background-light);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* 개인정보 동의 체크박스 */
+.privacy-consent {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.privacy-consent input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: var(--primary-color); /* 체크박스 색상 */
+}
+
+.privacy-consent label {
+  margin-bottom: 0;
+  font-weight: 500;
+  font-size: 0.95em;
+  color: var(--text-light);
+}
+
+.inquiry-form button[type="submit"]:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.inquiry-form button[type="submit"]:disabled {
+  background-color: var(--secondary-color);
+  cursor: not-allowed;
+  opacity: 0.8;
+}

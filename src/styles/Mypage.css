@@ -5,7 +5,7 @@
     /* max-width를 800px에서 찜 목록에 맞게 더 넓게 설정하는 것이 좋습니다. */
     width: 100%;
     max-width: 1200px; /* 찜 목록 그리드를 위해 확장 */
-    margin: 40px auto;
+    margin: 0 auto 40px;
     padding: 20px;
     font-family: "Noto Sans KR", sans-serif;
     padding-top: 80px; /* 기존 코드 유지 */

@@ -41,6 +41,15 @@
     box-shadow: 0 -2px 6px rgba(174, 147, 209, 0.3);
 }
 
+.store-content-wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.store-content {
+    flex-grow: 1;
+}
+
 /* =========================================================================
  * 3. 카테고리/상품 공통 그리드 스타일
  * ========================================================================= */
@@ -489,31 +498,15 @@
     margin-top: 10px; /* 위에 purchase-options 그룹과 간격 주기 */
 }
 
-/* 반응형 */
-@media (max-width: 768px) {
-    .detail-section {
-        flex-direction: column;
-        align-items: center;
-    }
-    .detail-image-area {
-        width: 100%;
-        max-width: 400px;
-        height: 300px;
-    }
-    .purchase-options {
-        justify-content: center;
-    }
-}
-
 /* =========================================================================
  * 6. 찜 버튼 관련 스타일 (GoodsList, ProductDetail 공통)
  * ========================================================================= */
-
-/* 상품 카드 내 찜 버튼 컨테이너 (GoodsList.jsx) */
-.product-card {
-    position: relative;
-}
-
+ 
+ /* 상품 카드 내 찜 버튼 컨테이너 (GoodsList.jsx) */
+ .product-card {
+     position: relative;
+    }
+    
 .product-favorite-wrapper {
     position: absolute;
     top: 10px;
@@ -640,4 +633,27 @@
     font-weight: 600;
     font-size: 15px;
     background-color: #fff;
+}
+
+.goodsList_spinner,
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .detail-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    .detail-image-area {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+    }
+    .purchase-options {
+        justify-content: center;
+    }
 }

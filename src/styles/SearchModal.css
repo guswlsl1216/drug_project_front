@@ -87,3 +87,35 @@
   font-size: 0.9rem;
   color: #666;
 }
+
+/* 쇼핑몰 상호작용 검사 모달 부분 */
+
+.medicine-registration-step{
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+
+.button-next{
+  margin: 0 auto;
+}
+
+.content-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.guidance-text-bottom{
+  font-size: 14px;
+  text-align: center;
+  color: #666;
+}
+
+.bottom-box{
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+}
+
