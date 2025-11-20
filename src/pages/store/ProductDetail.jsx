@@ -19,6 +19,8 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [reviewInfo, setReviewInfo] = useState({ 'length': 0, 'star_avg': 0 });
+  const [reviewUpdate, setReviewUpdate] = useState(false)
 
   const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
   const {goTo} = UseNavi()
@@ -79,14 +81,26 @@ const ProductDetail = () => {
         }
       })
     };
-
+    getInfo()
     ProductDetailandFavorite();
-  }, [goodsId, setLoading, setProduct, setIsFavorite, setError]); // goodsId가 변경될 때마다 재실행
+  }, [goodsId, setLoading, setProduct, setIsFavorite, setError, reviewUpdate]); // goodsId가 변경될 때마다 재실행
 
+  const handleReviewUpdated = () => {
+    setReviewUpdate(prev => !prev);
+  };
+
+  const getInfo = async () => {
+    const res = await requestHandler({
+      method: "get",
+      url: "/review/goodsReviewInfo/" + goodsId
+    })
+    console.log(res.data['info'])
+    setReviewInfo(res.data['info'])
+  }
 
   const handleQuantityChange = (type) => {
     setQuantity(prevQuantity => {
-      if(type === 'increment') { 
+      if (type === 'increment') {
         // 재고가 있을 경우에만 증가(재고가 없으면 무한정 증가 방지)
         // 재고 상태 : product.stock
         const maxStock = product?.stock || Infinity;
@@ -175,11 +189,17 @@ const ProductDetail = () => {
 
           {/* B. 제품 정보 및 구매 액션 영역 */}
           <div className="detail-info-area">
+
             {/* 제목 및 ID */}
-            <h1 className="product-title">{product.goods_name}</h1>
-            <p className="product-id">
-              상품 ID: {product.id} | 카테고리: {product.category || "미분류"}
-            </p>
+            <div className="d-flex align-items-center gap-2">
+              <h1 className="product-title">
+                {product.goods_name}
+              </h1>
+              <span className="text-warning fw-bold">
+                ⭐ {reviewInfo['star_avg']}점
+              </span>
+            </div>
+            <p className="product-id">상품 ID: {product.id} | 카테고리: {product.category || '미분류'}</p>
 
             {/* 가격 */}
             <div className="price-section">
@@ -238,20 +258,15 @@ const ProductDetail = () => {
 
         {/* 2. 상세 정보 및 리뷰 탭 섹션 */}
         <div className="tab-section">
+
           {/* 탭 네비게이션 */}
           <div className="tab-nav">
             <nav className="tab-links">
-              <NavLink
-                to={`/store/detail/${goodsId}/desc`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
+              <NavLink to={`/store/detail/${goodsId}/desc`} className={({ isActive }) => isActive ? 'tab-link active' : 'tab-link'}>
                 <h2 className="tab-title-only">제품 상세 정보</h2>
               </NavLink>
-              <NavLink
-                to={`/store/detail/${goodsId}/review`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
-                <h2 className="tab-title-only">리뷰</h2>
+              <NavLink to={`/store/detail/${goodsId}/review`} className={({ isActive }) => isActive ? 'tab-link active' : 'tab-link'}>
+                <h2 className="tab-title-only">리뷰({reviewInfo['length']})</h2>
               </NavLink>
               <NavLink
                 to={`/store/detail/${goodsId}/qna`}
@@ -264,7 +279,7 @@ const ProductDetail = () => {
 
           {/* 탭 콘텐츠 */}
           <div className="tab-content">
-            <Outlet context={{product}} />
+            <Outlet context={{ product, reviewUpdate, handleReviewUpdated }} />
           </div>
         </div>
       </div>
