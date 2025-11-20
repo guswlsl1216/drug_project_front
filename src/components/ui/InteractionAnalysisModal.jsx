@@ -11,31 +11,29 @@ const InteractionAnalysisModal = ({isOpen, onClose, supplementInfo}) => {
   const [analysisResult, setAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // 약물 등록 단계에서 사용할 상태 (세션 스토리지 대신 모달 내부에서 관리)
-  // MedicineRegistrationStep 컴포넌트로 전달될 recognizedMedicines 상태
-  const [recognizedMedicines, setRecognizedMedicines] = useState([]);
 
   // 상호작용 분석 API 호출 함수
-  const analyzeInteraction = async () => {
+  const analyzeInteraction = async (finalDataToSend) => {
     setLoading(true);
     try {
-      // ⭐ 유효성 검사: 확정된 약물만 필터링
-      const validatedMedicines = recognizedMedicines.filter((med) => med.isValidated);
+      // finalDataToSend 구조: { meds: [...], supps: [...] }
 
-      if (validatedMedicines.length === 0) {
-        alert("분석을 진행하려면 DB에 확정된 의약품이 1개 이상 필요합니다.");
+      // 유효성 검사 (MedicineRegistrationStep에서 이미 처리되었겠지만 한 번 더 확인)
+      if (finalDataToSend.meds.length === 0) {
+        alert("분석을 진행하려면 의약품이 1개 이상 필요합니다.");
+        setLoading(false);
+        return;
+      }
+      if (finalDataToSend.supps.length === 0) {
+        alert("분석을 진행하려면 영양제 정보가 필요합니다.");
         setLoading(false);
         return;
       }
 
-      // 서버로 보낼 데이터 구조 (예시)
+      // 서버로 보낼 데이터 구조 (finalDataToSend를 그대로 사용)
       const requestData = {
-        supplement: supplementInfo, // 영양제 정보
-        medicines: validatedMedicines.map((med) => ({
-          name: med.name,
-          ingredients: med.ingredients,
-          // 기타 약물 정보
-        })),
+        supplement: finalDataToSend.supps[0], // 단일 영양제
+        medicines: finalDataToSend.meds, // 의약품 배열
       };
 
       // /analyze/interaction 엔드포인트 호출 (가정)
@@ -56,7 +54,6 @@ const InteractionAnalysisModal = ({isOpen, onClose, supplementInfo}) => {
   const handleClose = () => {
     setStep("register");
     setAnalysisResult(null);
-    setRecognizedMedicines([]);
     onClose();
   };
 
@@ -64,9 +61,11 @@ const InteractionAnalysisModal = ({isOpen, onClose, supplementInfo}) => {
     if (step === "register") {
       return (
         <MedicineRegistrationStep
-          recognizedMedicines={recognizedMedicines}
-          setRecognizedMedicines={setRecognizedMedicines}
-          onNext={analyzeInteraction} // 검사 시작 버튼 역할
+          //  영양제 ID를 `initialSuppsId` prop으로 전달 (로딩용)
+          initialSuppsId={supplementInfo?.id}
+          //  기존에 전달하던 recognizedMedicines 상태 제거
+          //  onNext에는 분석 함수를 전달 (이 함수는 하위 컴포넌트에서 분석 데이터를 받아옴)
+          onNext={analyzeInteraction}
         />
       );
     } else if (step === "result" && analysisResult) {
