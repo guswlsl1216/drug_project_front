@@ -194,13 +194,13 @@ const ProductDetail = () => {
                   className="buy-now-btn"
                   onClick={() => {
                     if (!isLoggedIn) {
-                      goTo("/login")
-                      return
+                      goTo("/login");
+                      return;
                     }
                     goTo("/orders", {
                       buyer: {
                         nickname: user?.nickname ?? "",
-                        tel: user?.tel ?? ""
+                        tel: user?.tel ?? "",
                       },
                       items: [
                         {
@@ -208,20 +208,21 @@ const ProductDetail = () => {
                           goods_name: product.goods_name,
                           image_path: product.image_path,
                           unit_price: product.price,
-                          count: quantity
-                        }
+                          count: quantity,
+                        },
                       ],
-                      total_price: totalPrice
-                    })
+                      total_price: totalPrice,
+                    });
                   }}
                 >
                   바로구매
                 </Button>
-                
-                <button 
-                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
-                  onClick={toggleFavoriteHandler}>
-                  {isFavorite ? '❤️' : '🤍'}
+
+                <button
+                  className={`favorite-icon-btn ${isFavorite ? "active" : ""}`}
+                  onClick={toggleFavoriteHandler}
+                >
+                  {isFavorite ? "❤️" : "🤍"}
                 </button>
               </div>
             </div>
@@ -270,6 +271,7 @@ const ProductDetail = () => {
       <InteractionAnalysisModal
         isOpen={isAnalysisModalOpen}
         onClose={() => setIsAnalysisModalOpen(false)}
+        supplementIdForAnalysis={product.id}
         supplementInfo={{
           id: product.id,
           name: product.goods_name,
