@@ -1,0 +1,110 @@
+/* 회원가입 페이지 전체 중앙 배치 */
+.signup-page-wrapper {
+  min-height: 100vh;                 /* 화면 전체 높이 */
+  display: flex;
+  justify-content: center;           /* 가로 중앙 */
+  align-items: center;               /* 세로 중앙 */
+  background-color: #f9f9f9;         /* 필요 시 배경색 */
+  padding-top: 60px;                 /* 네비바 높이 고려 */
+  box-sizing: border-box;
+}
+
+/* 회원가입 폼 박스 */
+.signup-form {
+  background: #fff;
+  padding: 28px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  max-width: 450px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 폼 제목 */
+.signup-form h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* 각 입력 그룹 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+/* 라벨 */
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* input */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* select */
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* 버튼 */
+.signup-btn {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.signup-btn:disabled {
+  background-color: #a0c8ff;
+  cursor: not-allowed;
+}
+
+.signup-btn:hover:enabled {
+  background-color: #0056b3;
+}
+
+/* 반응형: 화면 작을 때 여백 확보 */
+@media (max-width: 600px) {
+  .signup-page-wrapper {
+    padding: 60px 16px;
+  }
+  .signup-form {
+    padding: 20px 24px;
+  }
+}
+
+.signup-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 60px; /* 네비바 높이 고려 */
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+}
