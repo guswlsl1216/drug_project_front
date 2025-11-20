@@ -8,6 +8,7 @@ import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
 import LoadingSpinner from "../../utils/LoadingSpinner";
+import useLoginRedirect from "../../utils/useLoginRedirect";
 
 
 const ProductDetail = () => {
@@ -21,7 +22,8 @@ const ProductDetail = () => {
 
   const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
   const {goTo} = UseNavi()
-  const {isLoggedIn, user} = useUser()
+  const {user} = useUser()
+  const { requireLogin } = useLoginRedirect();
 
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
@@ -127,6 +129,27 @@ const ProductDetail = () => {
     });  
   };
 
+  const handleOrder = () => {
+    requireLogin(() => {
+      goTo("/orders", {
+        buyer: {
+          nickname: user?.nickname ?? "",
+          tel: user?.tel ?? ""
+        },
+        items: [
+          {
+            goods_id: product.id,
+            goods_name: product.goods_name,
+            image_path: product.image_path,
+            unit_price: product.price,
+            count: quantity
+          }
+        ],
+        total_price: totalPrice
+      })
+    })
+  }
+
 
   if (loading) return <LoadingSpinner label="상품 상세 정보를 불러오는 중..." />
   if (error) return <div className="error-message">{error}</div>
@@ -192,36 +215,16 @@ const ProductDetail = () => {
                 <Button
                   variant="text"
                   className="buy-now-btn"
-                  onClick={() => {
-                    if (!isLoggedIn) {
-                      goTo("/login")
-                      return
-                    }
-                    goTo("/orders", {
-                      buyer: {
-                        nickname: user?.nickname ?? "",
-                        tel: user?.tel ?? ""
-                      },
-                      items: [
-                        {
-                          goods_id: product.id,
-                          goods_name: product.goods_name,
-                          image_path: product.image_path,
-                          unit_price: product.price,
-                          count: quantity
-                        }
-                      ],
-                      total_price: totalPrice
-                    })
-                  }}
+                  onClick={handleOrder}
                 >
                   바로구매
                 </Button>
-                
-                <button 
-                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
-                  onClick={toggleFavoriteHandler}>
-                  {isFavorite ? '❤️' : '🤍'}
+
+                <button
+                  className={`favorite-icon-btn ${isFavorite ? "active" : ""}`}
+                  onClick={toggleFavoriteHandler}
+                >
+                  {isFavorite ? "❤️" : "🤍"}
                 </button>
               </div>
             </div>
@@ -270,6 +273,7 @@ const ProductDetail = () => {
       <InteractionAnalysisModal
         isOpen={isAnalysisModalOpen}
         onClose={() => setIsAnalysisModalOpen(false)}
+        supplementIdForAnalysis={product.id}
         supplementInfo={{
           id: product.id,
           name: product.goods_name,

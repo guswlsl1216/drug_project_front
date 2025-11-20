@@ -40,6 +40,8 @@ const OrderSheet = () => {
   const [sameAsBuyer, setSameAsBuyer] = useState(false)
   const [point, setPoint] = useState(0)
   const [saveAddress, setSaveAddress] = useState(false);
+  const [addressList, setAddressList] = useState([]);
+  const [showAddressModal, setShowAddressModal] = useState(false);
 
   const calcShippingFee = (price) => {
     return price >= 20000 ? 0 : 2500;
@@ -175,7 +177,7 @@ const OrderSheet = () => {
     fetchUserInfo();
   }, []);
 
-  const handleSameAsBuyeerChange = async (e) => {
+  const handleSameAsBuyerChange = async (e) => {
     const checked = e.target.checked;
     setSameAsBuyer(checked)
 
@@ -210,6 +212,30 @@ const OrderSheet = () => {
     }))
   }
 
+  const openAddressModal = async () => {
+    await requestHandler({
+      method: "get",
+      url: "/orders/addresses",
+      onSuccess: (data) => {
+        setAddressList(data.addresses || [])
+        setShowAddressModal(true)
+      },
+      onError:(msg) => alert(msg || "배송지 목록을 불러오지 못했습니다.")
+    })
+  }
+
+  const handleSelectAddress = (addr) => {
+    setOrder(prev => ({
+      ...prev,
+      receiver:addr.receiver || "",
+      phone: addr.phone || "",
+      zipcode: addr.zipcode || "",
+      address: addr.address || "",
+      address_detail: addr.address_detail || ""
+    }))
+    setShowAddressModal(false)
+  }
+
   return(
     <>
       <h2 className="order-title">주문/결제</h2>
@@ -236,18 +262,29 @@ const OrderSheet = () => {
           <div className="card section-shipping">
             <h5 className="section-title">배송지</h5>
 
-            <div className="inline">
-              <label className="field-label">배송지 선택</label>
-              <label className="switch">
-                <input 
-                  type="checkbox" 
-                  checked={sameAsBuyer}
-                  onChange={handleSameAsBuyeerChange}
-                />
-                <span className="slider"></span>
-              </label>
-              <span className="switch-label">주문자 정보와 동일</span>
+            <div className="shipping-header">
+              <div className="inline shipping-select-row">
+                <label className="field-label">배송지 선택</label>
+                <label className="switch">
+                  <input 
+                    type="checkbox" 
+                    checked={sameAsBuyer}
+                    onChange={handleSameAsBuyerChange}
+                  />
+                  <span className="slider"></span>
+                </label>
+                <span className="switch-label">주문자 정보와 동일</span>
+              </div>
+
+              <Button
+                variant="text"
+                className="address-list-btn"
+                onClick={openAddressModal}
+              >
+                배송지 목록에서 찾기
+              </Button>
             </div>
+
 
             <label className="field-label" htmlFor="receiver">받으시는 분</label>
             <input 
@@ -300,7 +337,7 @@ const OrderSheet = () => {
                 onChange={(e) => setSaveAddress(e.target.checked)}
                 id="save-address"
               />
-              <label htmlFor="save-address" className="save-address-label">배송지 저장</label>
+              <label htmlFor="save-address" className="save-address-label">기본 배송지에 저장</label>
             </div>
           </div>
 
@@ -320,7 +357,7 @@ const OrderSheet = () => {
                     </p>
                   </div>
                   <strong className="item-price" name="items_total">
-                    {totalPrice.toLocaleString()}원
+                    {(item.unit_price * item.count).toLocaleString()}원
                   </strong>
                 </div>
               ))
@@ -453,7 +490,29 @@ const OrderSheet = () => {
             {loading ? "구매중..." : "구매하기"}
           </Button>
         </div>
-
+        {showAddressModal && (
+          <div className="address-modal-backdrop">
+            <div className="address-modal">
+              <h4>배송지 선택</h4>
+              {addressList.length === 0 ? (
+                <p>사용 가능한 배송지가 없습니다.</p>
+              ) : (
+                addressList.map((addr, idx) => (
+                  <button
+                    key={idx}
+                    className="address-item"
+                    onClick={() => handleSelectAddress(addr)}
+                  >
+                    <div>{addr.receiver} / {addr.phone}</div>
+                    <div>{addr.zipcode} {addr.address}</div>
+                    <div>{addr.address_detail}</div>
+                  </button>
+                ))
+              )}
+              <Button onClick={() => setShowAddressModal(false)}>닫기</Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
