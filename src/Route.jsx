@@ -37,6 +37,8 @@ import { AdminRoute } from "./hooks/AdminRoute";
 import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
+import TermsOfService from "./pages/footer/TermsOfService";
+import PrivacyPolicy from "./pages/footer/privacyPolicy";
 
 
 const Routers = () => {
@@ -44,6 +46,8 @@ const Routers = () => {
   return (
     <>
       <Routes>
+        <Route path="/terms" element={<TermsOfService/>}/>
+        <Route path="/privacy" element={<PrivacyPolicy/>}/>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupComplete" element={<SignupComplete/>} />
