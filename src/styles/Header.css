@@ -66,14 +66,14 @@ header{
 }
 
 .main_menu:hover > a {
-  color: #7a5cff;
+  color: #a671ec;
   font-weight: 600;
 }
 
-.main_menu > a.active {
-  color: #7a5cff;
+.main_menu.activeMenu > a {
+  color: #a671ec;
   font-weight: 600;
-  border-bottom: 2px solid #7a5cff;
+  border-bottom: 2px solid #a671ec;
 }
 
 .sub_menu_container {
@@ -114,7 +114,7 @@ header{
 
 .sub_menu > li:hover a {
   background-color: #f6f6f6;
-  color: #7a5cff;
+  color: #a671ec;
 }
 
 .header_user_menu {
