@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../../styles/Store.css";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink, Outlet, useOutletContext, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
 import InteractionAnalysisModal from "../../components/ui/InteractionAnalysisModal";
 import UseNavi from "../../utils/UseNavi";
@@ -12,6 +12,8 @@ import useLoginRedirect from "../../utils/useLoginRedirect";
 
 
 const ProductDetail = () => {
+  const { triggerUpdate, triggerCartUpdate } = useOutletContext();
+
   const {goodsId} = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,6 +28,21 @@ const ProductDetail = () => {
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
 
+  const addRecentItem = (newItem) => {
+    let items = sessionStorage.getItem("recentItems");
+    items = items ? JSON.parse(items) : [];
+
+    let newItems = items.filter(item => item.id !== newItem.id);
+    
+    newItems.unshift(newItem);
+
+    if (newItems.length > 15) {
+      newItems.pop();
+    }
+
+    sessionStorage.setItem("recentItems", JSON.stringify(newItems));
+    triggerUpdate();
+  }
 
   useEffect(() => {
     const ProductDetailandFavorite = async () => {
@@ -48,6 +65,7 @@ const ProductDetail = () => {
             }
 
             setError(null); // 에러 초기화
+            addRecentItem(productData);
           } else {
             setProduct(null)
             setIsFavorite(false)
@@ -102,6 +120,7 @@ const ProductDetail = () => {
           } else {
             alert(`총 ${data.count}개가 장바구니에 담겼습니다.`); 
           }
+          triggerCartUpdate();
           console.log(data);
         },
         onError: (msg) => {

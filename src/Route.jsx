@@ -9,7 +9,6 @@ import Review from "./pages/mypage/Review";
 import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
-import Medslist from "./pages/Medslist";
 import MyDrugs from "./pages/mypage/MyDrugs";
 import MedicinePage from "./pages/analyze/MedicinePage";
 import SupplementPage from "./pages/analyze/SupplementPage";
@@ -59,7 +58,6 @@ const Routers = () => {
           <Route path="supplement" element={<SupplementPage />} />
         </Route>
         <Route path="/analyze/result" element={<AnalyzeResult />} />
-        <Route path="/medslist" element={<Medslist />} />
         <Route path="/history" element={<History />} />
         <Route path="/history/detail/:id" element={<HistoryDetail />} />
 

@@ -100,10 +100,12 @@ const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
               </div>
             ) : (
               <>
-                {displayEmail && (
+                {displayEmail &&  (
                   <div className="meta-item">
                     <span className="meta-label">이메일</span>
-                    <span className="meta-value">{displayEmail}</span>
+                    <span className="meta-value">
+                      {displayEmail ? displayEmail : "- (비회원 문의)"}
+                    </span>
                   </div>
                 )}
                 <div className="meta-item">
