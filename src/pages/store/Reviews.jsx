@@ -65,6 +65,7 @@ function Review() {
       });
       const data = await response.json();
       console.log(data);
+      alert(data['message'])
     } catch (error) {
       console.error('Error:', error);
     }
@@ -370,52 +371,54 @@ function Review() {
                   {c.date}
                 </small>
               </div>
-              <div className="ms-3 d-flex gap-2">
-                {updateMode === idx ? (
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    onClick={() => {
-                      //저장 로직
-                      updateReivew(c.id)
-                    }}>
-                    저장
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    onClick={
-                      () => {
-                        // 수정 로직
-                        handleUpdateReview(idx, c.text, c.rating)
+              {currentUser == c.username && (
+                <div className="ms-3 d-flex gap-2">
+                  {updateMode === idx ? (
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={() => {
+                        //저장 로직
+                        updateReivew(c.id)
                       }}>
-                    수정
-                  </Button>
-                )}
-                {updateMode === idx ? (
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => {
-                      //수정취소
-                      setUpdateMode('')
-                    }}>
-                    취소
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline-danger"
-                    size="sm"
-                    onClick={() => {
-                      // 삭제 로직
-                      deleteReview(c.id)
-                    }}
-                  >
-                    삭제
-                  </Button>
-                )}
-              </div>
+                      저장
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      onClick={
+                        () => {
+                          // 수정 로직
+                          handleUpdateReview(idx, c.text, c.rating)
+                        }}>
+                      수정
+                    </Button>
+                  )}
+                  {updateMode === idx ? (
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => {
+                        //수정취소
+                        setUpdateMode('')
+                      }}>
+                      취소
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => {
+                        // 삭제 로직
+                        deleteReview(c.id)
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           </ListGroup.Item>
         ))}
