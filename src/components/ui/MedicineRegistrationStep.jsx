@@ -1,17 +1,19 @@
 // components/modals/MedicineRegistrationStep.jsx
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance.js";
 import SearchModal from "./SearchModal";
 import "../../styles/SearchModal.css";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
-const MedicineRegistrationStep = ({onNext}) => {
+const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
   // 상태 관리
   const [uploadedFile, setUploadedFile] = useState(null);
   const [medicineImage, setMedicineImage] = useState(null);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [selectedMedicineId, setSelectedMedicineId] = useState(null);
+  const [supplementData, setSupplementData] = useState(null);
   const [recognizedMedicines, setRecognizedMedicines] = useState([
     {
       id: 1,
@@ -19,6 +21,49 @@ const MedicineRegistrationStep = ({onNext}) => {
       isValidated: false,
     },
   ]);
+
+  useEffect(() => {
+    if (initialSuppsId) {
+      const fetchInitialSupplement = async () => {
+        try {
+          // 백엔드 API 호출 (이전 응답에서 추가한 엔드포인트)
+          const response = await axiosInstance.get(
+            `${SERVER_URL}/goods/aiAnalyze/supplements/detail/${initialSuppsId}`
+          );
+
+          const suppData = response.data;
+
+          if (suppData && suppData.id) {
+            // 성분 데이터를 프론트엔드 상태 구조에 맞게 배열로 변환
+            const ingredientsArray =
+              typeof suppData.ingredients === "string"
+                ? suppData.ingredients
+                    .split(",")
+                    .map((s) => s.trim())
+                    .filter((s) => s)
+                : suppData.ingredients;
+
+            const initialSupp = {
+              id: suppData.id,
+              name: suppData.name,
+              ingredients: ingredientsArray, // 성분 배열로 저장
+              korName: suppData.korName || suppData.name,
+              isValidated: true, // DB에서 가져온 데이터이므로 확정 상태
+            };
+
+            // ⭐ 영양제 상태에 저장 (recognizedMedicines에 넣지 않음)
+            setSupplementData(initialSupp);
+            console.log("초기 영양제 데이터 로드 완료:", initialSupp);
+          }
+        } catch (error) {
+          console.error("초기 영양제 데이터 로딩 오류:", error.response?.data || error.message);
+          // 실패 시, supplementData는 null로 유지
+        }
+      };
+
+      fetchInitialSupplement();
+    }
+  }, [initialSuppsId]);
 
   // API 호출 함수
   const callDetectApi = async (file) => {
@@ -71,7 +116,6 @@ const MedicineRegistrationStep = ({onNext}) => {
       id: Date.now(), // 고유 ID 생성
       name: "",
       isValidated: false,
-      
     };
 
     // 2. 새로운 항목을 기존 배열의 맨 앞에 추가하고 상태 업데이트
@@ -111,9 +155,22 @@ const MedicineRegistrationStep = ({onNext}) => {
 
   // 분석 시작 핸들러
   const handleAnalyzeStart = () => {
-    // 유효성 검사
-    const hasValidatedMedicine = recognizedMedicines.some((med) => med.isValidated === true);
-    const hasAnyUnvalidatedMedicine = recognizedMedicines.some((med) => med.isValidated === false);
+    const validMeds = recognizedMedicines.filter((med) => med.name.trim() !== "");
+
+    // 유효성 검사 (의약품 목록만 검사)
+    const hasValidatedMedicine = validMeds.some((med) => med.isValidated === true);
+    const hasAnyUnvalidatedMedicine = validMeds.some((med) => med.isValidated === false);
+
+    // [추가] 영양제 데이터가 로드되지 않은 경우 분석 불가능
+    if (!supplementData) {
+      alert("분석을 시작할 영양제 정보가 로드되지 않았습니다. 잠시 후 다시 시도해 주세요.");
+      return;
+    }
+
+    if (validMeds.length === 0) {
+      alert("분석을 시작하려면 의약품을 1개 이상 등록해야 합니다.");
+      return;
+    }
 
     if (!hasValidatedMedicine) {
       alert(
@@ -129,13 +186,34 @@ const MedicineRegistrationStep = ({onNext}) => {
       return;
     }
 
-    // 모든 검사를 통과했을 때, 상위 모달의 분석 시작 함수 호출
-    onNext();
+    // 서버로 보낼 최종 데이터 구성
+    const finalDataToSend = {
+      // 의약품 목록
+      meds: validMeds,
+      // 영양제는 단일 항목으로 배열에 담아 전송
+      supps: [supplementData],
+    };
+
+    // 상위 컴포넌트의 분석 시작 함수에 최종 데이터를 전달
+    onNext(finalDataToSend);
   };
 
   return (
     <div className="medicine-registration-step">
       <div className="content-wrapper">
+        {/* ⭐ 영양제 정보 표시 (옵션): 사용자에게 현재 분석 대상임을 알림 */}
+        {supplementData && (
+          <div
+            style={{
+              marginBottom: "20px",
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+          >
+            <p>💊 **현재 분석 대상 영양제:** {supplementData.name} (확정됨)</p>
+          </div>
+        )}
         {/* 이미지 분석 섹션 */}
         <div className="image-analysis-section">
           <h3>1. 이미지 분석</h3>

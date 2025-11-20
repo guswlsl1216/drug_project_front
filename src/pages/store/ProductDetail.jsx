@@ -219,11 +219,12 @@ const ProductDetail = () => {
                 >
                   바로구매
                 </Button>
-                
-                <button 
-                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
-                  onClick={toggleFavoriteHandler}>
-                  {isFavorite ? '❤️' : '🤍'}
+
+                <button
+                  className={`favorite-icon-btn ${isFavorite ? "active" : ""}`}
+                  onClick={toggleFavoriteHandler}
+                >
+                  {isFavorite ? "❤️" : "🤍"}
                 </button>
               </div>
             </div>
@@ -272,6 +273,7 @@ const ProductDetail = () => {
       <InteractionAnalysisModal
         isOpen={isAnalysisModalOpen}
         onClose={() => setIsAnalysisModalOpen(false)}
+        supplementIdForAnalysis={product.id}
         supplementInfo={{
           id: product.id,
           name: product.goods_name,
