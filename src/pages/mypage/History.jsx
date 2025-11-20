@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import '../../styles/utils/analysisStatus.css';
 import ANALYSIS_STATUS_MAPPING from '../../utils/analysisStatus';
 import UseNavi from '../../utils/UseNavi';
-import { useLocation } from 'react-router-dom';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import useLoginRedirect from '../../utils/useLoginRedirect';
 import '../../styles/analyze.css'
@@ -13,7 +12,6 @@ import Pagination from '../../components/ui/Pagination';
 
 const History = () => {
   const { goTo } = UseNavi();
-  const location = useLocation();
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   const [historyList, setHistoryList] = useState([]); // 분석 결과 목록
