@@ -4,8 +4,10 @@ import Button from '../../components/ui/Button'
 import requestHandler from '../../utils/requestHandler';
 import { useEffect, useState } from 'react';
 import useLoginRedirect from '../../utils/useLoginRedirect';
+import UseNavi from '../../utils/UseNavi';
 
 const AnalyzeResult = () => {
+  const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   const [isSave, setIsSave] = useState(false);  // 결과 저장 여부
@@ -67,7 +69,7 @@ const AnalyzeResult = () => {
             }
             </Button>
           <Button variant='primary' onClick={() => {
-            requireLogin(() => alert("루틴 페이지로 이동"))
+            requireLogin(() => goTo("/routine"))
           }}>복용 루틴 설정</Button>
         </div>
       </div>
