@@ -5,6 +5,8 @@ import UseNavi from "../utils/UseNavi";
 import Button from "../components/ui/Button";
 import requestHandler from "../utils/requestHandler";
 import Changehandler from "../utils/Changehandler";
+import AddressPicker from "../components/ui/AddressPicker";
+import "../styles/auth/Signup.css";
 
 const Signup = () => {
   const { goIndex, goTo, goBack } = UseNavi();
@@ -18,8 +20,18 @@ const Signup = () => {
     gender:"",
     address:"",
     detailed_address:"",
+    zipcode:"",
     tel:""
   });
+
+  const handleAddressChange = (addr) => {
+    setForm((prev) => ({
+      ...prev,
+      address: addr.road || addr.jibun || "", 
+      detailed_address: addr.detail || "",
+      zipcode: addr.postcode || "",
+    }));
+  };
   
   const handleSubmit = (e) => {
     e.preventDefault(); 
@@ -66,69 +78,62 @@ const Signup = () => {
   const unable = required.some((field) => form[field].trim() === ""); 
 
   return (
-    <>
-      <div className="wrapper">
-        <h2>회원가입 페이지</h2>
+    <div className="signup-page-wrapper">
+      
+      <form action="" onSubmit={handleSubmit} className="signup-form">
+        <h2>회원가입</h2>
         
-        <form action="" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <h4 className="form-label">아이디</h4>
+          <input className="form-input" type="text" name="username" value={form.username} onChange={handleChange} placeholder="ID"/>
+        </div>
+
+        <div className="form-group">
+          <h4 className="form-label">비밀번호</h4>
+          <input className="form-input" type="password" name="password" value={form.password} onChange={handleChange} placeholder="password"/>
+        </div>
+
+        <div className="form-group">
+          <h4 className="form-label">닉네임</h4>
+          <input className="form-input" type="text" name="nickname" value={form.nickname} onChange={handleChange} placeholder="nickname"/>
+        </div>
+        
+        <div className="form-group">
+          <h4 className="form-label">이메일</h4>
+          <input className="form-input" type="text" name="email" value={form.email} onChange={handleChange} placeholder="email"/>
+        </div>
+
+        <div className="form-group">
+          <h4 className="form-label">전화번호<small>(선택사항)</small></h4> 
           
-          <div>
-            <h4>아이디</h4>
-            <input type="text" name="username" value={form.username} onChange={handleChange} placeholder="ID"/>
-          </div>
+          <input className="form-input" type="text" name="tel" value={form.tel} onChange={handleChange} placeholder="ex) 010-1234-5678" maxLength={13}/>
+        </div>
 
-          <div>
-            <h4>비밀번호</h4>
-            <input type="password" name="password" value={form.password} onChange={handleChange} placeholder="password"/>
-          </div>
-
-          <div>
-            <h4>닉네임</h4>
-            <input type="text" name="nickname" value={form.nickname} onChange={handleChange} placeholder="nickname"/>
-          </div>
+        <div className="form-group">
+          <h4 className="form-label">나이<small>(선택사항)</small></h4> 
           
-          <div>
-            <h4>이메일</h4>
-            <input type="text" name="email" value={form.email} onChange={handleChange} placeholder="email"/>
-          </div>
+          <input className="form-input" type="text" name="age" value={form.age} onChange={handleChange} placeholder="ex) 23"/>
+        </div>
 
-          <div>
-            <h4>전화번호</h4> 
-            <h5>(선택사항)</h5>
-            <input type="text" name="tel" value={form.tel} onChange={handleChange} placeholder="ex) 010-1234-5678" maxLength={13}/>
-          </div>
+        <div className="form-group">
+          <h4 className="form-label">성별<small>(선택사항)</small></h4>
+          
+          <select name="gender" value={form.gender} onChange={handleChange} className="form-select">
+            <option value="">성별 선택</option>
+            <option value="남자">남자</option>
+            <option value="여자">여자</option>
+          </select>
+        </div>
 
-          <div>
-            <h4>나이</h4> 
-            <h5>(선택사항)</h5>
-            <input type="text" name="age" value={form.age} onChange={handleChange} placeholder="ex) 23"/>
-          </div>
+        <div className="form-group">
+          <h4 className="form-label">주소<small>(선택사항)</small></h4>
+          <AddressPicker onChange={handleAddressChange} />
+        </div>
 
-          <div>
-            <h4>성별</h4>
-            <h5>(선택사항)</h5>
-            <input type="text" name="gender" value={form.gender} onChange={handleChange} placeholder="ex) 남 or 여"/>
-          </div>
+        <Button className="signup-btn" variant="primary" disabled={unable} onClick={handleSubmit}>가입하기</Button>
 
-          <div>
-            <h4>주소</h4>
-            <h5>(선택사항)</h5>
-            <input type="text" name="address" value={form.address} onChange={handleChange} placeholder="ex) 도로명 주소"/>
-          </div>
-
-          <div>
-            <h4>상세 주소</h4>
-            <h5>(선택사항)</h5>
-            <input type="text" name="detailed_address" value={form.detailed_address} onChange={handleChange} placeholder="ex) 상세 주소"/>
-          </div>
-
-          <Button variant="primary" disabled={unable} onClick={handleSubmit}>가입하기</Button>
-
-        </form>
-
-
-      </div>
-    </>
+      </form>  
+    </div>
   );
 }
 
