@@ -34,11 +34,16 @@ import Reviews from "./pages/store/Reviews";
 import PaySuccess from "./pages/order/PaySuccess";
 import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
+import MyOrderList from "./pages/order/MyOrderList";
+import MyOrderDetail from "./pages/order/MyOrderDetail";
 import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
 import TermsOfService from "./pages/footer/TermsOfService";
 import PrivacyPolicy from "./pages/footer/privacyPolicy";
+import InquiryManage from "./pages/admin/InquiryManage";
+import InquiryList from "./pages/admin/InquiryList";
+import PendingList from "./pages/admin/PendingList";
 
 
 const Routers = () => {
@@ -78,6 +83,16 @@ const Routers = () => {
             <Route path="soldout" element={<SoldoutManage />} /> {/* 품절 관리 */}
           </Route>
           <Route path="order" element={<OrderHistory />} />
+          <Route path="inquiry" element={<InquiryManage />}> {/* 문의 관리 */}
+            <Route index element={<Navigate to="qna" replace />} />
+            {/* 상품 문의 */}
+            <Route path="qna" element={<InquiryList source="qna" />} />
+            <Route path="qna/pending" element={<PendingList source="qna" />} />
+
+            {/* 고객센터 문의 */}
+            <Route path="inquiry" element={<InquiryList source="inquiry" />} />
+            <Route path="inquiry/pending" element={<PendingList source="inquiry" />} />
+          </Route>
         </Route>
         <Route path="/store" element={<Store />} >
           <Route path="cart" element={<Cart/>} />
@@ -94,6 +109,8 @@ const Routers = () => {
           <Route path="contactUs" element={<ContactUs />} />
         </Route>
         <Route path="/orders" element={<OrderSheet />} />
+        <Route path="/myOrderList" element={<MyOrderList />} />
+        <Route path="/myOrderDetail" element={<MyOrderDetail />} />
         <Route path="/success" element={<PaySuccess />} />
         <Route path="/fail" element={<PayFail />} />
       </Routes>

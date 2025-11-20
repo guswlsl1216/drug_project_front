@@ -101,13 +101,283 @@
   min-height: 160px;
 }
 
-/* 반응형 */
-@media (max-width: 960px){
-  .toolbar{
+/* 공통 백드롭 */
+.stock-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;      /* 기본은 가운데 정렬 */
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 모달 박스 */
+.stock-modal {
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px 24px 18px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+}
+
+.stock-modal h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.stock-modal-title {
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.stock-modal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.stock-modal-row label {
+  font-size: 13px;
+  color: #555;
+}
+
+.stock-modal-row input[type="number"] {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.stock-modal-value {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 14px;
+}
+
+.stock-modal-helper {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.stock-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* 작은 버튼 (재고 수정) */
+.btn-small {
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background: #e5edff;
+}
+
+/* ===========================
+   반응형 스타일
+   =========================== */
+
+/* 960px 이하 – 툴바 1단/2단 정리 */
+@media (max-width: 960px) {
+  .toolbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
   }
-  .toolbar .left, .toolbar .right{
+
+  .toolbar .left,
+  .toolbar .right {
     justify-content: space-between;
+  }
+
+  .stock-modal {
+    max-width: 400px;
+  }
+}
+
+/* 768px 이하 – 태블릿 */
+@media (max-width: 768px) {
+  .productlist-container {
+    gap: 8px;
+  }
+
+  .productlist-header h2 {
+    font-size: 16px;
+  }
+
+  .toolbar {
+    padding: 8px 10px;
+  }
+
+  .toolbar .perpage {
+    font-size: 12px;
+  }
+
+  .toolbar .perpage select {
+    height: 30px;
+    padding: 0 6px;
+    font-size: 12px;
+  }
+
+  .table-wrap {
+    margin-top: 4px;
+  }
+
+  .productlist-table thead th,
+  .productlist-table tbody td {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .thumb {
+    width: 56px;
+    height: 56px;
+  }
+
+  /* 모달: 살짝 더 꽉 차게 */
+  .stock-modal-backdrop {
+    align-items: flex-start;
+    padding: 80px 16px 24px;
+  }
+
+  .stock-modal {
+    max-width: 100%;
+    border-radius: 16px;
+    padding: 18px 18px 16px;
+  }
+}
+
+/* 480px 이하 – 모바일(폰) */
+@media (max-width: 480px) {
+  .productlist-container {
+    gap: 6px;
+  }
+
+  .productlist-header h2 {
+    font-size: 15px;
+  }
+
+  /* 툴바: 위에서 아래로 꽉 차게 */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .toolbar .left,
+  .toolbar .right {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    justify-content: flex-start;
+  }
+
+  .toolbar .left > *,
+  .toolbar .right > * {
+    width: 100%;
+  }
+
+  .toolbar .perpage {
+    justify-content: flex-end;
+    font-size: 12px;
+  }
+
+  .toolbar .perpage select {
+    height: 30px;
+    padding: 0 6px;
+    font-size: 12px;
+  }
+
+  /* 테이블: 가로 스크롤 허용 + 패딩 축소 */
+  .table-wrap {
+    border-radius: 10px;
+    margin-top: 4px;
+    overflow-x: auto;
+  }
+
+  .productlist-table {
+    min-width: 100%;
+    width: 100%;
+    font-size: 12px;
+    border-collapse: collapse;
+    max-width: 900px;             /* 전체 테이블 넓이 줄임 */
+    margin: 0 auto;  
+  }
+
+  .productlist-table thead th,
+  .productlist-table tbody td {
+    padding: 6px 9px;
+  }
+
+  .col-hide-mobile {
+    display: none !important;
+  }
+
+  .productlist-table .thumb {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .productlist-table td.name .sub {
+    font-size: 11px;
+  }
+
+  .empty {
+    padding: 20px 12px;
+    font-size: 12px;
+  }
+
+  /* 상태 뱃지 크기도 축소 */
+  .badge.soldout {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+
+  /* 재고 수정 버튼도 좀 더 컴팩트하게 */
+  .btn-small {
+    padding: 4px 6px !important;
+    font-size: 11px !important;
+  }
+
+  /* 모바일 모달: 위쪽에서 살짝 내려오게 + 좌우 여백 */
+  .stock-modal-backdrop {
+    align-items: flex-start;
+    padding: 70px 12px 20px;
+  }
+
+  .stock-modal {
+    padding: 16px 16px 14px;
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .stock-modal h3 {
+    font-size: 16px;
+  }
+
+  .stock-modal-title {
+    font-size: 13px;
+  }
+
+  .stock-modal-row label,
+  .stock-modal-value,
+  .stock-modal-row input[type="number"] {
+    font-size: 13px;
+  }
+
+  .stock-modal-helper {
+    font-size: 11px;
   }
 }

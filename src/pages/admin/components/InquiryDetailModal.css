@@ -1,0 +1,262 @@
+/* ====== 공통 모달 레이아웃 ====== */
+.inqu-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 24px 16px;
+}
+
+/* 카드 */
+.inqu-modal-card {
+  width: min(720px, 100% - 32px);   /* 화면이 작으면 양 옆 16px 여백, 크면 720px 고정 */
+  max-width: 720px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+  border: 1px solid #eef2ff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ====== 헤더 ====== */
+.inqu-modal-backdrop .inqu-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: linear-gradient(90deg, #f5f3ff, #eef2ff);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.inqu-modal-card > header.inqu-modal-header {
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+  z-index: 1 !important;
+  background-color: transparent; /* 우리 그라디언트가 이미 있으니까 */
+}
+
+.inqu-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inqu-header-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #7a5cff;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.inqu-header-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.inqu-header-sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.inqu-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 상태/공개 칩 */
+.status-chip,
+.visibility-chip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-chip.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-chip.status-answered {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.visibility-chip.public {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.visibility-chip.private {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ====== 본문 ====== */
+.inqu-modal-body {
+  padding: 20px 24px 18px;
+  overflow-y: auto;
+}
+
+/* 메타 정보 */
+.inqu-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+.meta-item {
+  display: flex;
+  gap: 4px;
+}
+
+.meta-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.meta-value {
+  color: #111827;
+}
+
+/* 섹션 */
+.inqu-section + .inqu-section {
+  margin-top: 18px;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+.section-title.with-margin-top {
+  margin-top: 10px;
+}
+
+.section-box {
+  border-radius: 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 9px 11px;
+  font-size: 14px;
+  color: #111827;
+}
+
+.section-box-text {
+  white-space: pre-wrap;
+  line-height: 1.5;
+  min-height: 80px;
+}
+
+/* ====== 답변 폼 ====== */
+.answer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.answer-textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  font-size: 14px;
+  min-height: 140px;
+  resize: vertical;
+  outline: none;
+  background: #f9fafb;
+}
+
+.answer-textarea:focus {
+  border-color: #7a5cff;
+  box-shadow: 0 0 0 1px rgba(122, 92, 255, 0.18);
+}
+
+/* 버튼 영역 */
+.inqu-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* 상품 이미지 (섬네일) */
+.meta-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-left: 8px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+/* ====== 답변 메타 정보 (답변일) ====== */
+.answer-meta {
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b7280; /* gray-500 정도 느낌 */
+}
+
+.answer-meta-label {
+  font-weight: 500;
+}
+
+.answer-meta-value {
+  color: #4b5563; /* 조금 더 진한 회색 */
+}
+
+/* ====== 모바일 ====== */
+@media (max-width: 640px) {
+  .inqu-modal-backdrop {
+    align-items: flex-start;
+    padding: 140px 12px 16px;
+  }
+
+  .inqu-modal-card {
+    max-height: calc(100vh - 72px);
+    border-radius: 18px;
+  }
+
+  .inqu-modal-header {
+    padding-inline: 16px;
+  }
+
+  .inqu-modal-body {
+    padding-inline: 16px;
+  }
+  .meta-thumb {
+    width: 36px;
+    height: 36px;
+    margin-left: 6px;
+  }
+
+  .answer-meta {
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+}
+
