@@ -37,6 +37,7 @@ import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
 import MyOrderList from "./pages/order/MyOrderList";
 import MyOrderDetail from "./pages/order/MyOrderDetail";
+import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
 import InquiryManage from "./pages/admin/InquiryManage";
@@ -81,11 +82,18 @@ const Routers = () => {
           </Route>
           <Route path="order" element={<OrderHistory />} />
           <Route path="inquiry" element={<InquiryManage />}> {/* 문의 관리 */}
-            <Route index element={<InquiryList />} />
-            <Route path="pending" element={<PendingList />} />
+            <Route index element={<Navigate to="qna" replace />} />
+            {/* 상품 문의 */}
+            <Route path="qna" element={<InquiryList source="qna" />} />
+            <Route path="qna/pending" element={<PendingList source="qna" />} />
+
+            {/* 고객센터 문의 */}
+            <Route path="inquiry" element={<InquiryList source="inquiry" />} />
+            <Route path="inquiry/pending" element={<PendingList source="inquiry" />} />
           </Route>
         </Route>
         <Route path="/store" element={<Store />} >
+          <Route path="cart" element={<Cart/>} />
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>

@@ -7,9 +7,10 @@ import Pagination from "../../components/ui/Pagination";
 import requestHandler from "../../utils/requestHandler";
 import InquiryDetailModal from "./components/InquiryDetailModal";
 
-const InquiryList = ({mode = "all"}) => {
+const InquiryList = ({mode = "all", source = "qna"}) => {
   const isPendingMode = mode === "pending";
-  const [qna, setQnA] = useState([])
+  const isQna = source === "qna"; 
+  const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1)
   const [pages, setPages] = useState(1)
@@ -21,11 +22,12 @@ const InquiryList = ({mode = "all"}) => {
   })
   const [selected, setSelected] = useState(null)  
 
-
   const load = async () => {
+    const endpoint = isQna ? "/admin/qna" : "/admin/inquiry";
+    const listKey = isQna ? "qna" : "inquiries";  
     await requestHandler({
       method: "get",
-      url: "/admin/inquiry",
+      url: endpoint,
       params : {
         page, 
         per_page: perPage,
@@ -34,14 +36,15 @@ const InquiryList = ({mode = "all"}) => {
       },
       setLoading,
       onSuccess: (data) => {
-        setQnA(Array.isArray(data.qna) ? data.qna : []);
+        const items = Array.isArray(data[listKey]) ? data[listKey] : [];
+        setRows(items);
         setTotal(typeof data.total === "number" ? data.total : 0);
         setPages(typeof data.pages === "number" ? data.pages : 1);
         setPerPage(typeof data.per_page === "number" ? data.per_page : 10);
       },
       onError: (msg) => {
         alert(msg)
-        setQnA([])
+        setRows([])
         setTotal(0)
         setPages(1)
       },
@@ -50,7 +53,7 @@ const InquiryList = ({mode = "all"}) => {
 
   useEffect(() => {
     load()
-  }, [page, perPage, filters])
+  }, [page, perPage, filters, source])
 
   return (
     <div className="inquiry-list">
@@ -84,7 +87,11 @@ const InquiryList = ({mode = "all"}) => {
               <input 
                 type="text" 
                 name="query" 
-                placeholder="문의자명 또는 문의상품ID 검색" 
+                placeholder={
+                  isQna 
+                  ? "문의자명 또는 문의상품ID 검색" 
+                  : "이름 또는 이메일 검색"
+                }
                 className="filter-input"
               />
             </div>
@@ -128,46 +135,65 @@ const InquiryList = ({mode = "all"}) => {
         <div className="inquiry-loading">
           <LoadingSpinner size={30} label="문의 내역 불러오는중" />
         </div>
-      ) : qna.length ? (
+      ) : rows.length ? (
         <>
           <div className="inquiry-table-wrap">
             <table className="inquiry-table">
               <thead>
                 <tr>
                   <th className="col-visibility">번호</th>
-                  <th className="col-visibility">상품번호</th>
+                  {isQna && (
+                    <th className="col-visibility">상품번호</th>
+                  )}
                   <th>문의 제목</th>
-                  <th>문의자</th>
+                  <th>{isQna ? "문의자" : "이름"}</th>
+                  {!isQna && <th>이메일</th>}
                   <th>등록일</th>
                   <th>답변상태</th>
-                  <th className="col-visibility">공개여부</th> 
+                  {isQna && <th className="col-visibility">공개여부</th>}
                 </tr>
               </thead>
               <tbody>
-                {qna.map((q) => {
+                {rows.map((row) => {
                   return(
-                    <tr key={q.id}>
-                      <td className="col-visibility">{q.id}</td>
-                      <td className="col-visibility">{q.goods.id}</td>
+                    <tr key={row.id}>
+                      <td className="col-visibility">{row.id}</td>
+                      {isQna && (
+                        <td className="col-visibility">
+                          {row.goods?.id ?? row.goods_id ?? "-"}
+                        </td>
+                      )}
                       <td 
                         className="inquiry-title-cell clickable"
-                        onClick={() => setSelected(q)}
+                        onClick={() => setSelected(row)}
                       >
-                        {q.is_private && <span className="private-icon">🔒</span>}
-                        {q.question_title}
+                        {isQna && row.is_private && (
+                          <span className="private-icon">🔒</span>
+                        )}
+                        {/* QnA: question_title, Inquiry: title */}
+                        {isQna ? row.question_title : row.title}
                       </td>
-                      <td>{q.user.nickname}</td>
-                      <td>{time(q.created_at)}</td>
                       <td>
-                        <span className={`status-badge status-${q.status}`}>
-                          {q.status_label}
+                        {isQna ? row.user?.nickname : row.name}
+                      </td>
+                      {!isQna && <td>{row.email}</td>}
+                      <td>{time(row.created_at)}</td>
+                      <td>
+                        <span className={`status-badge status-${row.status}`}>
+                          {row.status_label}
                         </span>
                       </td>
-                      <td className="col-visibility">
-                        <span className={`visibility-badge ${q.is_private ? "private" : "public"}`}>
-                          {q.visibility_label}
-                        </span>
-                      </td>
+                      {isQna && (
+                        <td className="col-visibility">
+                          <span
+                            className={`visibility-badge ${
+                              row.is_private ? "private" : "public"
+                            }`}
+                          >
+                            {row.visibility_label}
+                          </span>
+                        </td>
+                      )}
                     </tr>
                   )
                 })}

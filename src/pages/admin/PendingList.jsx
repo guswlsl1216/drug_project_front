@@ -1,8 +1,8 @@
 import InquiryList from "./InquiryList"
 
-const PendingList = () => {
+const PendingList = ({source}) => {
   return (
-    <InquiryList mode="pending" />
+    <InquiryList source={source} mode="pending" />
   )
 }
 

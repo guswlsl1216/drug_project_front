@@ -5,6 +5,7 @@ import Button from "../../../components/ui/Button"
 import requestHandler from "../../../utils/requestHandler"
 
 const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
+  const isQna = inquiry.source === "qna"
   const [answer, setAnswer] = useState(inquiry.answer_content || "")
   const [saving, setSaving] = useState(false)
 
@@ -14,9 +15,13 @@ const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
       return alert("답변 내용을 입력해주세요.");
     }
 
+    const endpoint = isQna
+      ? `/admin/qna/${inquiry.id}`
+      : `/admin/inquiry/${inquiry.id}`
+
     await requestHandler({
       method: "post",
-      url:`/admin/inquiry/${inquiry.id}`,
+      url:endpoint,
       payload: { answer },
       setLoading: setSaving, 
       onSuccess: (data) => {
@@ -31,6 +36,14 @@ const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
     
   }
 
+  const displayTitle = isQna ? inquiry.question_title : inquiry.title
+  const displayContent = isQna ? inquiry.question_content : inquiry.content
+
+  const displayName = 
+    inquiry.user?.nickname || inquiry.name || "-"
+
+  const displayEmail = inquiry.email || inquiry.user?.email || null
+
   return (
     <div className="inqu-modal-backdrop" onClick={onClose}>
       <div
@@ -41,7 +54,9 @@ const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
           <div className="inqu-header-left">
             <div className="inqu-header-icon">Q</div>
             <div>
-              <div className="inqu-header-title">문의 상세</div>
+              <div className="inqu-header-title">
+                {isQna ? "상품 문의 상세" : "고객센터 문의 상세"}
+              </div>
               <div className="inqu-header-sub">
                 #{inquiry.id} · {time(inquiry.created_at)}
               </div>
@@ -52,13 +67,16 @@ const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
             <span className={`status-chip status-${inquiry.status}`}>
               {inquiry.status_label}
             </span>
-            <span
-              className={`visibility-chip ${
-                inquiry.is_private ? "private" : "public"
-              }`}
-            >
-              {inquiry.visibility_label}
-            </span>
+
+            {isQna && (
+              <span
+                className={`visibility-chip ${
+                  inquiry.is_private ? "private" : "public"
+                }`}
+              >
+                {inquiry.visibility_label}
+              </span>
+            )}
           </div>
         </header>
 
@@ -66,28 +84,43 @@ const InquiryDetailModal = ({inquiry, onClose, onSaved, canAnswer}) => {
           <section className="inqu-meta-row">
             <div className="meta-item">
               <span className="meta-label">문의자</span>
-              <span className="meta-value">{inquiry.user.nickname}</span>
+              <span className="meta-value">{displayName}</span>
             </div>
-            <div className="meta-item">
-              <span className="meta-label">상품번호</span>
-              <span className="meta-value">{inquiry.goods?.id ?? inquiry.goods_id}</span>
-              {inquiry.goods?.image && (
-                <img
-                  className="meta-thumb"
-                  src={inquiry.goods.image}
-                  alt={inquiry.goods.goods_name}
-                />
-              )}
-            </div>
+            {isQna ? (
+              <div className="meta-item">
+                <span className="meta-label">상품번호</span>
+                <span className="meta-value">{inquiry.goods?.id ?? inquiry.goods_id}</span>
+                {inquiry.goods?.image && (
+                  <img
+                    className="meta-thumb"
+                    src={inquiry.goods.image}
+                    alt={inquiry.goods.goods_name}
+                  />
+                )}
+              </div>
+            ) : (
+              <>
+                {displayEmail && (
+                  <div className="meta-item">
+                    <span className="meta-label">이메일</span>
+                    <span className="meta-value">{displayEmail}</span>
+                  </div>
+                )}
+                <div className="meta-item">
+                  <span className="meta-label">문의 유형</span>
+                  <span className="meta-value">{inquiry.type}</span>
+                </div>
+              </>
+            )}
           </section>
 
           <section className="inqu-section">
             <h3 className="section-title">문의 제목</h3>
-            <div className="section-box">{inquiry.question_title}</div>
+            <div className="section-box">{displayTitle}</div>
 
             <h3 className="section-title with-margin-top">문의 내용</h3>
             <div className="section-box section-box-text">
-              {inquiry.question_content}
+              {displayContent}
             </div>
           </section>
 
