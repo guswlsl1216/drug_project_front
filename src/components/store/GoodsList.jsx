@@ -4,7 +4,7 @@ import useFavoriteToggle from "../../pages/store/usefavoriteToggle";
 import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Pagination from "../ui/Pagination";
-import LoadingSpinner from "../../utils/loadingSpinner";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 
 const ProductCard = ({ product, sortKey, ProductHandler }) => {

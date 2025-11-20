@@ -11,6 +11,12 @@ const Store = () => {
     setIsUpdated(prev => !prev);
   };
 
+  // 장바구니 업데이트 알림
+  const [cartUpdated, setCartUpdated] = useState(false);
+  const triggerCartUpdate = () => {
+    setCartUpdated(prev => !prev);
+  };
+
   // ✨ 리모컨을 표시할 경로 목록을 확인하는 조건
   const shouldShowSideMenu = (
       location.pathname.startsWith('/store/allgoods') ||
@@ -36,12 +42,12 @@ const Store = () => {
       
       <div className={`store-content-wrapper ${shouldShowSideMenu ? 'showSide' : ''}`}>
         <div className="store-content">
-          <Outlet context={{ triggerUpdate }} />
+          <Outlet context={{ triggerUpdate, triggerCartUpdate }} />
         </div>
         
         {shouldShowSideMenu && (
           <div className="store-menu">
-            <StoreSideMenu isUpdated={isUpdated} />
+            <StoreSideMenu isUpdated={isUpdated} cartUpdated={cartUpdated} />
           </div>
         )}
       </div>

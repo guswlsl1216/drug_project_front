@@ -39,16 +39,41 @@
   color: #555;
 }
 
-.side_menu p {
+.side_menu p:last-child {
   margin: 0;
   font-size: 12px;
   font-weight: 500;
 }
 
 .side_menu:hover svg,
-.side_menu:hover p {
+.side_menu:hover p:last-child {
   color: #a671ec;
   font-weight: 700;
+}
+
+.cart_icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cart_cnt {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  
+  background-color: tomato;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+
+  text-align: center;
+  line-height: 16px;
 }
 
 .recent_items_box {

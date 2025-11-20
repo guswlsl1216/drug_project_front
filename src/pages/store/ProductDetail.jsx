@@ -7,11 +7,11 @@ import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
-import LoadingSpinner from "../../utils/loadingSpinner";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 
 const ProductDetail = () => {
-  const { triggerUpdate } = useOutletContext();
+  const { triggerUpdate, triggerCartUpdate } = useOutletContext();
 
   const {goodsId} = useParams();
   const [product, setProduct] = useState(null);
@@ -118,6 +118,7 @@ const ProductDetail = () => {
           } else {
             alert(`총 ${data.count}개가 장바구니에 담겼습니다.`); 
           }
+          triggerCartUpdate();
           console.log(data);
         },
         onError: (msg) => {

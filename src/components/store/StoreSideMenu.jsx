@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../../styles/store/StoreSideMenu.css";
 import { useEffect, useMemo, useState } from "react";
 import UseNavi from "../../utils/UseNavi";
-import { useLocation } from "react-router-dom";
+import requestHandler from "../../utils/requestHandler";
 
-const StoreSideMenu = ({ isUpdated }) => {
+const StoreSideMenu = ({ isUpdated, cartUpdated }) => {
   const { goTo } = UseNavi();
-  const location = useLocation();
   const [recentItems, setRecentItems] = useState([]); // 최근 본 상품 목록
+  const [cartLen, setCartLen] = useState(0);  // 장바구니 목록 개수
   
   // 최근 본 상품 페이지네이션
   const [nowPage, setNowPage] = useState(0);
@@ -40,6 +40,27 @@ const StoreSideMenu = ({ isUpdated }) => {
       setRecentItems(JSON.parse(data));
     }
   }, [isUpdated]);
+
+  useEffect(() => {
+    const getCart = async () => {
+      await requestHandler ({
+        method: "get",
+        url: '/cart',
+        onSuccess: (data) => {
+          if (data) {
+            if (!data)
+              setCartLen(0);
+            else
+              setCartLen(data.length);
+          }
+        },
+        onError: (msg) => {
+          console.error("장바구니 정보 로딩 실패: ", msg)
+        }
+      });
+    };
+    getCart();
+  }, [cartUpdated])
   
   const deleteItemHandler = (selectItem, e) => {
     e.stopPropagation();
@@ -55,12 +76,15 @@ const StoreSideMenu = ({ isUpdated }) => {
     <>
       <div className="store_side_menu_wrapper">
         <div className="side_menu_box">
-          <div className="side_menu">
-            <FontAwesomeIcon icon={faCartShopping} />
+          <div className="side_menu" onClick={() => goTo("/store/cart")} >
+            <div className="cart_icon">
+              {cartLen > 0 && <p className="cart_cnt">{cartLen}</p>}
+              <FontAwesomeIcon icon={faCartShopping} />
+            </div>
             <p>장바구니</p>
           </div>
-          <div className="side_menu">
-            <FontAwesomeIcon icon={faHeart} onClick={() => goTo("/store/favorite")} />
+          <div className="side_menu" onClick={() => goTo("/store/favorite")}>
+            <FontAwesomeIcon icon={faHeart} />
             <p>찜 목록</p>
           </div>
         </div>
