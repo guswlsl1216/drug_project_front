@@ -1,0 +1,141 @@
+.payments_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* wrapper 내에서 남은 공간 전체를 차지하도록 설정 */
+  min-height: calc(100vh - 50px); /* 100vh에서 wrapper의 padding-top(50px)을 뺌 */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #eeeeee;
+}
+
+.payments_box_section {
+  width: 100%;
+  max-width: 600px; /* 박스의 최대 너비 지정 */
+  padding: 40px;
+  background-color: #ffffff; 
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center; 
+}
+
+.payments_title h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.payFail_title {
+  color: tomato; /* 실패 시 붉은색 */
+}
+
+.payments_description {
+  margin-bottom: 30px; 
+  padding: 20px;
+  background-color: #fefefe; 
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.payments_description {
+  margin-bottom: 30px; 
+  padding: 20px;
+  background-color: #fefefe; 
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  display: flex; 
+  flex-wrap: wrap; /* dt와 dd 쌍이 채워지면 다음 쌍이 줄 바꿈되도록 설정 */
+  text-align: left;
+}
+
+.payments_description dt {
+  width: 35%;
+  font-weight: 600;
+  color: #555555;
+  padding: 4px 0;
+}
+
+.payments_description dd {
+  width: 65%; /* 나머지 공간 (100% - 35% = 65%) */
+  font-weight: 400;
+  color: #222222;
+  padding: 4px 0;
+}
+
+.payments_btn {
+  display: flex;
+  flex-direction: row; 
+  gap: 10px; 
+  justify-content: center; 
+}
+
+/* order_items_list: 상품 목록 전체 컨테이너 */
+.order_items_list {
+  margin-top: 25px; 
+  margin-bottom: 25px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+  text-align: left;
+}
+
+.order_items_list h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+/* order_item_card: 개별 상품 아이템 */
+.order_item_card {
+  display: flex;
+  justify-content: space-between; /* 이름과 상세 정보를 양 끝으로 배치 */
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.order_item_card:last-child {
+  border-bottom: none; /* 마지막 상품은 경계선 제거 */
+}
+
+.item_name {
+  font-weight: 500;
+  color: #222;
+  flex-grow: 1; /* 이름이 공간을 주로 차지 */
+}
+
+.item_details {
+  font-size: 14px;
+  color: #777;
+  margin-left: 15px;
+}
+
+.view_more_link {
+  /* 버튼의 기본 스타일 제거 */
+  background: none;
+  border: none;
+  padding: 0;
+  
+  /* 텍스트 스타일 */
+  font-size: 14px;
+  color: #007bff; /* 파란색 링크 스타일 */
+  font-weight: 500;
+  text-decoration: none; /* 밑줄을 원하면 underline으로 변경 */
+  cursor: pointer;
+  
+  /* 위치 조정 */
+  display: block; /* 블록 요소로 만들어 줄 바꿈 */
+  width: 100%;
+  text-align: center; /* 가운데 정렬 */
+  margin-top: 10px;
+}
+
+.view_more_link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
