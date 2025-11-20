@@ -166,12 +166,12 @@ const ProductList = () => {
                       onChange={toggleAll}
                     />
                   </th>
-                  <th>번호</th>
+                  <th className="col-hide-mobile">번호</th>
                   <th>카테고리</th>
                   <th>이미지</th>
                   <th>상품명</th>
-                  <th>등록일</th>
-                  <th>수정일</th>
+                  <th className="col-hide-mobile">등록일</th>
+                  <th className="col-hide-mobile">수정일</th>
                   <th>가격</th>
                   <th>상태</th>
                 </tr>
@@ -190,7 +190,7 @@ const ProductList = () => {
                           onChange={() => toggleOne(g.id)}
                         />
                       </td>
-                      <td>{g.id}</td>
+                      <td className="col-hide-mobile">{g.id}</td>
                       <td>{g.category || "-"}</td>
                       <td>
                         {g.image_path ? (
@@ -216,8 +216,8 @@ const ProductList = () => {
                           <div className="sub">{g.classify}</div>
                         ) : null}
                       </td>
-                      <td>{time(g.create_at)}</td>
-                      <td>{time(g.update_at)}</td>
+                      <td className="col-hide-mobile">{time(g.create_at)}</td>
+                      <td className="col-hide-mobile">{time(g.update_at)}</td>
                       <td>{formatPrice(g.price)}원</td>
                       <td>
                         {soldout ? (

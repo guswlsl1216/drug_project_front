@@ -1,0 +1,145 @@
+/* 페이지 전체 영역 */
+.inqu-container {
+  padding: 24px 32px;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+/* 제목 */
+.inqu-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #1f2937;
+}
+
+/* 탭 감싸는 영역 */
+.inqu-tab-wrap {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.inqu-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  background: #f4f0ff;
+}
+
+/* 탭 버튼 */
+.inqu-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 18px;
+  font-size: 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+
+  color: #6b7280;
+  background: transparent;
+  transition: 0.2s ease-out;
+}
+
+.inqu-tab:hover {
+  background: #e5ddff;
+}
+
+.inqu-tab.active {
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(148, 163, 184, 0.35);
+  color: #7a5cff;
+  font-weight: 600;
+  transform: translateY(-1px);
+}
+
+/* 탭 아래 카드 */
+.inqu-content-card {
+  margin-top: 16px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px 24px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  border: 1px solid #eef2ff;
+  min-height: 220px;
+  overflow: hidden;
+}
+
+.inq-top-tabs {
+  display: inline-flex;
+  gap: 8px;
+  padding: 4px;
+  border-radius: 999px;
+  background: #f9fafb;
+  margin-bottom: 14px;
+  border: 1px solid #e5e7eb;
+}
+
+/* 상단 탭 버튼 공통 */
+.inq-top-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 18px;
+  font-size: 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+
+  color: #6b7280;
+  background: transparent;
+  transition: background 0.18s ease-out, color 0.18s ease-out,
+    box-shadow 0.18s ease-out, transform 0.18s ease-out;
+}
+
+.inq-top-tab:hover {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+/* 상단 탭 활성화 상태 */
+.inq-top-tab.active {
+  background: #4f46e5;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   반응형
+   ========================= */
+
+@media (max-width: 768px) {
+  .inqu-container {
+    padding: 16px 12px;
+  }
+
+  .inqu-content-card {
+    padding: 16px;
+  }
+
+  .inq-top-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+    padding: 4px 6px;
+  }
+
+  .inq-top-tab {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+}

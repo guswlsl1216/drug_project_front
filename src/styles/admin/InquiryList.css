@@ -1,0 +1,289 @@
+/* =========================
+   문의 리스트 / 필터 / 테이블
+   ========================= */
+
+/* 전체 래퍼 */
+.inquiry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 상단 제목 */
+.inquiry-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inquiry-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* 필터 영역 */
+.inquiry-filter-wrap {
+  width: 100%;
+}
+
+.inquiry-filter-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 필드 공통 */
+.filter-field {
+  display: flex;
+  flex-direction: row;   
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  flex-wrap: nowrap;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.filter-label {
+  white-space: nowrap;
+}
+
+/* 인풋/셀렉트 공통 */
+.filter-select,
+.filter-input {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  padding: 7px 12px;
+  font-size: 14px;
+  outline: none;
+  background-color: #f9fafb;
+  min-width: 120px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+  border-color: #7a5cff;
+  box-shadow: 0 0 0 1px rgba(122, 92, 255, 0.15);
+}
+
+/* 검색 인풋 */
+.filter-search {
+  flex: 1 1;
+  min-width: 180px;
+}
+
+.filter-input {
+  width: 100%;
+}
+
+/* 검색/새로고침 버튼 영역 */
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.filter-submit {
+  height: 36px;
+  padding-inline: 16px;
+  font-size: 14px;
+}
+
+/* 표시 개수 */
+.per-page-field {
+  margin-left: auto;
+}
+
+/* 로딩 / 빈 상태 */
+.inquiry-loading,
+.inquiry-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* 테이블 */
+.inquiry-table-wrap {
+  margin-top: 4px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  overflow-x: auto;
+}
+
+.inquiry-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.inquiry-table thead {
+  background: #f9fafb;
+}
+
+.inquiry-table th,
+.inquiry-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+  white-space: nowrap;
+}
+
+.inquiry-table th {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.inquiry-table td {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.inquiry-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* 제목 칸 넓게 */
+.inquiry-title-cell {
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 하단 */
+.inquiry-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  gap: 8px;
+}
+
+.inquiry-total {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.private-icon {
+  margin-right: 4px;
+}
+
+/* 배지 */
+.status-badge,
+.visibility-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* 답변 상태 색상 */
+.status-badge.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.status-answered {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* 공개 여부 */
+.visibility-badge.public {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.visibility-badge.private {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* 번호/상품번호/공개여부 같은 컬럼 (기본 노출) */
+.col-visibility {
+  display: table-cell;
+}
+
+/* =========================
+   반응형
+   ========================= */
+
+/* 태블릿 (필터/바닥 정렬 조정) */
+@media (max-width: 1024px) {
+  .per-page-field {
+    margin-left: 0;
+  }
+
+  .inquiry-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* 모바일 (<= 640px) */
+@media (max-width: 640px) {
+
+  /* 번호/상품번호/공개여부 컬럼 숨김 */
+  .col-visibility {
+    display: none;
+  }
+
+  /* 필터 폼 세로 정렬 */
+  .inquiry-filter-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  /* 검색창 100% 폭 */
+  .filter-search {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  /* 🔥 검색/새로고침 버튼을 세로로, 꽉 차게 */
+  .filter-actions {
+    width: 100%;
+    flex-direction: column;      /* 버튼 둘이 세로로 쌓임 */
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .filter-submit,
+  .filter-refresh {
+    width: 100%;                 /* 버튼이 카드 폭 꽉 채움 */
+    justify-content: center;
+  }
+
+  /* 표시 개수는 아래 한 줄 정렬 */
+  .per-page-field {
+    width: 100%;
+    margin-left: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .inquiry-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .inquiry-table td {
+    font-size: 12px;
+  }
+
+}
+

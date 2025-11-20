@@ -299,7 +299,7 @@
 }
 
 /* 배송지 AddressPicker 마진 */
-.address.checkout{ margin-top: 8px; }
+.checkout{ margin-top: 8px; }
 
 /* 배송지 저장 체크박스 라인 */
 .save-address-inline {
@@ -321,6 +321,121 @@
   font-size: 14px;
   color: #444;
   cursor: pointer;
+}
+
+/* 배송지 헤더: 토글 + 배송지 목록 버튼 한 줄 정렬 */
+.shipping-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+/* 안쪽 inline은 아래 여백 제거 (기존 .inline의 margin-bottom 덮기) */
+.shipping-select-row {
+  margin-bottom: 0;
+}
+
+/* 이 줄 안에서의 라벨 마진 조금 줄이기 */
+.shipping-select-row .field-label {
+  margin: 0;
+  font-size: 13px;
+}
+
+/*   배송지 목록 모달 스타일   */
+.address-list-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  line-height: 1;
+}
+
+/* 호버 시 살짝만 강조 */
+.address-list-btn:hover {
+  border-color: #7a5cff;
+  background: #f9f5ff;
+}
+
+/* 모달 전체를 덮는 어두운 배경 */
+.address-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+/* 모달 박스 */
+.address-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 18px 16px 14px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 72vh;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 모달 타이틀 */
+.address-modal h4 {
+  margin: 0 0 6px 2px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* 개별 배송지 버튼 */
+.address-item {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f9fafb;
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    transform 0.06s ease;
+}
+
+/* 첫 줄: 수령인 / 전화번호 */
+.address-item > div:first-child {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+/* 둘째, 셋째 줄: 주소 */
+.address-item > div:nth-child(2),
+.address-item > div:nth-child(3) {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* 호버/포커스 시 강조 */
+.address-item:hover {
+  background: #eef2ff;
+  border-color: #7a5cff;
+  transform: translateY(-1px);
+}
+
+.address-item:active {
+  transform: translateY(0);
+}
+
+/* 모달 하단 닫기 버튼 정렬 */
+.address-modal > button {
+  margin-top: 4px;
 }
 
 /* ===== 데스크톱 2-컬럼: 플렉스 레이아웃로 변경 ===== */
@@ -352,4 +467,16 @@
 /* 모바일 */
 @media (max-width: 979.98px){
   .order-left .card + .card{ margin-top: 8px; } /* 모바일에서도 카드 간격 유지 */
+}
+
+/* 모바일에서는 줄바꿈해서 위아래로 배치 */
+@media (max-width: 600px) {
+  .shipping-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .address-list-btn {
+    align-self: flex-end;
+  }
 }
