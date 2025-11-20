@@ -9,7 +9,6 @@ import Review from "./pages/mypage/Review";
 import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
-import Medslist from "./pages/Medslist";
 import MyDrugs from "./pages/mypage/MyDrugs";
 import MedicinePage from "./pages/analyze/MedicinePage";
 import SupplementPage from "./pages/analyze/SupplementPage";
@@ -32,7 +31,12 @@ import Favorite from "./pages/mypage/Favorite";
 import OrderSheet from "./pages/order/OrderSheet";
 import ProductDescription from "./pages/store/ProductDescription";
 import Reviews from "./pages/store/Reviews";
+import PaySuccess from "./pages/order/PaySuccess";
+import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
+import Cart from "./pages/store/Cart";
+import ContactUs from "./pages/store/ContactUs";
+import QnA from "./pages/store/QnA";
 
 
 const Routers = () => {
@@ -49,15 +53,14 @@ const Routers = () => {
           <Route path="supplement" element={<SupplementPage />} />
         </Route>
         <Route path="/analyze/result" element={<AnalyzeResult />} />
-        <Route path="/medslist" element={<Medslist />} />
         <Route path="/history" element={<History />} />
         <Route path="/history/detail/:id" element={<HistoryDetail />} />
 
+        <Route path="mydrugs" element={<MyDrugs />} />
+        <Route path="routine" element={<Routine />} />
+
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
-          <Route path="mydrugs" element={<MyDrugs />} />
-          <Route path="routine" element={<Routine />} />
-          <Route path="favorite" element={<Favorite />} />
           <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
         </Route>
@@ -73,16 +76,22 @@ const Routers = () => {
           <Route path="order" element={<OrderHistory />} />
         </Route>
         <Route path="/store" element={<Store />} >
+          <Route path="cart" element={<Cart/>} />
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
+          <Route path="favorite" element={<Favorite />} />
           <Route path="detail/:goodsId" element={<ProductDetail />}>
             <Route index element={<Navigate to="desc" replace />} />
             <Route path="desc" element={<ProductDescription />} />
             <Route path="review" element={<Reviews />} />
+            <Route path="qna" element={<QnA/>}/>
           </Route>
+          <Route path="contactUs" element={<ContactUs />} />
         </Route>
         <Route path="/orders" element={<OrderSheet />} />
+        <Route path="/success" element={<PaySuccess />} />
+        <Route path="/fail" element={<PayFail />} />
       </Routes>
     </>
   );

@@ -4,6 +4,7 @@ import useFavoriteToggle from "../../pages/store/usefavoriteToggle";
 import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Pagination from "../ui/Pagination";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 
 const ProductCard = ({ product, sortKey, ProductHandler }) => {
@@ -139,7 +140,13 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   }, [page, sortKey, categoryValue, categoryKey, perPage, fetchProducts]); // fetchProducts가 useCallback으로 감싸져 있으므로 안전하게 사용 가능
 
 
-  if (loading) return <div className="loading-message">상품 목록을 불러오는 중...</div>
+  if (loading) {
+    return (
+      <div className="goodsList_spinner">
+        <LoadingSpinner label="상품 목록을 불러오는 중..." />
+      </div>
+      )
+  }
   if (products.length === 0 && !loading) {
       return <div className="no-results">표시할 상품이 없습니다.</div>
   }
@@ -149,12 +156,6 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   const handleSortChange = (key) => {
     setSortKey(key);
   };
-
-  if (loading) return <div className="loading-message">상품 목록을 불러오는 중...</div>
-
-  if (products.length === 0 && !loading) {
-    return <div className="no-results">표시할 상품이 없습니다.</div>;
-  }
 
   return(
     <>

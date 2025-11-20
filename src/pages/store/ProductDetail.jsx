@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import "../../styles/Store.css";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink, Outlet, useOutletContext, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
 import InteractionAnalysisModal from "../../components/ui/InteractionAnalysisModal";
 import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 
 const ProductDetail = () => {
+  const { triggerUpdate, triggerCartUpdate } = useOutletContext();
+
   const {goodsId} = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,6 +26,21 @@ const ProductDetail = () => {
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
 
+  const addRecentItem = (newItem) => {
+    let items = sessionStorage.getItem("recentItems");
+    items = items ? JSON.parse(items) : [];
+
+    let newItems = items.filter(item => item.id !== newItem.id);
+    
+    newItems.unshift(newItem);
+
+    if (newItems.length > 15) {
+      newItems.pop();
+    }
+
+    sessionStorage.setItem("recentItems", JSON.stringify(newItems));
+    triggerUpdate();
+  }
 
   useEffect(() => {
     const ProductDetailandFavorite = async () => {
@@ -31,7 +49,6 @@ const ProductDetail = () => {
         url: `/goods/${goodsId}`,
         setLoading,
         onSuccess: (data) => {
-          console.log("백엔드 응답 데이터 구조:", data)
 
           if (data && data.product) {
             const productData = data.product;
@@ -46,6 +63,7 @@ const ProductDetail = () => {
             }
 
             setError(null); // 에러 초기화
+            addRecentItem(productData);
           } else {
             setProduct(null)
             setIsFavorite(false)
@@ -81,8 +99,36 @@ const ProductDetail = () => {
 
   const totalPrice = (product?.price || 0) * quantity;
 
+  const handleCart = () => { // 재고 이상으로 계속 담겨서 수정 필요 일단 재고는 넘어가니까 다음 작업 
+    // 여기 수정 후 에러남
 
-  if (loading) return <div className="loading-message">상품 상세 정보를 불러오는 중...</div>
+    if (product.stock === 0 ) {
+      alert("재고가 없습니다.");
+      return;
+    }
+    
+    requestHandler({
+        method:"post",
+        url:`cart/${goodsId}`,
+        payload:{ count: quantity }, // 수량을 data에 담아서 보냄
+        setLoading,
+        onSuccess:(data) => {
+          if (data.message) {
+            alert(`${data.message}`);
+          } else {
+            alert(`총 ${data.count}개가 장바구니에 담겼습니다.`); 
+          }
+          triggerCartUpdate();
+          console.log(data);
+        },
+        onError: (msg) => {
+          alert(msg);
+        }
+    });  
+  };
+
+
+  if (loading) return <LoadingSpinner label="상품 상세 정보를 불러오는 중..." />
   if (error) return <div className="error-message">{error}</div>
   if (!product) return <div className="no-data">상품 정보를 찾을 수 없습니다.</div>
 
@@ -140,11 +186,9 @@ const ProductDetail = () => {
 
             {/* 구매 액션 버튼 */}
             <div className="purchase-options">
-              <button className="add-to-cart-btn">장바구니 담기</button>
-
-              <button className="add-to-cart-btn">장바구니 담기</button>
-
-              <div className="buy-and-favorite-group">
+              <button className="add-to-cart-btn" onClick={handleCart}>장바구니 담기</button>
+              
+              <div className="buy-and-favorite-group"> 
                 <Button
                   variant="text"
                   className="buy-now-btn"
@@ -206,6 +250,12 @@ const ProductDetail = () => {
                 className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
               >
                 <h2 className="tab-title-only">리뷰</h2>
+              </NavLink>
+              <NavLink
+                to={`/store/detail/${goodsId}/qna`}
+                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
+              >
+                <h2 className="tab-title-only">Q&A</h2>
               </NavLink>
             </nav>
           </div>
