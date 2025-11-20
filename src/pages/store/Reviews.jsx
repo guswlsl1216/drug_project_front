@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Container, Form, Button, ListGroup, Alert } from "react-bootstrap";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Star } from 'lucide-react';
 import { useParams } from "react-router-dom";
 import requestHandler from "../../utils/requestHandler";
 import { useOutletContext } from 'react-router-dom';
+import "../../styles/store/Review.css"
 
 //모델 붙이면 완료인듯
 function Review() {
@@ -225,34 +225,33 @@ function Review() {
           )}
         </Form.Group>
         <Form.Group controlId="commentInput">
-          <div className="d-flex gap-2">
-            <Form.Control
-              type="text"
+          <div className="text-input-wrapper">
+            <textarea
               placeholder="댓글을 입력하세요..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <input
-              type="file"
-              id="fileInput"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                // 파일 처리 로직
-                setImgurl(e.target.files[0]);
-                setSelectedFile(e.target.files[0].name);
-              }}
-            />
-            <button
-              type="button"
-              className="btn - light"
-              onClick={() => document.getElementById("fileInput").click()}
-              style={{ whiteSpace: "nowrap", backbround: "white" }}
-            >
-              📁
-            </button>
+            <div className="file-input-wrapper">
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  setImgurl(e.target.files[0]);
+                  setSelectedFile(e.target.files[0].name);
+                }}
+              />
+              <button
+                type="button"
+                className="file-btn"
+                onClick={() => document.getElementById("fileInput").click()}
+              >
+                📁
+              </button>
+            </div>
           </div>
           {selectedFile && (
-            <small className="text-muted mt-2 d-block" style={{ fontSize: "12px" }}>
+            <small className="text-muted mt-1 d-block" style={{ fontSize: "12px" }}>
               선택된 파일: {selectedFile}
             </small>
           )}
@@ -272,20 +271,29 @@ function Review() {
           <ListGroup.Item className="text-muted">아직 댓글이 없습니다.</ListGroup.Item>
         )}
         {comments.map((c, idx) => (
-          <ListGroup.Item key={idx}>
-            <div className="d-flex justify-content-between align-items-start">
+          <li className="comment-item" key={idx}>
+            <div className="comment-inner">
               <div className="flex-grow-1">
-                <div className="fw-bold mb-2">{c.username}</div>
-                <div className="mb-2">
+                <div className="comment-header">
+                  <div className="comment-username-wrapper">
+                    <div className="user-avatar">
+                      {c.username.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <div className="comment-username">{c.username}</div>
+                      <div className="comment-date">{c.date}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rating-display">
                   {updateMode === idx ? (
                     <>
                       {[1, 2, 3, 4, 5].map((star) => (
                         <button
                           key={star}
                           type="button"
-                          //별점 등록
                           onClick={() => setUpdateRating(star)}
-                          //마우스hover할때 별
                           onMouseEnter={() => setUpdateHoverRating(star)}
                           onMouseLeave={() => setUpdateHoverRating(0)}
                           style={{
@@ -320,7 +328,8 @@ function Review() {
                     </>
                   )}
                 </div>
-                {c.img && (
+
+                {c.img && c.img !== 'null' ? (
                   updateMode === idx ? (
                     <div>
                       <div className="mb-2">
@@ -337,13 +346,12 @@ function Review() {
                           }
                         }}
                       />
-                      <button
-                        type="button"
+                      <Button
                         className="btn btn-light btn-sm"
                         onClick={() => document.getElementById("updateFileInput").click()}
                       >
                         📁 이미지 변경
-                      </button>
+                      </Button>
                       {updateFileName && (
                         <small className="text-muted d-block mt-1">
                           새 파일: {updateFileName}
@@ -355,72 +363,71 @@ function Review() {
                       <img src={c.img} alt="" style={{ maxWidth: "100px", height: "auto" }} />
                     </div>
                   )
-                )}
+                ) : null}
+
                 {updateMode === idx ? (
-                  <Form.Group controlId="commentUpdate">
-                    <Form.Control
+                  <div className="form-group controlId">
+                    <textarea
                       type="text"
                       value={updateInput}
                       onChange={(e) => setUpdateInput(e.target.value)}
+                      className="edit-input"
                     />
-                  </Form.Group>
+                  </div>
                 ) : (
-                  <div className="mb-2">{c.text}</div>
+                  <div className="comment-text">{c.text}</div>
                 )}
+
                 <small className="text-muted">
                   {c.date}
                 </small>
               </div>
+
               {currentUser == c.username && (
-                <div className="ms-3 d-flex gap-2">
+                <div className="comment-actions">
                   {updateMode === idx ? (
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={() => {
-                        //저장 로직
-                        updateReivew(c.id)
-                      }}>
-                      저장
-                    </Button>
+                    <>
+                      <Button
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => {
+                          updateReivew(c.id)
+                        }}
+                      >
+                        저장
+                      </Button>
+                      <Button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => {
+                          setUpdateMode('')
+                        }}
+                      >
+                        취소
+                      </Button>
+                    </>
                   ) : (
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      onClick={
-                        () => {
-                          // 수정 로직
+                    <>
+                      <Button
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={() => {
                           handleUpdateReview(idx, c.text, c.rating)
-                        }}>
-                      수정
-                    </Button>
-                  )}
-                  {updateMode === idx ? (
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => {
-                        //수정취소
-                        setUpdateMode('')
-                      }}>
-                      취소
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => {
-                        // 삭제 로직
-                        deleteReview(c.id)
-                      }}
-                    >
-                      삭제
-                    </Button>
+                        }}
+                      >
+                        수정
+                      </Button>
+                      <Button
+                        className="btn btn-outline-danger btn-sm"
+                        onClick={() => {
+                          deleteReview(c.id)
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    </>
                   )}
                 </div>
               )}
             </div>
-          </ListGroup.Item>
+          </li>
         ))}
       </ListGroup>
     </Container >
