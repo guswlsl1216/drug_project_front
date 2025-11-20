@@ -32,7 +32,8 @@ const ContactUs = () => {
     setFormMessage(null);
     setError(null);
 
-    if (!formData.name || !formData.email || !formData.type || !formData.title || !formData.content){
+    console.log("Submitting FormData:", formData);
+    if (!formData.name.trim() || !formData.email.trim() || !formData.type.trim() || !formData.title.trim() || !formData.content.trim()){
       setError("모든 필수 항목을 입력해주세요.");
       return;
     }
@@ -40,7 +41,7 @@ const ContactUs = () => {
     await requestHandler({
       method:'post',
       url:'/inquiry/contact',
-      data: formData,
+      payload: formData,
       setLoading,
       onSuccess: (data) => {
         setFormMessage(data.message);
