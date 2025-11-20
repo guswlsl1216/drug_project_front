@@ -39,6 +39,8 @@ import MyOrderDetail from "./pages/order/MyOrderDetail";
 import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
+import TermsOfService from "./pages/footer/TermsOfService";
+import PrivacyPolicy from "./pages/footer/privacyPolicy";
 import InquiryManage from "./pages/admin/InquiryManage";
 import InquiryList from "./pages/admin/InquiryList";
 import PendingList from "./pages/admin/PendingList";
@@ -49,6 +51,8 @@ const Routers = () => {
   return (
     <>
       <Routes>
+        <Route path="/terms" element={<TermsOfService/>}/>
+        <Route path="/privacy" element={<PrivacyPolicy/>}/>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupComplete" element={<SignupComplete/>} />
