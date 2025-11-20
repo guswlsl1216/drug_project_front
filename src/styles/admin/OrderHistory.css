@@ -5,6 +5,8 @@
   display: grid;
   gap: 16px;
   padding: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, "Malgun Gothic", "맑은 고딕", sans-serif;
 }
 
 /* ==============================
@@ -17,8 +19,9 @@
   gap: 12px 16px;
   padding: 12px 16px;
   border: 1px solid #e7e7ef;
-  border-radius: 12px;
-  background: #fff;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(148, 163, 184, 0.12);
 }
 
 .order-history__filter-label {
@@ -26,46 +29,52 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #4b4b58;
+  color: #4b5563;
 }
 
 .order-history__select {
   height: 36px;
   padding: 0 10px;
-  border: 1px solid #dcdce6;
-  border-radius: 10px;
-  background: #fff;
+  border: 1px solid #d4d4e0;
+  border-radius: 999px;
+  background: #ffffff;
   font-size: 14px;
-  color: #333;
+  color: #111827;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.18s ease;
 }
 
 .order-history__select:focus {
-  border-color: #7a5cff33;
-  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.12);
+  border-color: #7a5cff;
+  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.18);
 }
 
 .order-history__search {
   flex: 1;
-  min-width: 200px;
+  min-width: 220px;
   height: 36px;
-  padding: 0 10px;
-  border: 1px solid #dcdce6;
-  border-radius: 10px;
-  background: #fff;
+  padding: 0 12px;
+  border: 1px solid #d4d4e0;
+  border-radius: 999px;
+  background: #ffffff;
   font-size: 14px;
-  transition: all 0.2s;
+  color: #111827;
+  outline: none;
+  transition: all 0.18s ease;
+}
+
+.order-history__search::placeholder {
+  color: #9ca3af;
 }
 
 .order-history__search:focus {
-  border-color: #7a5cff33;
-  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.12);
+  border-color: #7a5cff;
+  box-shadow: 0 0 0 3px rgba(122, 92, 255, 0.18);
 }
 
 .order-history__search-btn {
-  padding: 8px 16px;
-  border-radius: 10px;
+  padding: 8px 18px;
+  border-radius: 999px;
 }
 
 .order-history__perpage {
@@ -73,7 +82,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 13px;
   color: #4b4b58;
 }
 
@@ -83,35 +92,35 @@
 .order-history__table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
-  border: 1px solid #ececf3;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 12px 30px rgba(148, 163, 184, 0.18);
   font-size: 14px;
 }
 
 .order-history__table thead th {
-  background: linear-gradient(180deg, #fafaff 0%, #f4f4ff 100%);
+  background: linear-gradient(180deg, #fafaff 0%, #f3f2ff 100%);
   color: #353545;
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.2px;
-  padding: 12px 14px;
+  padding: 11px 14px;
   text-align: left;
-  border-bottom: 1px solid #ececf3;
+  border-bottom: 1px solid #e4e4f2;
   white-space: nowrap;
 }
 
 .order-history__table tbody td {
-  padding: 12px 14px;
+  padding: 11px 14px;
   border-bottom: 1px solid #f2f2f7;
   color: #2f2f39;
   vertical-align: middle;
-  transition: background 0.15s ease;
+  transition: background 0.12s ease;
 }
 
 .order-history__row:hover {
-  background: #fafaff;
+  background: #faf7ff;
 }
 
 /* 금액 우측 정렬 */
@@ -119,47 +128,57 @@
   text-align: right;
 }
 
-/* 상세보기 버튼 */
+/* 상세보기 “보기” 버튼 느낌 */
 .order-history__view-btn {
   font-size: 13px;
   padding: 4px 10px;
-  color: #6b5cff;
-  border-radius: 6px;
+  color: #7a5cff;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
 }
 
 .order-history__view-btn:hover {
-  background: #f5f3ff;
+  background: #f4f0ff;
+  color: #5b3deb;
 }
 
 /* ==============================
    💬 상태 배지 색상
    ============================== */
 .order-history__cell.status {
-  display: inline-block;
   min-width: 80px;
   text-align: center;
   font-weight: 600;
   font-size: 12px;
-  padding: 6px 10px;
   border-radius: 999px;
-  border: 1px solid transparent;
+  
 }
 
+/* 결제완료 */
 .order-history__cell.status.approved {
   color: #166534;
   background: #dcfce7;
   border-color: #bbf7d0;
 }
+
+/* 취소 */
 .order-history__cell.status.cancelled {
   color: #7f1d1d;
   background: #fee2e2;
   border-color: #fecaca;
 }
+
+/* 환불 */
 .order-history__cell.status.refunded {
   color: #7c2d12;
   background: #ffedd5;
   border-color: #fed7aa;
 }
+
+/* 대기/요청 */
 .order-history__cell.status.requested,
 .order-history__cell.status.pending {
   color: #075985;
@@ -175,7 +194,7 @@
   padding: 40px 16px;
   text-align: center;
   color: #6b6b7a;
-  background: #fff;
+  background: #ffffff;
   border: 1px dashed #e7e7ef;
   border-radius: 12px;
 }
@@ -186,7 +205,7 @@
   justify-content: space-between;
   color: #404054;
   font-size: 14px;
-  background: #fff;
+  background: #ffffff;
   padding: 10px 14px;
   border: 1px solid #ececf3;
   border-radius: 10px;
@@ -195,52 +214,170 @@
 /* ==============================
    📱 반응형
    ============================== */
+
+/* 1024px 이하 – 태블릿: 살짝만 컴팩트하게 */
 @media (max-width: 1024px) {
   .order-history__filter {
-    gap: 10px;
+    gap: 10px 12px;
+    padding: 10px 12px;
   }
 
-  .order-history__filter-label span {
-    display: none;
+  .order-history__filter-label {
+    font-size: 13px;
+  }
+
+  .order-history__select,
+  .order-history__search {
+    height: 34px;
+    font-size: 13px;
   }
 
   .order-history__table {
     font-size: 13px;
+    box-shadow: 0 10px 24px rgba(148, 163, 184, 0.16);
   }
 
+  .order-history__table thead th,
+  .order-history__table tbody td {
+    padding: 10px 12px;
+  }
+
+  /* 마지막 컬럼(상세보기)은 오른쪽 정렬 유지 */
   .order-history__table thead th:nth-child(7),
   .order-history__table tbody td:nth-child(7) {
     text-align: right;
   }
 }
 
+/* 768px 이하 – 모바일 레이아웃 전환 */
 @media (max-width: 768px) {
+  /* 필터: 위→아래로 정렬 */
   .order-history__filter {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
   }
 
+  .order-history__filter-label {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .order-history__select {
+    flex: 0 0 auto;
+  }
+
+  /* 검색창 + 버튼 한 줄 */
   .order-history__search {
     width: 100%;
+    min-width: 0;
+  }
+
+  .order-history__search-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 표시 개수는 맨 아래로 */
+  .order-history__perpage {
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+
+  /* 테이블은 살짝 그림자/라운드 축소 */
+  .order-history__table {
+    box-shadow: 0 8px 20px rgba(148, 163, 184, 0.14);
+  }
+
+  .order-history__table thead th,
+  .order-history__table tbody td {
+    padding: 9px 10px;
   }
 
   .order-history__summary {
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
+    font-size: 13px;
   }
 }
 
-@media (max-width: 430px) {
-  .order-history__table thead th:nth-child(2) {
-    width: 120px;
+/* 480px 이하 – 작은 폰 최적화 */
+@media (max-width: 480px) {
+  .order-history {
+    gap: 12px;
+    padding: 4px 0;
   }
 
-  .order-history__cell {
-    padding: 10px 8px;
+   /* 공통 래퍼 폭 통일: 필터 / 테이블 / 요약 */
+  .order-history__filter,
+  .order-history__table,
+  .order-history__summary {
+    width: 100%;
+    max-width: 360px;      /* 👉 여기 숫자만 취향대로 (320~400 사이 추천) */
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .order-history__filter {
+    padding: 10px 10px;
+    border-radius: 12px;
+  }
+
+  .order-history__select,
+  .order-history__search {
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .order-history__search-btn {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+
+  /* 테이블: 살짝 더 컴팩트 */
+  .order-history__table {
+    font-size: 12px;
+    border-radius: 12px;
+  }
+
+  .order-history__table thead th,
+  .order-history__table tbody td {
+    padding: 6px 6px;
+  }
+
+  .order-history__table tbody td {
+    white-space: normal;    /* 기본 줄바꿈 활성화 */
+    word-break: break-word; /* 단어 길어도 줄바꿈 */
+  }
+
+  /* 너무 좁은 화면에서는 일부 컬럼 숨김
+     3열: 주문자, 6열: 결제수단
+   */
+  .order-history__table thead th:nth-child(3),
+  .order-history__table tbody td:nth-child(3),
+  .order-history__table thead th:nth-child(6),
+  .order-history__table tbody td:nth-child(6) {
+    display: none;
+  }
+
+  /* 주문ID, 금액, 상태만 또렷하게 보이도록 */
+  .order-history__table thead th:nth-child(1),
+  .order-history__table tbody td:nth-child(1) {
+    width: 60px;
+  }
+
+  .order-history__cell.amount {
+    white-space: nowrap;
+  }
+
+  .order-history__cell.status {
+    min-width: 68px;
+    font-size: 11px;
   }
 
   .order-history__summary {
-    font-size: 13px;
+    font-size: 12px;
+    padding: 8px 10px;
   }
 }

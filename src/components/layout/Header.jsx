@@ -1,15 +1,40 @@
 // 헤더
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "../../styles/Header.css";
 import logoImage from "../../images/logo.png";
 import { useUser } from "../context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../ui/Button";
 import UseNavi from "../../utils/UseNavi";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const { user, setUser, isLoggedIn } = useUser();
   const {goTo} = UseNavi();
+  const location = useLocation();
+
+  // 페이지에 해당하는 메인메뉴 활성화 css를 위한 페이지 분류 목록
+  const [activeMenu, setActiveMenu] = useState(null);
+;
+  const nowActivePage = (pathname) => {
+    if (pathname.startsWith('/analyze') ||
+        pathname.startsWith('/history')) {
+      return "analyze";
+    }
+    else if (pathname.startsWith('/routine') ||
+             pathname.startsWith('/mydrugs')) {
+      return "routine";
+    }
+    else if (pathname.startsWith('/store/') ||
+             pathname.startsWith('/orders')) {
+      return "store";
+    }
+  }
+
+  useEffect(() => {
+    const nowActiveMenu = nowActivePage(location.pathname);
+    setActiveMenu(nowActiveMenu);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     requestHandler({
@@ -39,7 +64,7 @@ const Header = () => {
           </div>
           <div className="header_main_menu">
             <ul className="main_menu_container">
-              <li className="main_menu">
+              <li className={`main_menu ${activeMenu == 'analyze' ? 'activeMenu' : ''}`}>
                 <NavLink to="analyze/medicine">AI분석</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
@@ -52,7 +77,7 @@ const Header = () => {
                   </ul>
                 </div>
               </li>
-              <li className="main_menu">
+              <li className={`main_menu ${activeMenu == 'routine' ? 'activeMenu' : ''}`}>
                 <NavLink to="/routine">루틴</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
@@ -65,7 +90,7 @@ const Header = () => {
                   </ul>
                 </div>
               </li>
-              <li className="main_menu">
+              <li className={`main_menu ${activeMenu == 'store' ? 'activeMenu' : ''}`}>
                 <NavLink to="store/allgoods">스토어</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
@@ -76,7 +101,7 @@ const Header = () => {
                       <NavLink to="store/favorite">찜 목록</NavLink>
                     </li>
                     <li>
-                      <NavLink>주문 내역</NavLink>
+                      <NavLink to="/myOrderList">주문 내역</NavLink>
                     </li>
                     <li>
                       <NavLink>나의 리뷰</NavLink>

@@ -63,6 +63,32 @@ const OrderHistory = () => {
     load()
   }, [page, perPage, filters])
 
+  const formatStatus = (status) => {
+    switch (status) {
+      case "DONE": return "결제완료";
+      case "CANCELED": return "취소";
+      case "PARTIAL_CANCELED": return "부분취소";
+      case "READY": return "대기";
+      case "IN_PROGRESS": return "진행중";
+      case "WAITING_FOR_DEPOSIT": return "입금대기";
+      case "ABORTED": return "실패";
+      case "EXPIRED": return "만료";
+      default: return status || "-";
+    }
+  };
+
+  const formatMethod = (method) => {
+    // DB에 저장된 값 기준으로 매핑
+    switch (method) {
+      case "카드": return "카드";
+      case "간편결제": return "간편결제";
+      case "가상계좌": return "가상계좌";
+      case "계좌이체": return "계좌이체";
+      case "휴대폰": return "휴대폰결제";
+      default: return method || "-";
+    }
+  };
+
   return(
     <div className="order-history">
       <form 
@@ -82,9 +108,14 @@ const OrderHistory = () => {
           결제상태
           <select name="status" className="order-history__select">
             <option value="">전체</option>
-            <option value="APPROVED">결제완료</option>
-            <option value="CANCELLED">취소</option>
-            <option value="REFUNDED">환불</option>
+            <option value="DONE">결제완료</option>
+            <option value="CANCELED">취소</option>
+            <option value="PARTIAL_CANCELED">부분취소</option>
+            <option value="WAITING_FOR_DEPOSIT">입금대기</option>
+            <option value="READY">대기</option>
+            <option value="IN_PROGRESS">진행중</option>
+            <option value="ABORTED">실패</option>
+            <option value="EXPIRED">만료</option>
           </select>
         </label>
 
@@ -92,15 +123,18 @@ const OrderHistory = () => {
           결제방법
           <select name="method" className="order-history__select">
             <option value="">전체</option>
-            <option value="TOSS">토스페이</option>
-            <option value="KAKAOPAY">카카오페이</option>
+            <option value="카드">카드</option>
+            <option value="간편결제">간편결제</option>
+            <option value="가상계좌">가상계좌</option>
+            <option value="계좌이체">계좌이체</option>
+            <option value="휴대폰">휴대폰</option>
           </select>
         </label>
 
         <input 
           type="text" 
           name="query" 
-          placeholder="주문자명 또는 주문번호 검색" 
+          placeholder="주문자명 또는 주문ID 검색" 
           className="order-history__search"
         />
         <Button type="submit" variant="primary" className="order-history__search-btn">
@@ -152,7 +186,7 @@ const OrderHistory = () => {
                   <tr key={i} className="order-history__row">
                     <td className="order-history__cell id">{orderId}</td>
                     <td className="order-history__cell date">
-                      {time(paidAt) || "-"}
+                      {paidAt ? time(paidAt) : "-"}
                     </td>
                     <td className="order-history__cell user">
                       {p.user_nickname || "-"}
@@ -165,9 +199,9 @@ const OrderHistory = () => {
                         p?.status || ""
                       ).toLowerCase()}`}
                     >
-                      {p?.status}
+                      {formatStatus(p?.status)}
                     </td>
-                    <td className="order-history__cell method">{p?.method}</td>
+                    <td className="order-history__cell method">{formatMethod(p?.method)}</td>
                     <td className="order-history__cell detail">
                       <Button 
                         variant="text" 

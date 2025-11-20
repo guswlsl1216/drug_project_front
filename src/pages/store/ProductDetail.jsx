@@ -1,29 +1,50 @@
 import { useEffect, useState } from "react";
 import "../../styles/Store.css";
-import { NavLink, Outlet, useParams } from "react-router-dom";
+import { NavLink, Outlet, useOutletContext, useParams } from "react-router-dom";
 import useFavoriteToggle from "./usefavoriteToggle";
 import InteractionAnalysisModal from "../../components/ui/InteractionAnalysisModal";
 import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import { useUser } from "../../components/context/UserContext";
-import LoadingSpinner from "../../utils/loadingSpinner";
+import LoadingSpinner from "../../utils/LoadingSpinner";
+import useLoginRedirect from "../../utils/useLoginRedirect";
 
 
 const ProductDetail = () => {
+  const { triggerUpdate, triggerCartUpdate } = useOutletContext();
+
   const {goodsId} = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [reviewInfo, setReviewInfo] = useState({ 'length': 0, 'star_avg': 0 });
+  const [reviewUpdate, setReviewUpdate] = useState(false)
 
   const {isFavorite, toggleFavoriteHandler, message, setIsFavorite} = useFavoriteToggle(false, goodsId);
   const {goTo} = UseNavi()
-  const {isLoggedIn, user} = useUser()
+  const {user} = useUser()
+  const { requireLogin } = useLoginRedirect();
 
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
 
+  const addRecentItem = (newItem) => {
+    let items = sessionStorage.getItem("recentItems");
+    items = items ? JSON.parse(items) : [];
+
+    let newItems = items.filter(item => item.id !== newItem.id);
+    
+    newItems.unshift(newItem);
+
+    if (newItems.length > 15) {
+      newItems.pop();
+    }
+
+    sessionStorage.setItem("recentItems", JSON.stringify(newItems));
+    triggerUpdate();
+  }
 
   useEffect(() => {
     const ProductDetailandFavorite = async () => {
@@ -46,6 +67,7 @@ const ProductDetail = () => {
             }
 
             setError(null); // 에러 초기화
+            addRecentItem(productData);
           } else {
             setProduct(null)
             setIsFavorite(false)
@@ -59,14 +81,26 @@ const ProductDetail = () => {
         }
       })
     };
-
+    getInfo()
     ProductDetailandFavorite();
-  }, [goodsId, setLoading, setProduct, setIsFavorite, setError]); // goodsId가 변경될 때마다 재실행
+  }, [goodsId, setLoading, setProduct, setIsFavorite, setError, reviewUpdate]); // goodsId가 변경될 때마다 재실행
 
+  const handleReviewUpdated = () => {
+    setReviewUpdate(prev => !prev);
+  };
+
+  const getInfo = async () => {
+    const res = await requestHandler({
+      method: "get",
+      url: "/review/goodsReviewInfo/" + goodsId
+    })
+    console.log(res.data['info'])
+    setReviewInfo(res.data['info'])
+  }
 
   const handleQuantityChange = (type) => {
     setQuantity(prevQuantity => {
-      if(type === 'increment') { 
+      if (type === 'increment') {
         // 재고가 있을 경우에만 증가(재고가 없으면 무한정 증가 방지)
         // 재고 상태 : product.stock
         const maxStock = product?.stock || Infinity;
@@ -100,6 +134,7 @@ const ProductDetail = () => {
           } else {
             alert(`총 ${data.count}개가 장바구니에 담겼습니다.`); 
           }
+          triggerCartUpdate();
           console.log(data);
         },
         onError: (msg) => {
@@ -107,6 +142,27 @@ const ProductDetail = () => {
         }
     });  
   };
+
+  const handleOrder = () => {
+    requireLogin(() => {
+      goTo("/orders", {
+        buyer: {
+          nickname: user?.nickname ?? "",
+          tel: user?.tel ?? ""
+        },
+        items: [
+          {
+            goods_id: product.id,
+            goods_name: product.goods_name,
+            image_path: product.image_path,
+            unit_price: product.price,
+            count: quantity
+          }
+        ],
+        total_price: totalPrice
+      })
+    })
+  }
 
 
   if (loading) return <LoadingSpinner label="상품 상세 정보를 불러오는 중..." />
@@ -133,11 +189,17 @@ const ProductDetail = () => {
 
           {/* B. 제품 정보 및 구매 액션 영역 */}
           <div className="detail-info-area">
+
             {/* 제목 및 ID */}
-            <h1 className="product-title">{product.goods_name}</h1>
-            <p className="product-id">
-              상품 ID: {product.id} | 카테고리: {product.category || "미분류"}
-            </p>
+            <div className="d-flex align-items-center gap-2">
+              <h1 className="product-title">
+                {product.goods_name}
+              </h1>
+              <span className="text-warning fw-bold">
+                ⭐ {reviewInfo['star_avg']}점
+              </span>
+            </div>
+            <p className="product-id">상품 ID: {product.id} | 카테고리: {product.category || '미분류'}</p>
 
             {/* 가격 */}
             <div className="price-section">
@@ -173,36 +235,16 @@ const ProductDetail = () => {
                 <Button
                   variant="text"
                   className="buy-now-btn"
-                  onClick={() => {
-                    if (!isLoggedIn) {
-                      goTo("/login")
-                      return
-                    }
-                    goTo("/orders", {
-                      buyer: {
-                        nickname: user?.nickname ?? "",
-                        tel: user?.tel ?? ""
-                      },
-                      items: [
-                        {
-                          goods_id: product.id,
-                          goods_name: product.goods_name,
-                          image_path: product.image_path,
-                          unit_price: product.price,
-                          count: quantity
-                        }
-                      ],
-                      total_price: totalPrice
-                    })
-                  }}
+                  onClick={handleOrder}
                 >
                   바로구매
                 </Button>
-                
-                <button 
-                  className={`favorite-icon-btn ${isFavorite ? 'active' : ''}`}
-                  onClick={toggleFavoriteHandler}>
-                  {isFavorite ? '❤️' : '🤍'}
+
+                <button
+                  className={`favorite-icon-btn ${isFavorite ? "active" : ""}`}
+                  onClick={toggleFavoriteHandler}
+                >
+                  {isFavorite ? "❤️" : "🤍"}
                 </button>
               </div>
             </div>
@@ -216,20 +258,15 @@ const ProductDetail = () => {
 
         {/* 2. 상세 정보 및 리뷰 탭 섹션 */}
         <div className="tab-section">
+
           {/* 탭 네비게이션 */}
           <div className="tab-nav">
             <nav className="tab-links">
-              <NavLink
-                to={`/store/detail/${goodsId}/desc`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
+              <NavLink to={`/store/detail/${goodsId}/desc`} className={({ isActive }) => isActive ? 'tab-link active' : 'tab-link'}>
                 <h2 className="tab-title-only">제품 상세 정보</h2>
               </NavLink>
-              <NavLink
-                to={`/store/detail/${goodsId}/review`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
-                <h2 className="tab-title-only">리뷰</h2>
+              <NavLink to={`/store/detail/${goodsId}/review`} className={({ isActive }) => isActive ? 'tab-link active' : 'tab-link'}>
+                <h2 className="tab-title-only">리뷰({reviewInfo['length']})</h2>
               </NavLink>
               <NavLink
                 to={`/store/detail/${goodsId}/qna`}
@@ -242,7 +279,7 @@ const ProductDetail = () => {
 
           {/* 탭 콘텐츠 */}
           <div className="tab-content">
-            <Outlet context={{product}} />
+            <Outlet context={{ product, reviewUpdate, handleReviewUpdated }} />
           </div>
         </div>
       </div>
@@ -251,6 +288,7 @@ const ProductDetail = () => {
       <InteractionAnalysisModal
         isOpen={isAnalysisModalOpen}
         onClose={() => setIsAnalysisModalOpen(false)}
+        supplementIdForAnalysis={product.id}
         supplementInfo={{
           id: product.id,
           name: product.goods_name,

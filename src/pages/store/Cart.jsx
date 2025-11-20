@@ -4,6 +4,7 @@ import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import "../../styles/cart/Cart.css";
+import useLoginRedirect from "../../utils/useLoginRedirect";
 
 const Cart = () => {
   
@@ -12,6 +13,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const {user, setUser, isLoggedIn} = useUser(); // 로그인 한 사람만 접근 가능
   const [allCheck, setAllCheck] = useState(false); // 전체 선택 
+  const { requireLogin } = useLoginRedirect();
   
 
   // 장바구니 목록 가져오기
@@ -102,11 +104,49 @@ const Cart = () => {
     setCartItem(prev => prev.filter(item => !item.check));
   };
 
+  const checkedItems = cartItem.filter(item => item.check);
+
   // 총 결제 금액
-  const totalPrice = cartItem.reduce((acc, item) => acc + item.price * item.count, 0 );
+  const selectedTotalPrice = checkedItems.reduce(
+    (acc, item) => acc + item.price * item.count, 0 
+  );
 
   // 배송비
-  const shipping = totalPrice >= 20000 ? 0 : 2500;
+  const shipping = selectedTotalPrice === 0
+    ? 0
+    : selectedTotalPrice >= 20000
+    ? 0 : 2500
+
+  const ordershandle = () => {
+    requireLogin(() => {
+      const checkedItems = cartItem.filter(item => item.check);
+      if (checkedItems.length === 0) {
+        alert("구매할 상품을 선택해 주세요.");
+        return;
+      }
+
+      const orderItems = checkedItems.map(item => ({
+        goods_id: item.goods_id,       // 장바구니 데이터 구조에 맞게 'goods_id' 사용
+        goods_name: item.goods_name,
+        image_path: item.image_path,
+        unit_price: item.price,
+        count: item.count
+      }))
+
+      const total_price = orderItems.reduce(
+        (acc, item) => acc + item.unit_price * item.count,0
+      );
+
+      goTo("/orders", {
+        buyer: {
+          nickname: user?.nickname ?? "",
+          tel: user?.tel ?? ""
+        },
+        items: orderItems,
+        total_price
+      })
+    }, false)
+  }
 
 
   return (
@@ -147,12 +187,12 @@ const Cart = () => {
           
           <div className="summary-subtext">
             <span>총 상품금액 : </span>
-            <h3 className="summary-price">{totalPrice}원</h3>
+            <h3 className="summary-price">{selectedTotalPrice.toLocaleString()}원</h3>
           </div>
             
           <div className="summary-subtext">
             <span>총 배송비 : </span>
-            <h3 className="summary-price">{shipping}원 </h3>
+            <h3 className="summary-price">{shipping.toLocaleString()}원 </h3>
           </div>        
         </div>
 
@@ -160,14 +200,18 @@ const Cart = () => {
 
         <div className="summary-final-section">
           <p className="summary-title">결제 예정 금액</p>
-          <h2 className="summary-final-price">{totalPrice + shipping}원</h2>
+          <h2 className="summary-final-price">{(selectedTotalPrice + shipping).toLocaleString()}원</h2>
           <p className="summary-info">
             ⓘ 쿠폰 및 적립금은 구매하기 버튼을 누른 후 주문서에서 적용하실 수 있습니다.
           </p>
         </div>
 
         <div className="summary-button-box">
-          <Button onClick={()=>{goTo("/orders")}}>구매하기</Button>
+          <Button 
+            onClick={ordershandle}
+          >
+            구매하기
+          </Button>
         </div>
 
       </div>
