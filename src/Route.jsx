@@ -43,14 +43,11 @@ import PrivacyPolicy from "./pages/footer/privacyPolicy";
 import InquiryManage from "./pages/admin/InquiryManage";
 import InquiryList from "./pages/admin/InquiryList";
 import PendingList from "./pages/admin/PendingList";
-import { Suspense } from "react";
-import LoadingSpinner from "./utils/LoadingSpinner";
-
 
 const Routers = () => {
 
   return (
-    <Suspense fallback={<LoadingSpinner size={25} label="불러오는 중..." />}>
+    <>
       <Routes>
         <Route path="/terms" element={<TermsOfService/>}/>
         <Route path="/privacy" element={<PrivacyPolicy/>}/>
@@ -114,7 +111,7 @@ const Routers = () => {
         <Route path="/success" element={<PaySuccess />} />
         <Route path="/fail" element={<PayFail />} />
       </Routes>
-    </Suspense>
+    </>
   );
 }
 

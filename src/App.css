@@ -4,3 +4,26 @@
   margin: 0;
   padding: 0;
 }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* 전체 앱을 세로로 꽉 채우는 레이아웃 */
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 가운데 콘텐츠 영역이 남는 공간을 전부 차지 */
+.app-main {
+  flex: 1;
+}
+
+.loading-left {
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  padding: 8px 12px; /* 여백은 선택 */
+}

@@ -7,20 +7,30 @@ import ChatbotButton from './components/ui/ChatbotButton'
 import ChatbotDock from './components/chatbot/ChatbotDock'
 import { UserProvider, useUser } from './components/context/UserContext'
 import useScrollToTop from './utils/useScrollToTop'
+import LoadingSpinner from './utils/LoadingSpinner'
 
 const AppContent = () => {
   const {loading} = useUser();
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState([])
 
-  if (loading) return <div>Loading...</div>; // 새로고침 시 체크 완료까지 기다림
+  if (loading) {
+    return (
+      <div className="loading-left">
+        <LoadingSpinner size={30} label='Loading...'/>
+      </div>
+    )
+  }; // 새로고침 시 체크 완료까지 기다림
 
   return (
-    <>
+    <div className="app-layout">
       <Header/>
-      <Routers/>
-      <ChatbotButton onClick={() => setOpen(true)} />
+      <main className="app-main">
+        <Routers/>
+      </main>
       <Footer/>
+      
+      <ChatbotButton onClick={() => setOpen(true)} />
       <ChatbotDock
         open={open}
         onClose={() => setOpen(false)}  
@@ -28,7 +38,7 @@ const AppContent = () => {
         setMessages={setMessages} // 업데이트 함수도 넘기기
         onNewChat={() => setMessages([])} // 새 대화시 초기화
       />
-    </>
+    </div>
   );
 };
 
