@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import { useEffect, useState } from "react";
-import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Mypage.css";
 import requestHandler from "../../utils/requestHandler";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const Favorite = () => {
 
@@ -44,7 +44,7 @@ const Favorite = () => {
     fetchFavorite();
   }, [setLoading, setFavorites, setError])
 
-  if (loading) return <div className="loading-message">찜 목록을 불러오는 중...</div>
+  if (loading) return <LoadingSpinner label="찜 목록을 불러오는 중..." />
   if (error) return <div className="error-message">{error}</div>
 
   return(

@@ -5,10 +5,14 @@ import Changehandler from "../utils/Changehandler";
 import { useEffect, useState } from "react";
 import { useUser } from "../components/context/UserContext";
 import axiosInstance from "../utils/axiosInstance";
+import "../styles/auth/Login.css";
+import { useLocation } from "react-router-dom";
 
 // 로그인 페이지
 
 const Login = () => {
+  const location = useLocation();
+  const fromSignupComplete = location.state?.fromSignupComplete;
   const {goIndex, goTo, goBack} = UseNavi();
   const [form, setForm] = useState({
     username:"",
@@ -27,9 +31,12 @@ const Login = () => {
 
       // 서버에서 보내 준 user 정보로 Context 업데이트
       setUser(res.data.data);
-
-      // 로그인 후 인덱스로 이동
-      goIndex();
+      if (fromSignupComplete) {
+        goIndex(); // 회원가입 완료 페이지에서는 인덱스로 이동
+      }else {
+        goBack(); // 모든 다른 페이지에서는 이전 페이지로 이동
+      }
+      
     } catch (err) {
       alert(err?.response?.data?.message || "로그인 실패"); // 조건문 해석 불가능 다시 알아보고 수정 필요
 
@@ -41,26 +48,27 @@ const Login = () => {
 
   return (
     <>
-      <div className="wrapper">
-        <h2>로그인 페이지</h2>
+      <div className="login-fixed-center">
 
-        <form action="">
+        <div className="login-container">
+          <h2 className="login-title">로그인</h2>
 
-          <div>
-            <h4>아이디</h4>
-            <input type="text" name="username" value={form.username} onChange={Changehandler(setForm)} />
-          </div>
+          <form action="" className="login-form">
+            <div className="login-form-group">
+              <h4 className="login-label">아이디</h4>
+              <input className="login-input" type="text" name="username" value={form.username} onChange={Changehandler(setForm)} />
+            </div>
 
-          <div>
-            <h4>비밀번호</h4>
-            <input type="password" name="password" value={form.password} onChange={Changehandler(setForm)} />
-          </div>
+            <div className="login-form-group">
+              <h4 className="login-label">비밀번호</h4>
+              <input className="login-input" type="password" name="password" value={form.password} onChange={Changehandler(setForm)} />
+            </div>
 
-          <Button variant="primary" onClick={handleSubmit}>로그인</Button>
+            <Button className="login-btn" variant="primary" onClick={handleSubmit}>로그인</Button>
 
-        </form>
-
-      </div>
+          </form>
+        </div>
+      </div>    
     </>
   );
 }
