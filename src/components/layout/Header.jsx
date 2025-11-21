@@ -122,7 +122,7 @@ const Header = () => {
                       <NavLink to="/myOrderList">주문 내역</NavLink>
                     </li>
                     <li>
-                      <NavLink>나의 리뷰</NavLink>
+                      <NavLink to="/myReview">나의 리뷰</NavLink>
                     </li>
                     <li>
                       <NavLink to="store/cart">장바구니</NavLink>
