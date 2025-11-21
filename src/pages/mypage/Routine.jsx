@@ -97,7 +97,7 @@ const Routine = () => {
             allDay={true} // 이벤트가 하루 종일인지 여부를 지정합니다.
             timeZone="GMT" // 캘린더의 시간대를 GMT로 설정합니다.
             headerToolbar={{
-              left: "prev today", center: "title", right: "next",
+              left: "prev", center: "title", right: "next",
             }}
             dateClick={handleDateClick} //날짜클릭시 이벤트
             dayCellClassNames={(arg) => {
@@ -149,7 +149,7 @@ const Routine = () => {
             ref={calendarRef}
             plugins={[listPlugin]}
             initialView="listDay"
-            headerToolbar={{ left: "prev today", center: "title", right: "next" }}
+            headerToolbar={{ left: "today", center: "title", right: "" }}
             timeZone="local"
             editable={true} // 이벤트의 드래그 앤 드롭, 리사이징, 이동을 허용합니다.
             droppable={true} // 캘린더에 요소를 드롭하여 이벤트를 생성할 수 있도록 허용합니다.
