@@ -6,31 +6,49 @@ import { useUser } from "../context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../ui/Button";
 import UseNavi from "../../utils/UseNavi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const { user, setUser, isLoggedIn } = useUser();
   const {goTo} = UseNavi();
   const location = useLocation();
+  const menuRef = useRef(null);
 
+  // 프로필 눌렀을 때 메뉴 팝업 뜨게 하기
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const clickOutsideHandler = (e) => {
+    if (menuRef.current && !menuRef.current.contains(e.target)) {
+      setIsMenuOpen(false);
+    }
+  };
+  
   // 페이지에 해당하는 메인메뉴 활성화 css를 위한 페이지 분류 목록
   const [activeMenu, setActiveMenu] = useState(null);
-;
   const nowActivePage = (pathname) => {
     if (pathname.startsWith('/analyze') ||
-        pathname.startsWith('/history')) {
+    pathname.startsWith('/history')) {
       return "analyze";
     }
     else if (pathname.startsWith('/routine') ||
-             pathname.startsWith('/mydrugs')) {
+    pathname.startsWith('/mydrugs')) {
       return "routine";
     }
     else if (pathname.startsWith('/store/') ||
-             pathname.startsWith('/orders')) {
+    pathname.startsWith('/orders')) {
       return "store";
     }
   }
 
+  useEffect(() => {
+    document.addEventListener('mousedown', clickOutsideHandler);
+
+    return () => {
+      document.removeEventListener('mousedown', clickOutsideHandler);
+    }
+  }, []);
+  
   useEffect(() => {
     const nowActiveMenu = nowActivePage(location.pathname);
     setActiveMenu(nowActiveMenu);
@@ -104,7 +122,7 @@ const Header = () => {
                       <NavLink to="/myOrderList">주문 내역</NavLink>
                     </li>
                     <li>
-                      <NavLink>나의 리뷰</NavLink>
+                      <NavLink to="/myReview">나의 리뷰</NavLink>
                     </li>
                     <li>
                       <NavLink to="store/cart">장바구니</NavLink>
@@ -119,21 +137,29 @@ const Header = () => {
           </div>
           <div className="header_user_menu">
             <ul className="user_menu_container">
-              <li className="user_menu">
-                {isLoggedIn ? (
-                  <>
-                    <span>{user.nickname}님</span>
-                    <Button onClick={handleLogout}>로그아웃</Button>
-                  </>
-                ) : (
-                  <>               
-                    <NavLink to="login">로그인</NavLink>
-                    <NavLink to="signup">회원가입</NavLink>
-                  </>
-                )}
-
-                <NavLink to="mypage">마이페이지(임시)</NavLink>
-              </li>
+              {isLoggedIn ? (
+                <li className={`user_menu_logged_in ${isMenuOpen ? 'is-active' : ''}`} ref={menuRef}>
+                  <div className="profile" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <FontAwesomeIcon icon={faUser} />
+                    <span>{user.nickname}</span>
+                  </div>
+                  <div className="mypage_menu">
+                    <ul>
+                      <li>
+                        <NavLink to="mypage">회원정보</NavLink>
+                      </li>
+                      <li>
+                        <p onClick={handleLogout}>로그아웃</p>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              ) : (
+                <li className="user_menu_logged_out">               
+                  <NavLink to="login">로그인</NavLink>
+                  <NavLink to="signup">회원가입</NavLink>
+                </li>
+              )}
             </ul>
           </div>
         </nav>

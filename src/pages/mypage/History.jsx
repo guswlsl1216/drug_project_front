@@ -9,6 +9,7 @@ import LoadingSpinner from '../../utils/LoadingSpinner';
 import useLoginRedirect from '../../utils/useLoginRedirect';
 import '../../styles/analyze.css'
 import Pagination from '../../components/ui/Pagination';
+import time from '../../utils/time';
 
 const History = () => {
   const { goTo } = UseNavi();
@@ -58,7 +59,6 @@ const History = () => {
   const historyCard = (history) => {
     const { status_label, status_className } = ANALYSIS_STATUS_MAPPING[history.status]
     const fullDateTime = history.analysis_date;
-    const dateOnlySlice = fullDateTime.slice(0, 10);
     
     return (
       <article className="history_card">
@@ -67,7 +67,7 @@ const History = () => {
             <p>{status_label}</p>
           </div>
           <div className="history_cardInfo_content">
-            <h3>{dateOnlySlice}</h3>
+            <h3>{time(fullDateTime)}</h3>
             <p className='ellipsis'><span>[의약품]</span> {
               history.meds.map(med => med.name).join(', ')
             }</p>

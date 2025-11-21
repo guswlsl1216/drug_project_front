@@ -123,12 +123,108 @@ header{
   align-items: center;
 }
 
-.user_menu {
+.user_menu_container {
+  list-style: none;
   display: flex;
-  align-content: center;
+  height: 100%;
+  align-items: center;
 }
 
-/* !!! 임시 !!! */
-.user_menu > a {
-  padding-left: 5px;
+.user_menu_logged_in {
+  position: relative; 
+  display: flex;
+  align-items: center; 
+  list-style: none;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  padding: 8px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.profile:hover {
+  background-color: #f0f0f0;
+}
+
+.profile svg {
+  margin-right: 3px;
+  vertical-align: middle; 
+}
+
+.mypage_menu {
+  position: absolute; 
+  top: 100%;
+  right: 0;
+  
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000; 
+  min-width: 120px;
+  padding: 5px 0;
+  
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px); 
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.user_menu_logged_in.is-active .mypage_menu { 
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mypage_menu ul {
+  list-style: none;
+}
+
+.mypage_menu li a, 
+.mypage_menu li p { 
+  display: block;
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.5;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.mypage_menu li a:hover,
+.mypage_menu li p:hover {
+  /* background-color: #f5f5f5; */
+  color: #a671ec;
+}
+
+.mypage_menu li p:hover {
+  color: tomato;
+}
+
+.user_menu_logged_out { 
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  list-style: none;
+}
+
+.user_menu_logged_out a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.user_menu_logged_out a:hover {
+  color: #a671ec;
 }

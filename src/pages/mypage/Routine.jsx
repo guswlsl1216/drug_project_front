@@ -85,10 +85,11 @@ const Routine = () => {
   };
 
   return (
-    <>
-      <h2>규칙적으로 약을 복용하세요</h2>
-      <div id="Routine">
-        <div id="calendar">
+    <div className="routine-page">
+      <h2 className="routine-title">규칙적으로 약을 복용하세요</h2>
+
+      <div className="routine-main-wrapper">
+        <div className="routine-calendar-section">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 설정
             editable={true} // 이벤트의 드래그 앤 드롭, 리사이징, 이동을 허용합니다.
@@ -148,7 +149,7 @@ const Routine = () => {
             }}
           />
         </div>
-        <div id="list">
+        <div className="routine-list-section">
           <FullCalendar
             ref={calendarRef}
             plugins={[listPlugin]}
@@ -196,7 +197,7 @@ const Routine = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
