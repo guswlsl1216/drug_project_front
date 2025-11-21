@@ -28,6 +28,10 @@ const Routine = () => {
   }
 
   useEffect(() => {
+    document.title = 'Medi.Check! | 루틴';
+  }, [])
+
+  useEffect(() => {
     //페이지 로드 되면 루틴리스트와 그에 해당하는 로그들을 쫙불러옴
     routine_load()
   }, [])

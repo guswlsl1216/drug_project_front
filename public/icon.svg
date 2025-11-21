@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="roundCapsule">
+      <rect x="156" y="96" width="200" height="320" rx="100" ry="100"/>
+    </clipPath>
+  </defs>
+
+  <!-- Capsule outline -->
+  <rect x="156" y="96" width="200" height="320" rx="100" ry="100"
+        fill="white" stroke="#d0d0d0" stroke-width="12"/>
+
+  <!-- Blue top -->
+  <rect x="156" y="96" width="200" height="160" rx="100" ry="100"
+        fill="#7aa7d9" clip-path="url(#roundCapsule)" />
+
+  <!-- Orange bottom -->
+  <rect x="156" y="256" width="200" height="160" rx="100" ry="100"
+        fill="#f28f85" clip-path="url(#roundCapsule)" />
+
+  <!-- Overlap curve -->
+  <ellipse cx="256" cy="256" rx="110" ry="55" fill="#cfa2a1" opacity="0.4"/>
+
+  <!-- Check mark -->
+  <path d="M220 210 L250 240 L300 180" stroke="white" stroke-width="18" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

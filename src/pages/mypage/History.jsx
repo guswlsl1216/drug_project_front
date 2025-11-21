@@ -20,6 +20,10 @@ const History = () => {
   const [pages, setPages] = useState(1)
   const [total, setTotal] = useState(0)
   const [perPage, setPerPage] = useState(5)
+
+  useEffect(() => {
+    document.title = 'Medi.Check! | 분석 결과 내역';
+  }, [])
   
   useEffect(() => {
     requireLogin(() => {

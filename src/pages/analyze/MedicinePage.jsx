@@ -62,6 +62,10 @@ const MedicinePage = () => {
   );
 
   useEffect(() => {
+    document.title = 'Medi.Check! | AI 분석하기';
+  }, [])
+
+  useEffect(() => {
     // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
     return () => {
       // 컴포넌트가 사라지기 직전에 현재 데이터를 세션에 저장합니다.

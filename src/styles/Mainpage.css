@@ -97,40 +97,78 @@
 .info_contents{
   width: 50%;
   height: 500px;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.1), /* 부드러운 그림자 (주요 그림자) */
+    0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.info_button_link {
+  /* 부모 div를 100% 채워서 영역 전체를 클릭 가능하게 만듭니다. */
+  display: block; 
+  width: 100%;
+  height: 100%;
+  
+  /* 링크의 기본 밑줄과 색상을 제거합니다. */
+  text-decoration: none;
+  color: inherit; 
+  
+  /* 그림자 효과를 부드럽게 전환하기 위한 설정 */
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+/* 호버(Hover) 시 입체감 효과 */
+.info_button_link:hover {
+  /* 마우스를 올리면 약간 위로 올라오는 것처럼 보이게 합니다. */
+  transform: translateY(-8px); 
+}
+
+.info_text_box h2,
+.info_text_box p {
+    /* 클릭 가능한 영역임을 명확히 보여줍니다. */
+    cursor: pointer; 
 }
 
 .info_left_sec1{
-  background-image: url('../images/main01.png');
+  background-image: url('../images/ex03.png');
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #dafaee;
 }
 
 .info_right_sec2{
-  background-image: url('../images/main01.png');
+  background-image: url('../images/ex02.png');
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #daf2fa;
 }
 
 .info_left_sec3{
-  background-image: url('../images/main01.png');
+  background-image: url('../images/routine.png');
   background-size: contain;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #faefda;
 }
 
 .info_right_sec4{
-  background-image: url('../images/main01.png');
+  background-image: url('../images/store.png');
   background-size: contain;
-}
-
-.info_left_sec5{
-  background-image: url('../images/main01.png');
   background-size: contain;
-}
-
-.info_right_sec6{
-  background-image: url('../images/main01.png');
-  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #fae7da;
 }
 
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.info {
+  background-color: #fafafa;
+  margin-bottom: 100px;
 }

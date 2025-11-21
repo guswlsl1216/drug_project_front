@@ -47,6 +47,14 @@ const ProductDetail = () => {
   }
 
   useEffect(() => {
+    if (product && product.goods_name) {
+      document.title = `Medi.Check! | ${product.goods_name}`;
+    } else {
+      document.title = `Medi.Check! | 상품 상세`;
+    }
+  }, [product])
+
+  useEffect(() => {
     const ProductDetailandFavorite = async () => {
       await requestHandler({
         method: "get",

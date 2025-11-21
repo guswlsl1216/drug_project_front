@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import "../../styles/Store.css";
 import StoreSideMenu from "../../components/store/StoreSideMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Store = () => {
   const location = useLocation();
@@ -31,6 +31,10 @@ const Store = () => {
     location.pathname.startsWith('/store/functionality') ||
     location.pathname.startsWith('/store/ingredient')
   )
+
+  useEffect(() => {
+      document.title = 'Medi.Check! | 스토어';
+    }, [])
 
   return (
     <>

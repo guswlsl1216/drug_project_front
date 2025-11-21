@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Changehandler from "../../utils/Changehandler";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
@@ -54,6 +54,10 @@ const ContactUs = () => {
       }
     })
   }
+
+  useEffect(() => {
+      document.title = 'Medi.Check! | 문의하기';
+    }, [])
 
   return(
     <>

@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import mainImage from "../images/main01.png";
 import pill from "../images/pill.png";
 import "../styles/Mainpage.css";
 
 function Mainpage() {
+  useEffect(() => {
+    document.title = 'Medi.Check! | 홈 화면';
+  }, [])
+  
   return (
     <>
       <main className="wrapper">
@@ -23,12 +28,15 @@ function Mainpage() {
             </p>
           </div>
         </section>
+
         <section className="info">
           <div className="info_section">
-            <div className="info_contents info_left_sec1">이미지</div>
+            <div className="info_contents info_left_sec1"></div>
             <div className="info_contents info_right_sec1">
               <div className="info_text_box">
-                <h2>AI 조합 분석</h2>
+                <a href="/analyze/medicine" className="info_button_link">
+                  <h2>AI 조합 분석</h2>
+                </a>
                 <p>약·영양제 조합의 상호작용 위험도를 AI가 실시간으로 분석합니다.</p>
               </div>
             </div>
@@ -37,48 +45,38 @@ function Mainpage() {
           <div className="info_section">
             <div className="info_contents info_left_sec2">
               <div className="info_text_box">
-                <h2>AI 조합 분석</h2>
-                <p>약·영양제 조합의 상호작용 위험도를 AI가 실시간으로 분석합니다.</p>
+                <a href="/history" className="info_button_link">
+                  <h2>나의 분석 결과</h2>
+                </a>
+                <p>이전에 진행했던 약/영양제 조합 분석 결과들을 날짜별로 저장하고, 필요할 때마다 다시 확인하여 안전하고 현명한 선택에 활용하세요.</p>
               </div>
             </div>
-            <div className="info_contents info_right_sec2">이미지</div>
+            <div className="info_contents info_right_sec2"></div>
           </div>
           <div className="info_section">
-            <div className="info_contents info_left_sec3">이미지</div>
+            <div className="info_contents info_left_sec3"></div>
             <div className="info_contents info_right_sec3">
               <div className="info_text_box">
-                <h2>AI 조합 분석</h2>
-                <p>약·영양제 조합의 상호작용 위험도를 AI가 실시간으로 분석합니다.</p>
+                <a href="/routine" className="info_button_link">
+                  <h2>루틴 관리</h2>
+                </a>
+                <p>현재 섭취 중인 약과 영양제 목록을 한눈에 확인하고, 복용 시간을 간편하게 기록하여 빠짐없이 건강을 챙길 수 있습니다.</p>
               </div>
             </div>
           </div>
+
           <div className="info_section">
             <div className="info_contents info_left_sec4">
               <div className="info_text_box">
-                <h2>AI 조합 분석</h2>
-                <p>약·영양제 조합의 상호작용 위험도를 AI가 실시간으로 분석합니다.</p>
+                <a href="/store/allgoods" className="info_button_link">
+                  <h2>쇼핑하기</h2>
+                </a>
+                <p>선택하신 제품 간의 상호작용 위험을 진단하여, 안심하고 구매할 수 있도록 안전성을 꼼꼼하게 검증합니다.</p>
               </div>
             </div>
-            <div className="info_contents info_right_sec4">이미지</div>
+            <div className="info_contents info_right_sec4"></div>
           </div>
-          <div className="info_section">
-            <div className="info_contents info_left_sec5">이미지</div>
-            <div className="info_contents info_right_sec5">
-              <div className="info_text_box">
-                <h2>AI 조합 분석</h2>
-                <p>약·영양제 조합의 상호작용 위험도를 AI가 실시간으로 분석합니다.</p>
-              </div>
-            </div>
-          </div>
-          <div className="info_section">
-            <div className="info_contents info_left_sec6">
-              <div className="info_text_box">
-                <h2>AI 조합 분석</h2>
-                <p>약·영양제 조합의 상호작용 위험도를 AI가 실시간으로 분석합니다.</p>
-              </div>
-            </div>
-            <div className="info_contents info_right_sec6">이미지</div>
-          </div>
+
         </section>
         <section className="contact"></section>
       </main>

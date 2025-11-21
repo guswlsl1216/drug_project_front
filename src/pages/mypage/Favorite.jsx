@@ -41,6 +41,10 @@ const Favorite = () => {
   }
 
   useEffect(() => {
+      document.title = 'Medi.Check! | 찜';
+    }, [])
+
+  useEffect(() => {
     fetchFavorite();
   }, [setLoading, setFavorites, setError])
 

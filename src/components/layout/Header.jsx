@@ -59,7 +59,7 @@ const Header = () => {
         <nav className="header_container">
           <div className="header_logo">
             <NavLink to="/">
-              <h1 className="logo">Home</h1>
+              <h1 className="logo">Medi.Check</h1>
             </NavLink>
           </div>
           <div className="header_main_menu">
