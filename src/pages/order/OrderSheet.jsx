@@ -236,6 +236,15 @@ const OrderSheet = () => {
     setShowAddressModal(false)
   }
 
+  const handleAddressChange = (next) => {
+  setOrder(prev => ({
+    ...prev,
+    zipcode: next.postcode || "",
+    address: next.road || next.jibun || next.display.raw || "",
+    address_detail: next.detail || ""
+  }));
+};
+
   return(
     <>
       <h2 className="order-title">주문/결제</h2>
@@ -310,7 +319,7 @@ const OrderSheet = () => {
               value={{
                 postcode: order.zipcode || "",
                 road: order.address || "",
-                jibun: "",
+                jibun: order.address || "",
                 extras: "",
                 local: "",
                 type: "",
@@ -320,14 +329,7 @@ const OrderSheet = () => {
                 },
                 detail: order.address_detail || ""
               }}
-              onChange={(next) => {
-                setOrder(prev => ({
-                  ...prev,
-                  zipcode: next.postcode || "",
-                  address: next.road || next.jibun || next.display.raw || "",
-                  address_detail: next.detail || ""
-                }))
-              }}
+              onChange={handleAddressChange}
             />
             <div className="inline save-address-inline">
               <input 

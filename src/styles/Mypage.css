@@ -55,7 +55,7 @@
  * ========================================================================= */
 
 .favorite-list-container {
-    padding: 0 10px; /* Mypage-content 패딩과 중복될 수 있지만, 내부 컨테이너 스타일 정의 */
+  padding: 40px 10px 60px;  /* Mypage-content 패딩과 중복될 수 있지만, 내부 컨테이너 스타일 정의 */
 }
 
 .favorite-list-title {

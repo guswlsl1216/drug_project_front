@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MyDrugs.css";
 import requestHandler from "../../utils/requestHandler";
-import UseNavi from "../../utils/UseNavi";
-import { useUser } from "../../components/context/UserContext"; 
 import useLoginRedirect from "../../utils/useLoginRedirect";  
 import Button from "../../components/ui/Button";
 
@@ -11,13 +9,12 @@ import Button from "../../components/ui/Button";
 
 const SuppInput = ( {setActiveTab }) => {
 
-  const { isLoggedIn } = useUser();         // ✅ 로그인 상태 확인
+  
   const { requireLogin } = useLoginRedirect(); 
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSeachTerm] = useState("");
   const [loading, setLoading] = useState(false);
-  const {goTo} = UseNavi();
   
 
   useEffect(() => {
