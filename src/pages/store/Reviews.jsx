@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import requestHandler from "../../utils/requestHandler";
 import { useOutletContext } from 'react-router-dom';
 import "../../styles/store/Review.css"
+import time from "../../utils/time";
 
 //모델 붙이면 완료인듯
 function Review() {
@@ -57,19 +58,24 @@ function Review() {
     formData.append('stars', rate);
     formData.append('image', img);
 
-    try {
-      const response = await fetch(`http://localhost:5000/review/addReview/${goods_id}`, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include'
-      });
-      const data = await response.json();
-      console.log(data);
-      alert(data['message'])
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    handleReviewUpdated()
+    await requestHandler({
+      method: 'post',
+      url:`/review/addReview/${goods_id}`,
+      payload:formData,
+      userImage: true,
+      onSuccess: (data) => {
+        if (!data.ok) {
+          alert(data.message)
+          return
+        }
+        alert(data.message)
+        handleReviewUpdated()
+      },
+      onError: (msg, err) => {
+        console.error(err)
+        alert(msg)
+      }
+    })
   };
 
   // 댓글 추가
@@ -93,7 +99,7 @@ function Review() {
     setUpdateRating(rating)
   }
 
-  const updateReivew = async (review_id) => {
+  const updateReview = async (review_id) => {
     const content = updateInput;
     const rate = updateRating;
     const id = review_id;
@@ -104,20 +110,25 @@ function Review() {
     formData.append('stars', rate);
     formData.append('image', img);
 
-    try {
-      const response = await fetch(`http://localhost:5000/review/updateReview/${id}`, {
-        method: 'PUT',
-        body: formData,
-        credentials: 'include'
-      });
-      const data = await response.json();
-      console.log(data);
-      alert(data['message'])
-    } catch (error) {
-      console.error('Error:', error);
-    }
-    setUpdateMode('')
-    handleReviewUpdated()
+    await requestHandler({
+      method: 'put',
+      url:`/review/updateReview/${id}`,
+      payload: formData,
+      userImage:true,
+      onSuccess: (data) => {
+        if (!data.ok) {
+          alert(data.message)
+          return
+        }
+        alert(data.message)
+        setUpdateMode('')
+        handleReviewUpdated()
+      },
+      onError: (msg, err) => {
+        console.error(err)
+        alert(msg)
+      }
+    })
   }
 
   const deleteReview = async (review_id) => {
@@ -281,7 +292,7 @@ function Review() {
                     </div>
                     <div>
                       <div className="comment-username">{c.username}</div>
-                      <div className="comment-date">{c.date}</div>
+                      <div className="comment-date">{time(c.date)}</div>
                     </div>
                   </div>
                 </div>
@@ -379,7 +390,7 @@ function Review() {
                 )}
 
                 <small className="text-muted">
-                  {c.date}
+                  {time(c.date)}
                 </small>
               </div>
 
@@ -390,7 +401,7 @@ function Review() {
                       <Button
                         className="btn btn-outline-primary btn-sm"
                         onClick={() => {
-                          updateReivew(c.id)
+                          updateReview(c.id)
                         }}
                       >
                         저장

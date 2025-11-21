@@ -1,0 +1,89 @@
+/* 로그인 페이지 전체 중앙 배치 */
+.login-fixed-center {
+  min-height: 100vh;             /* 화면 전체 높이 */
+  display: flex;
+  justify-content: center;       /* 가로 중앙 */
+  align-items: center;           /* 세로 중앙 */
+  background-color: #f9f9f9;     /* 필요 시 페이지 배경색 */
+  padding-top: 60px;             /* 네비바 높이 고려 */
+  box-sizing: border-box;
+}
+
+/* 로그인 박스 */
+.login-container {
+  background: #fff;
+  padding: 28px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  max-width: 350px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 로그인 제목 */
+.login-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* 로그인 폼 전체 */
+.login-form {
+  width: 100%;
+}
+
+/* 각 입력 그룹 */
+.login-form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 라벨 */
+.login-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* input */
+.login-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* 버튼 */
+.login-btn {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 반응형: 화면 작을 때 여백 확보 */
+@media (max-width: 600px) {
+  .login-fixed-center {
+    padding: 60px 16px;
+  }
+  .login-container {
+    padding: 20px 24px;
+  }
+}

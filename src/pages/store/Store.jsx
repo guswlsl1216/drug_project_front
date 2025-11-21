@@ -25,20 +25,29 @@ const Store = () => {
       location.pathname.startsWith('/store/detail/')
   );
 
+  // 스토어 네비바
+  const shouldShowNav = (
+    location.pathname.startsWith('/store/allgoods') ||
+    location.pathname.startsWith('/store/functionality') ||
+    location.pathname.startsWith('/store/ingredient')
+  )
+
   return (
     <>
     <div className="store-container">
-      <nav className="store-nav">
-        <NavLink to="allgoods" className={({isActive}) => (isActive ? "tab active" : "tab")}>
-          전체
-        </NavLink>
-        <NavLink to="functionality" className={({isActive}) => (isActive ? "tab active" : "tab")}>
-          기능성
-        </NavLink>
-        <NavLink to="ingredient" className={({isActive}) => (isActive ? "tab active" : "tab")}>
-          성분별
-        </NavLink>
-      </nav>
+      {shouldShowNav && (
+        <nav className="store-nav">
+          <NavLink to="allgoods" className={({isActive}) => (isActive ? "tab active" : "tab")}>
+            전체
+          </NavLink>
+          <NavLink to="functionality" className={({isActive}) => (isActive ? "tab active" : "tab")}>
+            기능성
+          </NavLink>
+          <NavLink to="ingredient" className={({isActive}) => (isActive ? "tab active" : "tab")}>
+            성분별
+          </NavLink>
+        </nav>
+      )}    
       
       <div className={`store-content-wrapper ${shouldShowSideMenu ? 'showSide' : ''}`}>
         <div className="store-content">

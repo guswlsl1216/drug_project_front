@@ -1,12 +1,12 @@
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 테스트키
 const customerKey = uuidv4();
 
 const PaymentsSheet = (props) => {
-  const { amount, setAmount, setReady, widgets, setWidgets, order } = props;
+  const { amount, setReady, widgets, setWidgets, order } = props;
   
   // 결제위젯 인스턴스 생성
   useEffect(() => {

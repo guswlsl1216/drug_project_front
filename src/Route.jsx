@@ -4,7 +4,6 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
-import Orders from "./pages/mypage/Orders";
 import Review from "./pages/mypage/Review";
 import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
@@ -39,16 +38,19 @@ import MyOrderDetail from "./pages/order/MyOrderDetail";
 import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
+import TermsOfService from "./pages/footer/TermsOfService";
+import PrivacyPolicy from "./pages/footer/privacyPolicy";
 import InquiryManage from "./pages/admin/InquiryManage";
 import InquiryList from "./pages/admin/InquiryList";
 import PendingList from "./pages/admin/PendingList";
-
 
 const Routers = () => {
 
   return (
     <>
       <Routes>
+        <Route path="/terms" element={<TermsOfService/>}/>
+        <Route path="/privacy" element={<PrivacyPolicy/>}/>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupComplete" element={<SignupComplete/>} />
@@ -66,7 +68,6 @@ const Routers = () => {
 
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
-          <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
         </Route>
 

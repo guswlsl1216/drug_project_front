@@ -1,3 +1,8 @@
+/* 장바구니 전체 컨테이너 */
+.cart-container {
+  padding-top: 80px; /* 네비바 높이 + 여유 공간 */
+}
+
 /* 장바구니 아이템 카드 */
 .cart-item {
   display: flex;

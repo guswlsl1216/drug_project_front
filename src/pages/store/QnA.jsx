@@ -7,11 +7,12 @@ import Changehandler from "../../utils/Changehandler";
 import Button from "../../components/ui/Button";
 import UseNavi from "../../utils/UseNavi";
 import QnATopFAQ from "../../components/store/QnATopFAQ";
+import time from "../../utils/time";
 
 const QnA = () => {
   const {goodsId} = useParams(); // URL에서 상품 ID 가져오기
   const {isLoggedIn, user} = useUser(); // 로그인 상태 및 사용자 정보
-    const {goTo} = UseNavi()
+  const {goTo} = UseNavi()
 
   // Q&A 목록 상태
   const [qnaList, setQnaList] = useState([]);
@@ -313,7 +314,7 @@ const QnA = () => {
                       {qna.title}
                     </span>
                     <span className="q-author">{qna.user_nickname}</span>
-                    <span className="q-date">{qna.created_at.split(" ")[0]}</span>
+                    <span className="q-date">{time(qna.created_at)}</span>
 
                     {/* (관리자)질문 수정 버튼 제거 */}
                     {(qna.is_owner || isAdmin()) && (
@@ -368,7 +369,7 @@ const QnA = () => {
                               <>
                               <div className="answer-text-row">
                                 {qna.answer}
-                                <span className="a-date">({qna.answered_at})</span>
+                                <span className="a-date">({time(qna.answered_at)})</span>
                               </div>
                               </>
                             )
