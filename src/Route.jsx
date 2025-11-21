@@ -68,8 +68,8 @@ const Routers = () => {
 
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
-          <Route path="review" element={<Review />} />
         </Route>
+        <Route path="/myReview" element={<Review />} />
 
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>}>
           <Route index element={<Navigate to="products" replace />} />   {/* 기본: 상품관리 */}
