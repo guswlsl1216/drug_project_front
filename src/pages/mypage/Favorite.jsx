@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import { useEffect, useState } from "react";
-import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Mypage.css";
 import requestHandler from "../../utils/requestHandler";
 

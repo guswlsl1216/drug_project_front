@@ -25,26 +25,26 @@ const Functionality = () => {
 
   return (
     <>
-    <div className="functionality-container">
-      <div className="category-grid">
-        {categories.map((item, idx) => (
-          <div 
-            className={`category-item ${selectedCategory === item ? 'category-active' : ''}`}
-            key={idx}
-            onClick={() => handleCategoryClick(item)}
-          >
-            {item}
-          </div>
-        ))}
+      <div className="functionality-container">
+        <div className="category-grid">
+          {categories.map((item, idx) => (
+            <div 
+              className={`category-item ${selectedCategory === item ? 'category-active' : ''}`}
+              key={idx}
+              onClick={() => handleCategoryClick(item)}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+
+        <hr className="functionality-hr"/>
+
+        <GoodsList
+            categoryKey="classify" // DB 컬럼명에 맞게 조정 필요
+            categoryValue={selectedCategory}
+        />
       </div>
-
-      <hr className="functionality-hr"/>
-
-      <GoodsList
-          categoryKey="classify" // DB 컬럼명에 맞게 조정 필요
-          categoryValue={selectedCategory}
-      />
-    </div>
     
     </>
   );

@@ -4,7 +4,6 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
-import Orders from "./pages/mypage/Orders";
 import Review from "./pages/mypage/Review";
 import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
@@ -42,12 +41,14 @@ import QnA from "./pages/store/QnA";
 import InquiryManage from "./pages/admin/InquiryManage";
 import InquiryList from "./pages/admin/InquiryList";
 import PendingList from "./pages/admin/PendingList";
+import { Suspense } from "react";
+import LoadingSpinner from "./utils/LoadingSpinner";
 
 
 const Routers = () => {
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner size={25} label="불러오는 중..." />}>
       <Routes>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
@@ -66,7 +67,6 @@ const Routers = () => {
 
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
-          <Route path="orders" element={<Orders />} />
           <Route path="review" element={<Review />} />
         </Route>
 
@@ -110,7 +110,7 @@ const Routers = () => {
         <Route path="/success" element={<PaySuccess />} />
         <Route path="/fail" element={<PayFail />} />
       </Routes>
-    </>
+    </Suspense>
   );
 }
 
