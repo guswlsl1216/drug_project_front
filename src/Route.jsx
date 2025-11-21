@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import Mainpage from "./pages/Mainpage";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
+import Signup from "./pages/auth/Signup";
+import Login from "./pages/auth/Login";
 import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
 import Review from "./pages/mypage/Review";
@@ -11,7 +11,7 @@ import Routine from "./pages/mypage/Routine";
 import MyDrugs from "./pages/mypage/MyDrugs";
 import MedicinePage from "./pages/analyze/MedicinePage";
 import SupplementPage from "./pages/analyze/SupplementPage";
-import SignupComplete from "./pages/SignupComplete"
+import SignupComplete from "./pages/auth/SignupComplete";
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import AdminPage from "./pages/admin/AdminPage";
 import ProductManage from "./pages/admin/ProductManage";
@@ -43,6 +43,7 @@ import PrivacyPolicy from "./pages/footer/privacyPolicy";
 import InquiryManage from "./pages/admin/InquiryManage";
 import InquiryList from "./pages/admin/InquiryList";
 import PendingList from "./pages/admin/PendingList";
+import UserCheck from "./pages/mypage/UserCheck";
 
 const Routers = () => {
 
@@ -68,6 +69,7 @@ const Routers = () => {
 
         <Route path="/mypage" element={<Mypage />}>
           <Route path="userinfo" element={<Userinfo />} />
+          <Route index element={<UserCheck />} />
           <Route path="review" element={<Review />} />
         </Route>
 

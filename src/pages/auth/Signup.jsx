@@ -1,12 +1,12 @@
 // 회원가입 페이지
 
 import { useState } from "react";
-import UseNavi from "../utils/UseNavi";
-import Button from "../components/ui/Button";
-import requestHandler from "../utils/requestHandler";
-import Changehandler from "../utils/Changehandler";
-import AddressPicker from "../components/ui/AddressPicker";
-import "../styles/auth/Signup.css";
+import UseNavi from "../../utils/UseNavi";
+import Button from "../../components/ui/Button";
+import requestHandler from "../../utils/requestHandler";
+import Changehandler from "../../utils/Changehandler";
+import AddressPicker from "../../components/ui/AddressPicker";
+import "../../styles/auth/Signup.css";
 
 const Signup = () => {
   const { goIndex, goTo, goBack } = UseNavi();

@@ -1,11 +1,11 @@
-import UseNavi from "../utils/UseNavi";
-import Button from "../components/ui/Button";
-import requestHandler from "../utils/requestHandler";
-import Changehandler from "../utils/Changehandler";
+import UseNavi from "../../utils/UseNavi";
+import Button from "../../components/ui/Button";
+import requestHandler from "../../utils/requestHandler";
+import Changehandler from "../../utils/Changehandler";
 import { useEffect, useState } from "react";
-import { useUser } from "../components/context/UserContext";
-import axiosInstance from "../utils/axiosInstance";
-import "../styles/auth/Login.css";
+import { useUser } from "../../components/context/UserContext";
+import axiosInstance from "../../utils/axiosInstance";
+import "../../styles/auth/Login.css";
 import { useLocation } from "react-router-dom";
 
 // 로그인 페이지

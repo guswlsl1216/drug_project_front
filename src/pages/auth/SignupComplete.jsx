@@ -1,6 +1,6 @@
-import Button from "../components/ui/Button"
-import UseNavi from "../utils/UseNavi";
-import "../styles/auth/SignupComplete.css";
+import Button from "../../components/ui/Button"
+import UseNavi from "../../utils/UseNavi";
+import "../../styles/auth/SignupComplete.css";
 import { replace } from "react-router-dom";
 
 const SignupComplete = () => {
