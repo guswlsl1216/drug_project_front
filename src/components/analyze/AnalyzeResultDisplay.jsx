@@ -12,12 +12,15 @@ const loadImageUrl = () => {
   return sessionStorage.getItem(ImageUrlKey) || null;
 };
 
-const DrugImageCropper = ({box}) => {
+const DrugImageCropper = ({ box, medName, onCropComplete }) => {
   const canvasRef = useRef(null);
   const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+  const didProcessRef = useRef(false);
 
   useEffect(() => {
+    if (didProcessRef.current) return;
     if (!originalImageUrl || !box || box.length !== 4) return;
+    didProcessRef.current = true;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -47,23 +50,32 @@ const DrugImageCropper = ({box}) => {
         width,
         height // 캔버스에 그릴 대상 영역
       );
+      
+      requestAnimationFrame(() => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            onCropComplete(blob, `${medName}.jpeg`);
+          }
+        }, 'image/jpeg');
+      });
     };
 
     img.onerror = () => {
       console.error("이미지 로드 실패 또는 CORS 오류");
       // 이미지 로드 실패 시 대체 텍스트나 아이콘을 표시할 수 있습니다.
     };
-  }, [originalImageUrl, box]); // 원본 URL이나 좌표가 바뀌면 다시 그림
+    
+  }, []); // 원본 URL이나 좌표가 바뀌면 다시 그림
 
   // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
-  if (!originalImageUrl || box.length !== 4) {
+  if (!originalImageUrl || !box || box.length !== 4) {
     return <p className="meds_box_image">이미지 없음</p>;
   }
 
   return <canvas ref={canvasRef} className="meds_box_image" />;
 };
 
-const AnalyzeResultDisplay = ({ result }) => {
+const AnalyzeResultDisplay = ({ result, onCropComplete }) => {
   const { status_label, status_message, status_color, status_fontAwesome } = ANALYSIS_STATUS_MAPPING[result.status]
 
   const [isOpen, setIsOpen] = useState(false);
@@ -163,6 +175,8 @@ const AnalyzeResultDisplay = ({ result }) => {
               <div className="drugs_box" key={i}>
                 <DrugImageCropper
                   box={med.detection_box} // MedicinePage에서 추가한 좌표 사용
+                  medName={med.name}
+                  onCropComplete={onCropComplete}
                 />
                 <p title={med.name} className="drugs_box_name ellipsis">
                   {med.name}
@@ -260,7 +274,7 @@ const AnalyzeResultDisplay = ({ result }) => {
             setIsOpen={setIsOpen}
             drugId={drugId}
             drugType={drugType}
-            drugBox={{drugBox}}
+            drugBox={drugBox}
           />
         }
 
