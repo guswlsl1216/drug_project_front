@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MedicinePage.css";
 import requestHandler from "../../utils/requestHandler";
+import UseNavi from "../../utils/UseNavi";
 
 // --- 세션 관리 유틸리티 ---
 const ResultDataKey = "ANALYSIS_RESULT_DATA";
@@ -59,7 +59,7 @@ const loadMedicineList = () => {
 // -----------------------------
 
 const SupplementPage = () => {
-  const navigate = useNavigate();
+  const {goTo} = UseNavi()
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [selectedSupplementId, setSelectedSupplementId] = useState(null);
 
@@ -175,7 +175,7 @@ const SupplementPage = () => {
       saveAnalysisResult(analysisResult);
 
       // 5. 결과 페이지로 이동
-      navigate("/analyze/result");
+      goTo("/analyze/result")
     } catch (error) {
       console.error("분석 결과 요청 중 오류 발생:", error);
       alert("분석 요청 중 오류가 발생했습니다. 콘솔을 확인해 주세요.");
