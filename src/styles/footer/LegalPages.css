@@ -1,0 +1,76 @@
+.legal-page-container {
+    max-width: 900px; /* 법률 문서는 너비를 제한하여 읽기 편하게 */
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 제목 스타일 */
+.legal-page-container h2 {
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #6f3cff; /* 브랜드 색상으로 구분선 */
+}
+
+/* 개정일 */
+.revision-date {
+    text-align: center;
+    color: #777;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+/* 각 섹션 제목 */
+.content-section h3 {
+    font-size: 20px;
+    color: #222;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    font-weight: 700;
+}
+
+/* 일반 단락 스타일 */
+.content-section p {
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 15px;
+    text-align: justify; /* 양쪽 정렬로 깔끔하게 */
+}
+
+/* 목록 스타일 */
+.content-section ul {
+    list-style-type: disc;
+    margin-left: 30px;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+.content-section ul li {
+    line-height: 1.6;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* 강조 텍스트 (예: 볼드체) */
+.content-section strong {
+    font-weight: 600;
+    color: #000;
+}
+
+/* 연락처 정보 */
+.contact-info {
+    margin-top: 40px;
+    padding: 15px;
+    border: 1px solid #6f3cff;
+    background-color: #f7f3ff; /* 연한 배경색으로 눈에 띄게 */
+    text-align: center;
+    color: #333;
+    font-weight: 500;
+}

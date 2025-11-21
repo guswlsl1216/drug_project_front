@@ -657,3 +657,14 @@
         justify-content: center;
     }
 }
+
+.product-description-content .goods-desc img {
+    /* 이미지가 부모 컨테이너의 100% 너비를 초과하지 않도록 강제합니다. */
+    max-width: 100%;
+    
+    /* 원래 이미지가 100%보다 작더라도 깨지지 않도록 원래 비율을 유지합니다. */
+    height: auto; 
+    
+    /* 혹시 모를 내부의 고정된 너비 속성을 무시하기 위해 !important를 사용할 수 있습니다. */
+    /* width: 100% !important; */
+}
