@@ -183,6 +183,12 @@ header{
   transform: translateY(0);
 }
 
+.user_menu_logged_in:hover .mypage_menu {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .mypage_menu ul {
   list-style: none;
 }
