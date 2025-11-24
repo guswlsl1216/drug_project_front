@@ -68,6 +68,11 @@ const OrderDetailModal = ({payment, onClose}) => {
           <p><b>수령인:</b>{order.receiver}</p>
           <p><b>연락처:</b>{order.phone}</p>
           <p><b>주소:</b>{order.address} {order.address_detail}</p>
+          {order.address_extra && (
+            <p style={{ color: "#2563eb", fontWeight: 500 }}>
+              <b>참고항목:</b> {order.address_extra}
+            </p>
+          )}
         </section>
 
         <section>

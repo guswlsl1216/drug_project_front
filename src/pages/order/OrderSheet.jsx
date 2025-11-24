@@ -29,6 +29,7 @@ const OrderSheet = () => {
     zipcode:"",
     address :"",
     address_detail :"",
+    address_extra: "",
     receiver: "",
     phone: ""
   })
@@ -190,7 +191,8 @@ const OrderSheet = () => {
         phone: "",
         zipcode: "",
         address: "",
-        address_detail: ""
+        address_detail: "",
+        address_extra: ""     // 같이 초기화
       }))
     }
   }
@@ -231,10 +233,21 @@ const OrderSheet = () => {
       phone: addr.phone || "",
       zipcode: addr.zipcode || "",
       address: addr.address || "",
-      address_detail: addr.address_detail || ""
+      address_detail: addr.address_detail || "",
+      address_extra: addr.address_extra || ""
     }))
     setShowAddressModal(false)
   }
+
+  const handleAddressChange = (next) => {
+  setOrder(prev => ({
+    ...prev,
+    zipcode: next.postcode || "",
+    address: next.road || next.jibun || next.display.raw || "",
+    address_detail: next.detail || "",
+    address_extra: next.extras || ""  
+  }));
+};
 
   return(
     <>
@@ -310,8 +323,8 @@ const OrderSheet = () => {
               value={{
                 postcode: order.zipcode || "",
                 road: order.address || "",
-                jibun: "",
-                extras: "",
+                jibun: order.address || "",
+                extras: order.address_extra || "",   
                 local: "",
                 type: "",
                 display: {
@@ -320,14 +333,7 @@ const OrderSheet = () => {
                 },
                 detail: order.address_detail || ""
               }}
-              onChange={(next) => {
-                setOrder(prev => ({
-                  ...prev,
-                  zipcode: next.postcode || "",
-                  address: next.road || next.jibun || next.display.raw || "",
-                  address_detail: next.detail || ""
-                }))
-              }}
+              onChange={handleAddressChange}
             />
             <div className="inline save-address-inline">
               <input 
@@ -506,6 +512,7 @@ const OrderSheet = () => {
                     <div>{addr.receiver} / {addr.phone}</div>
                     <div>{addr.zipcode} {addr.address}</div>
                     <div>{addr.address_detail}</div>
+                    <div>{addr.address_extra}</div>
                   </button>
                 ))
               )}

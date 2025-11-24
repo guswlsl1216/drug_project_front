@@ -123,12 +123,193 @@ header{
   align-items: center;
 }
 
-.user_menu {
+.user_menu_container {
+  list-style: none;
   display: flex;
-  align-content: center;
+  height: 100%;
+  align-items: center;
 }
 
-/* !!! 임시 !!! */
-.user_menu > a {
-  padding-left: 5px;
+.user_menu_logged_in {
+  position: relative; 
+  display: flex;
+  align-items: center; 
+  list-style: none;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  padding: 8px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.profile:hover {
+  background-color: #f0f0f0;
+}
+
+.profile svg {
+  margin-right: 3px;
+  vertical-align: middle; 
+}
+
+.mypage_menu {
+  position: absolute; 
+  top: 100%;
+  right: 0;
+  
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000; 
+  min-width: 120px;
+  padding: 5px 0;
+  
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(10px); 
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.user_menu_logged_in.is-active .mypage_menu { 
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mypage_menu ul {
+  list-style: none;
+}
+
+.mypage_menu li a, 
+.mypage_menu li p { 
+  display: block;
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1.5;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.mypage_menu li a:hover,
+.mypage_menu li p:hover {
+  /* background-color: #f5f5f5; */
+  color: #a671ec;
+}
+
+.mypage_menu li p:hover {
+  color: tomato;
+}
+
+.user_menu_logged_out { 
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  list-style: none;
+}
+
+.user_menu_logged_out a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.user_menu_logged_out a:hover {
+  color: #a671ec;
+}
+
+/* ============================= */
+/* 햄버거 버튼 (기본: 숨김)      */
+/* ============================= */
+
+.hamburger-btn {
+  display: none;          /* 데스크탑에서는 항상 안 보임 */
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  color: #333;
+
+  padding: 4px 6px;
+}
+
+/* ============================= */
+/* 모바일 메뉴 기본 숨김         */
+/* ============================= */
+
+.mobile_menu {
+  display: none;
+}
+
+/* ============================= */
+/* 반응형 (모바일 구간)          */
+/* ============================= */
+
+@media (max-width: 600px) {
+
+  /* 메인 메뉴 숨기기 */
+  .header_main_menu {
+    display: none;
+  }
+
+  /* 모바일에서 햄버거 버튼 보이기 */
+  .hamburger-btn {
+    display: flex;
+    margin-left: 190px;  /* Home 글자와 거리 */
+  }
+
+  /* 모바일 메뉴 */
+  .mobile_menu {
+    display: block;
+    width: 100%;
+    background: white;
+    padding: 10px 20px;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile_menu ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .mobile-menu-section-title {
+    margin-top: 16px;
+    font-weight: 700;
+    color: #444;
+    font-size: 15px;
+  }
+
+  /* 모바일 NavLink 스타일 */
+  .mobile-menu-link {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+    text-align: left;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .mobile-menu-link:hover {
+    color: #a671ec;
+  }
 }

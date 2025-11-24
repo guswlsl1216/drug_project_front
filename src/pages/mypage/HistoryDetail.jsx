@@ -1,12 +1,13 @@
 import '../../styles/analyze/AnalyzeResult.css'
 import { useEffect, useState } from "react";
-import { replace, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import AnalyzeResultDisplay from "../../components/analyze/AnalyzeResultDisplay";
 import Button from "../../components/ui/Button";
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import requestHandler from '../../utils/requestHandler';
 import UseNavi from '../../utils/UseNavi';
 import useLoginRedirect from '../../utils/useLoginRedirect';
+import time from '../../utils/time';
 
 const HistoryDetail = () => {
   const { state } = useLocation();
@@ -64,7 +65,7 @@ const HistoryDetail = () => {
       <div className="wrapper analyze_result">
         <div className='analyze_result_header'>
           <h1>분석 결과</h1>
-          {result && <p>{result.analysis_date}</p>}
+          {result && <p>{time(result.analysis_date)}</p>}
         </div>
 
         {

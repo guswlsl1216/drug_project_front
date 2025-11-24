@@ -29,6 +29,12 @@
 .myorder-detail__title {
   margin-top: 0; 
   margin-bottom: 16px;
+
+  /* 추가 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .myorder-detail__title-text {
@@ -231,6 +237,20 @@
   font-size: 15px;
 }
 
+.back-to-list-btn {
+  background: #f1f3f5;
+  border: 1px solid #d0d4d8;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.back-to-list-btn:hover {
+  background: #e9ecef;
+}
+
 /* 반응형 (모바일) */
 @media (max-width: 600px) {
   .myorder-detail-page {
@@ -240,6 +260,11 @@
   .myorder-detail {
     margin: 20px auto 30px;
     padding: 16px 12px 24px;
+  }
+
+  .myorder-detail__title {
+    flex-direction: row; /* 한 줄 유지 (기본값이라 생략해도 됨) */
+    /* 혹은 세로로 쌓고 싶으면 column 으로 바꾸면 됨 */
   }
 
   .myorder-detail__title-text {
