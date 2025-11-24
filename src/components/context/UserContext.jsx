@@ -9,6 +9,7 @@ export const UserContext = createContext();
 export const UserProvider = ({children}) => {
   const [user, setUser] = useState(null); // 로그인 한 유저 정보
   const [loading, setLoading] = useState(true); // 로그인 한 유저 정보
+  const [verified, setVerified] = useState(false); // 회원정보 인증하면 저장
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -31,10 +32,16 @@ export const UserProvider = ({children}) => {
     checkLogin();
   }, []);
 
+  useEffect(() => { // 로그아웃하면 인증을 fasle로 바꿨는데 다시 로그인을 하면 남아있어서 user가 null이 되는 경우 자동으로 초기화 추가
+    if (!user) {
+      setVerified(false);
+    }
+  }, [user]);
+
   const isLoggedIn = !!user;
     
   return (
-    <UserContext.Provider value={{ user, setUser, isLoggedIn, loading }}>
+    <UserContext.Provider value={{ user, setUser, isLoggedIn, loading, verified, setVerified }}>
       {children}
     </UserContext.Provider>
   );
