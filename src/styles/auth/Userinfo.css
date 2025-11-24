@@ -1,0 +1,41 @@
+.userinfo-container {
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 기존의 userinfo-group 스타일 유지 */
+
+.userinfo-group {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.userinfo-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.userinfo-group input,
+.userinfo-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* 버튼을 감싸는 컨테이너가 없으면, 버튼에 margin-top을 줘서 적절히 띄우기 */
+button {
+  margin-top: 20px;
+  align-self: center; /* 부모 flex 컨테이너 내에서 중앙 정렬 */
+}

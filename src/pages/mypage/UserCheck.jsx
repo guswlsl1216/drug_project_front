@@ -27,7 +27,7 @@ const UserCheck = () => {
 
   useEffect(() => {
     if (verified) {
-      goTo("/mypage/userinfo");
+      goTo("/mypage/userinfo", {state:{verified: true}}); // 렌더링 최소화
       return;
     }
     requireLogin(() => {}, true);

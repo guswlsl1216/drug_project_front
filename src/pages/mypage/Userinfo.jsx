@@ -4,10 +4,15 @@ import { useUser } from "../../components/context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../../components/ui/Button";
 import AddressPicker from "../../components/ui/AddressPicker";
+import "../../styles/auth/Userinfo.css";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Userinfo = () => {
   const {user, loading, verified} = useUser();
   const {goTo} = UseNavi();
+  const preVerfied = location.state?.verified ?? false;
+
+  const [localVerified, setLocalVerified] = useState(preVerfied);
 
   const [form, setForm] = useState({
     password:"",
@@ -27,58 +32,67 @@ const Userinfo = () => {
     if (!loading) {
       if(!user) {
         goTo("/login"); // 로그인을 안 했으면 로그인 페이지로 이동
-      } else if (!verified) {
+      } else if (!verified && !localVerified) {
         goTo("/mypage/usercheck"); // 비밀번호 인증을 안 하고 접근 시 인증으로 이동
       }
     }
-  }, [loading, user, verified, goTo]);
+  }, [loading, user, verified, localVerified, goTo]);
   
-  if (loading || !user || !verified) {
+  if (loading || !user || (!verified && !localVerified)) {
     return <div>로딩 중 . . .</div>;
   }
-
-  const handleChange = () => {
+  const handleChange = async () => {
     
     const payload = {};
+    
 
     Object.keys(form).forEach((key) => {
       let value = form[key].trim(); // 공백 제거 key,value 
-      if (key ==="tel") value = value.replace(/-/g,""); // 하이픈 제거
-      if (value !== "") payload[key] = value;
+
+      // if (value == null || value === "") return; // 값 없으면 건너뛰기
+      if (typeof value === "string") value = value.trim();
+      if (key === "tel") value = value.replace(/-/g,""); // 하이픈 제거
+      if (key === "age" && value !== "") value = parseInt(value, 10);
+
+      if (value !== "" && value != null && value !== user[key]) {
+        payload[key] = value;
+      } 
+
     });
 
     if (Object.keys(payload).length === 0) {
-      alert("수정 할 내용이 없습니다.");
+      alert("변경 된 내용이 없습니다.");
       return;
     }
+    console.log("payload",payload)
 
-    requestHandler({
-      method: "post",
-      url:"/auth/user",
-      payload,
-      onSuccess: (data) => {
-        alert("회원정보가 변경되었습니다.");
-        setForm({
-          password:"",
-          nickname:"",
-          text:"",
-          email:"",
-          tel:"",
-          age:"",
-          gender:"",
-          address:"",
-          detail:"",
-          jibun:"",
-          zipcode:"",
-        });
-      },
-      onError: (msg) => alert(msg || "회원정보 변경 실패"),
-    });
+    try {
+      const res = await axiosInstance.post("/auth/user", payload, {
+        headers:{"Content-Type":"application/json"},
+      });
+
+      alert("회원정보가 변경되었습니다.");
+      setForm({
+        password:"",
+        nickname:"",
+        email:"",
+        tel:"",
+        age:"",
+        gender:"",
+        address:"",
+        detail:"",
+        jibun:"",
+        zipcode:"",
+      });
+    } catch (error) {
+      alert(error?.response?.data?.message || "회원정보 변경 실패");
+    }
+  
   };
 
   return(
     <div className="userinfo-container"> 
-      <h2>회원정보 페이지</h2>
+      <h2>회원정보</h2>
 
       <div className="userinfo-group">
         <label>아이디</label>
@@ -128,6 +142,7 @@ const Userinfo = () => {
             road: form.address,
             jibun: form.jibun,
             detail: form.detail,
+            display:{raw:form.address || "", compact:form.address || ""}
           }}
           onChange={(data) => {
             setForm((prev) => ({
