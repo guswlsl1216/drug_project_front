@@ -5,6 +5,7 @@ import UseNavi from "../../utils/UseNavi";
 import requestHandler from "../../utils/requestHandler";
 import Pagination from "../ui/Pagination";
 import LoadingSpinner from "../../utils/LoadingSpinner";
+import { useOutletContext } from "react-router-dom";
 
 
 const ProductCard = ({ product, sortKey, ProductHandler }) => {
@@ -64,6 +65,7 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   const [pages, setPages] = useState(1)
   const [total, setTotal] = useState(0)
   const [perPage, setPerPage] = useState(20)
+  const {searchQuery, handleSearchChange, handleSearchSubmit, submittedSearchQuery} = useOutletContext();
 
   // 정렬 키 상태 (기본 값: 신상품순)
   const [sortKey, setSortKey] = useState('newest');
@@ -73,7 +75,7 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   }
 
   // 상품 데이터를 서버에서 불러오는 함수
-  const fetchProducts = useCallback(async(currentPage, currentSortKey, currentCategoryValue, currentCategoryKey, currentPerPage) => {
+  const fetchProducts = useCallback(async(currentPage, currentSortKey, currentCategoryValue, currentCategoryKey, currentPerPage, currentSubmittedSearchQuery) => {
     setLoading(true);
 
     const baseUrl = "/goods"
@@ -86,6 +88,9 @@ const GoodsList = ({categoryKey, categoryValue}) => {
       category_value: 'All',
     }
 
+    if (currentSubmittedSearchQuery) {
+      params.goods_name = currentSubmittedSearchQuery;
+    }
 
     if (currentCategoryKey !== '전체') {
       const KEY_MAP = {
@@ -132,12 +137,12 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   useEffect(() => {
     // sortKey, categoryValue, categoryKey 중 하나라도 변경되면 페이지를 1로 리셋
     setPage(1); 
-  }, [sortKey, categoryValue, categoryKey]);
+  }, [sortKey, categoryValue, categoryKey, submittedSearchQuery]);
 
   useEffect(() => {
     // page, sortKey, categoryValue, categoryKey, perPage 중 하나라도 변경되면 호출
-    fetchProducts(page, sortKey, categoryValue, categoryKey, perPage);
-  }, [page, sortKey, categoryValue, categoryKey, perPage, fetchProducts]); // fetchProducts가 useCallback으로 감싸져 있으므로 안전하게 사용 가능
+    fetchProducts(page, sortKey, categoryValue, categoryKey, perPage, submittedSearchQuery);
+  }, [page, sortKey, categoryValue, categoryKey, perPage, fetchProducts, submittedSearchQuery]); // fetchProducts가 useCallback으로 감싸져 있으므로 안전하게 사용 가능
 
 
   if (loading) {
@@ -147,10 +152,6 @@ const GoodsList = ({categoryKey, categoryValue}) => {
       </div>
       )
   }
-  if (products.length === 0 && !loading) {
-      return <div className="no-results">표시할 상품이 없습니다.</div>
-  }
-
 
   // 정렬 버튼 클릭 핸들러
   const handleSortChange = (key) => {
@@ -160,39 +161,59 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   return(
     <>
     <div className="goods-list-container">
-      <h3 className="goods-list-title">{categoryValue === 'All' ? '전체 상품' : `${categoryValue} 상품`} ({total}개)</h3>
+      <div className="title-and-search-wrapper">
+        <h3 className="goods-list-title">{categoryValue === 'All' ? '전체 상품' : `${categoryValue} 상품`} ({total}개)</h3>
 
-      <div className="sort-buttons">
-        <button onClick={() => handleSortChange('popularity')} className={sortKey === 'popularity' ? 'active' : ''}>
-          인기순(1달)
-        </button>
-        <button onClick={() => handleSortChange('newest')} className={sortKey === 'newest' ? 'active' : ''}>
-          신상품순
-        </button>
-        <button onClick={() => handleSortChange('sales')} className={sortKey === 'sales' ? 'active' : ''}>
-          판매순(총 판매)
-        </button>
-        <button onClick={() => handleSortChange('price')} className={sortKey === 'price' ? 'active' : ''}>
-          낮은가격순
-        </button>
+        <form onSubmit={handleSearchSubmit} className="store-search-form">
+          <input 
+            type="text"
+            placeholder="상품 이름을 검색하세요." 
+            value={searchQuery}
+            onChange={handleSearchChange}
+            className="search-input-small"
+          />
+          <button type="submit" className="search-icon-button">Q</button>
+        </form>
       </div>
-    
-      <div className="product-grid">
-        {products.map(product => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            sortKey={sortKey}
-            ProductHandler={ProductHandler}/>
-        ))}
+
+        <div className="sort-buttons">
+          <button onClick={() => handleSortChange('popularity')} className={sortKey === 'popularity' ? 'active' : ''}>
+            인기순(1달)
+          </button>
+          <button onClick={() => handleSortChange('newest')} className={sortKey === 'newest' ? 'active' : ''}>
+            신상품순
+          </button>
+          <button onClick={() => handleSortChange('sales')} className={sortKey === 'sales' ? 'active' : ''}>
+            판매순(총 판매)
+          </button>
+          <button onClick={() => handleSortChange('price')} className={sortKey === 'price' ? 'active' : ''}>
+            낮은가격순
+          </button>
+        </div>
+      
+        <div className="product-grid">
+          {products.length === 0 && !loading ? (
+            <div className="no-results-in-grid">표시할 상품이 없습니다.</div>
+          ) : (
+            products.map(product => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              sortKey={sortKey}
+              ProductHandler={ProductHandler}/>
+          ))
+          )}
+        </div>
+        
+        {products.length > 0 && (
+          <Pagination
+          page={page}
+          pages={pages}
+          onChange={(num) => setPage(num)}
+          loading={loading}
+        />
+        )}
       </div>
-      <Pagination
-        page={page}
-        pages={pages}
-        onChange={(num) => setPage(num)}
-        loading={loading}
-      />
-    </div>
     </>
   )
 }

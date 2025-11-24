@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoodsList from "../../components/store/GoodsList";
 import "../../styles/Store.css"
+import { useOutletContext } from "react-router-dom";
 
 const Ingredient = () =>{
   
@@ -16,9 +17,11 @@ const Ingredient = () =>{
   ]
 
   const [selectedCategory, setSelectedCategory] = useState(ingredients[0]); 
+  const {resetSearchStates} = useOutletContext();
 
   const handleCategoryClick = (category) => {
-        setSelectedCategory(category);
+    resetSearchStates();
+    setSelectedCategory(category);
   }
 
   return (
