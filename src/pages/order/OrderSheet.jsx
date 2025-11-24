@@ -153,7 +153,7 @@ const OrderSheet = () => {
           phone: String(u.tel || ""),
           zipcode: u.zipcode || "",
           address: u.address || "",
-          address_detail: u.detailed_address || ""
+          address_detail: u.detail || ""
         }))
       },
       onError: (msg) => {
