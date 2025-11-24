@@ -9,6 +9,7 @@ import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const ProductCard = ({ product, sortKey, ProductHandler }) => {
   const goodsId = product && product.id;
+  const isSoldOut = (product?.stock ?? 0) <= 0 || product?.is_active === false;
 
   // 초기 찜 상태는 product.is_favorite을 사용합니다.
   const { isFavorite, toggleFavoriteHandler, message } = useFavoriteToggle(
@@ -40,13 +41,12 @@ const ProductCard = ({ product, sortKey, ProductHandler }) => {
             
       {/* 카드 클릭 시 상세 페이지 이동 핸들러는 이미지/정보 영역에 적용 */}
       <div onClick={() => ProductHandler(product.id)} className="product-card-clickable-area">
-        <div className="product-image"><img src={product.image_path} alt="" /></div>
+        <div className="product-image">
+          {isSoldOut && <div className="soldout-badge">품절</div>}
+          <img src={product.image_path} alt="" />
+        </div>
         <div className="product-name">{product.goods_name}</div>
         <div className="product-price">{product.price ? product.price.toLocaleString() : '가격 미정'}원</div>
-        {/* <div className="product-actions">
-          <button>구매하기</button>
-          <button>장바구니</button>
-        </div> */}
       </div>
 
       {/* 판매순 정보 */}
@@ -64,6 +64,7 @@ const GoodsList = ({categoryKey, categoryValue}) => {
   const [pages, setPages] = useState(1)
   const [total, setTotal] = useState(0)
   const [perPage, setPerPage] = useState(20)
+  const [hideSoldOut, setHideSoldOut] = useState(true)
 
   // 정렬 키 상태 (기본 값: 신상품순)
   const [sortKey, setSortKey] = useState('newest');
@@ -175,10 +176,21 @@ const GoodsList = ({categoryKey, categoryValue}) => {
         <button onClick={() => handleSortChange('price')} className={sortKey === 'price' ? 'active' : ''}>
           낮은가격순
         </button>
+
+        <label className="hide-soldout-check">
+          <input 
+            type="checkbox" 
+            checked={hideSoldOut}
+            onChange={(e) => setHideSoldOut(e.target.checked)}
+          />
+          품절 제외
+        </label>
       </div>
     
       <div className="product-grid">
-        {products.map(product => (
+        {products
+          .filter( p => !hideSoldOut || (p.stock ?? 0) > 0 && p.is_active !== false)
+          .map(product => (
           <ProductCard
             key={product.id}
             product={product}
