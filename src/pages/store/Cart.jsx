@@ -7,6 +7,7 @@ import "../../styles/cart/Cart.css";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const Cart = () => {
   
@@ -40,7 +41,7 @@ const Cart = () => {
     getCart();
   },[]);
 
-  if (loading) return <div>장바구니 제품을 불러오는 중 ...</div>
+  if (loading) return <div><LoadingSpinner size={30} label="장바구니 제품을 불러오는 중 ..." /></div>
 
   // 수량 변경
   const cahngeCount = async (i, action) => {    
