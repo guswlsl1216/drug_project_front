@@ -16,7 +16,7 @@ const loadImageUrl = (result) => {
     imageUrl = result.image_url;
 
     if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('blob')) {
-      imageUrl = `${BASE_URL}${originalImageUrl}`;
+      imageUrl = `${BASE_URL}${imageUrl}`;
     };
   };
 
@@ -72,7 +72,6 @@ const DrugImageCropper = ({ box, result }) => {
 
   // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
   if (!originalImageUrl || !box || box.length !== 4) {
-    // return <p className="meds_box_image">이미지 없음</p>;
     return '';  // 이미지 분석으로 등록하지 않은 의약품 대응
   }
 
