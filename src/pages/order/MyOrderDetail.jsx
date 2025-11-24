@@ -4,6 +4,9 @@ import requestHandler from "../../utils/requestHandler";
 import { useEffect, useState } from "react";
 import time from "../../utils/time";
 import LoadingSpinner from "../../utils/LoadingSpinner";
+import { GoArrowLeft } from "react-icons/go";
+import Button from "../../components/ui/Button";
+import UseNavi from "../../utils/UseNavi";
 
 const MyOrderDetail = () => {
   const location = useLocation();
@@ -11,6 +14,7 @@ const MyOrderDetail = () => {
   const orderId = state.order?.order_id || 0 // type:number
   const [order, setOrder] = useState()
   const [loading, setLoading] = useState(false);
+  const {goTo} = UseNavi()
 
   const load = async () => {
     await requestHandler({
@@ -58,6 +62,13 @@ const MyOrderDetail = () => {
 
         <div className="myorder-detail__title">
           <h2 className="myorder-detail__title-text">주문 상세</h2>
+          <Button
+            variant="text"
+            className="back-to-list-btn"
+            onClick={() => goTo("/myOrderList")}
+          >
+            <GoArrowLeft />주문 내역으로
+          </Button>
         </div>
 
         <div className="myorder-detail__ordercode">

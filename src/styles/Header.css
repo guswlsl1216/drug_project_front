@@ -228,3 +228,88 @@ header{
 .user_menu_logged_out a:hover {
   color: #a671ec;
 }
+
+/* ============================= */
+/* 햄버거 버튼 (기본: 숨김)      */
+/* ============================= */
+
+.hamburger-btn {
+  display: none;          /* 데스크탑에서는 항상 안 보임 */
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  color: #333;
+
+  padding: 4px 6px;
+}
+
+/* ============================= */
+/* 모바일 메뉴 기본 숨김         */
+/* ============================= */
+
+.mobile_menu {
+  display: none;
+}
+
+/* ============================= */
+/* 반응형 (모바일 구간)          */
+/* ============================= */
+
+@media (max-width: 600px) {
+
+  /* 메인 메뉴 숨기기 */
+  .header_main_menu {
+    display: none;
+  }
+
+  /* 모바일에서 햄버거 버튼 보이기 */
+  .hamburger-btn {
+    display: flex;
+    margin-left: 190px;  /* Home 글자와 거리 */
+  }
+
+  /* 모바일 메뉴 */
+  .mobile_menu {
+    display: block;
+    width: 100%;
+    background: white;
+    padding: 10px 20px;
+    border-top: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile_menu ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .mobile-menu-section-title {
+    margin-top: 16px;
+    font-weight: 700;
+    color: #444;
+    font-size: 15px;
+  }
+
+  /* 모바일 NavLink 스타일 */
+  .mobile-menu-link {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+    text-align: left;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .mobile-menu-link:hover {
+    color: #a671ec;
+  }
+}

@@ -8,7 +8,7 @@ import Button from "../ui/Button";
 import UseNavi from "../../utils/UseNavi";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const { user, setUser, isLoggedIn, vetified, setVerified } = useUser();
@@ -18,6 +18,9 @@ const Header = () => {
 
   // 프로필 눌렀을 때 메뉴 팝업 뜨게 하기
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
   const clickOutsideHandler = (e) => {
     if (menuRef.current && !menuRef.current.contains(e.target)) {
       setIsMenuOpen(false);
@@ -52,6 +55,7 @@ const Header = () => {
   useEffect(() => {
     const nowActiveMenu = nowActivePage(location.pathname);
     setActiveMenu(nowActiveMenu);
+    setIsMobileMenuOpen(false)
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -72,6 +76,27 @@ const Header = () => {
     });
   };
 
+  const mobileMenuRef= useRef(null)
+
+  useEffect(() => {
+    const clickOutside = (e) => {
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(e.target) &&
+        !e.target.closest(".hamburger-btn")
+      ) {
+        setIsMobileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", clickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", clickOutside)
+    }
+  }, [isMobileMenuOpen])
+
   return (
     <>
       <header>
@@ -81,6 +106,16 @@ const Header = () => {
               <h1 className="logo">Home</h1>
             </NavLink>
           </div>
+          <Button
+           type="button"
+           variant="text"
+           className={`hamburger-btn ${isMobileMenuOpen ? "is-open" : ""}`}
+           onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+           aria-label="메뉴 열기"
+          >
+            <FontAwesomeIcon icon={faBars} />
+          </Button>
+
           <div className="header_main_menu">
             <ul className="main_menu_container">
               <li className={`main_menu ${activeMenu == 'analyze' ? 'activeMenu' : ''}`}>
@@ -101,10 +136,10 @@ const Header = () => {
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
-                      <NavLink to="/routine">루틴</NavLink>
+                      <NavLink to="/routine">캘린더</NavLink>
                     </li>
                     <li>
-                      <NavLink to="/mydrugs">복용약</NavLink>
+                      <NavLink to="/mydrugs">등록 / 목록</NavLink>
                     </li>
                   </ul>
                 </div>
@@ -123,7 +158,7 @@ const Header = () => {
                       <NavLink to="/myOrderList">주문 내역</NavLink>
                     </li>
                     <li>
-                      <NavLink>나의 리뷰</NavLink>
+                      <NavLink to="/myReview">나의 리뷰</NavLink>
                     </li>
                     <li>
                       <NavLink to="store/cart">장바구니</NavLink>
@@ -164,6 +199,94 @@ const Header = () => {
             </ul>
           </div>
         </nav>
+
+        {isMobileMenuOpen && (
+          <div className="mobile_menu" ref={mobileMenuRef}>
+            <ul>
+              <li>
+                <p className="mobile-menu-section-title">AI분석</p>
+                <NavLink
+                  to="/analyze/medicine"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  분석하기
+                </NavLink>
+                <NavLink
+                  to="/history"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  분석 결과 내역
+                </NavLink>
+              </li>
+
+              <li>
+                <p className="mobile-menu-section-title">루틴</p>
+                <NavLink
+                  to="/routine"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  캘린더
+                </NavLink>
+                <NavLink
+                  to="/mydrugs"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  등록 / 목록
+                </NavLink>
+              </li>
+
+              <li>
+                <p className="mobile-menu-section-title">스토어</p>
+                <NavLink
+                  to="/store/allgoods"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  상품 목록
+                </NavLink>
+                <NavLink
+                  to="/store/favorite"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  찜 목록
+                </NavLink>
+                <NavLink
+                  to="/myOrderList"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  주문 내역
+                </NavLink>
+                <NavLink
+                  to="/myReview"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  나의 리뷰
+                </NavLink>
+                <NavLink
+                  to="/store/cart"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  장바구니
+                </NavLink>
+                <NavLink
+                  to="/store/contactUs"
+                  className="mobile-menu-link"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  문의하기
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        )}
       </header>
     </>
   );
