@@ -8,13 +8,19 @@ import DrugInfo from './DrugInfo';
 
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
-const loadImageUrl = () => {
-  return sessionStorage.getItem(ImageUrlKey) || null;
+const loadImageUrl = (result) => {
+  let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
+
+  if ((!imageUrl || imageUrl == null) && result.imageUrl) {
+    imageUrl = result.image_url;
+  };
+
+  return imageUrl;
 };
 
-const DrugImageCropper = ({ box, medName, onCropComplete }) => {
+const DrugImageCropper = ({ box, result }) => {
   const canvasRef = useRef(null);
-  const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+  const originalImageUrl = loadImageUrl(result); // 세션에서 원본 URL 로드
   const didProcessRef = useRef(false);
 
   useEffect(() => {
@@ -50,14 +56,6 @@ const DrugImageCropper = ({ box, medName, onCropComplete }) => {
         width,
         height // 캔버스에 그릴 대상 영역
       );
-      
-      requestAnimationFrame(() => {
-        canvas.toBlob((blob) => {
-          if (blob) {
-            onCropComplete(blob, `${medName}.jpeg`);
-          }
-        }, 'image/jpeg');
-      });
     };
 
     img.onerror = () => {
@@ -65,17 +63,18 @@ const DrugImageCropper = ({ box, medName, onCropComplete }) => {
       // 이미지 로드 실패 시 대체 텍스트나 아이콘을 표시할 수 있습니다.
     };
     
-  }, []); // 원본 URL이나 좌표가 바뀌면 다시 그림
+  }, [originalImageUrl, box]); // 원본 URL이나 좌표가 바뀌면 다시 그림
 
   // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
   if (!originalImageUrl || !box || box.length !== 4) {
-    return <p className="meds_box_image">이미지 없음</p>;
+    // return <p className="meds_box_image">이미지 없음</p>;
+    return '';  // 이미지 분석으로 등록하지 않은 의약품 대응
   }
 
   return <canvas ref={canvasRef} className="meds_box_image" />;
 };
 
-const AnalyzeResultDisplay = ({ result, onCropComplete }) => {
+const AnalyzeResultDisplay = ({ result }) => {
   const { status_label, status_message, status_color, status_fontAwesome } = ANALYSIS_STATUS_MAPPING[result.status]
 
   const [isOpen, setIsOpen] = useState(false);
@@ -175,8 +174,7 @@ const AnalyzeResultDisplay = ({ result, onCropComplete }) => {
               <div className="drugs_box" key={i}>
                 <DrugImageCropper
                   box={med.detection_box} // MedicinePage에서 추가한 좌표 사용
-                  medName={med.name}
-                  onCropComplete={onCropComplete}
+                  result={result}
                 />
                 <p title={med.name} className="drugs_box_name ellipsis">
                   {med.name}
@@ -275,6 +273,7 @@ const AnalyzeResultDisplay = ({ result, onCropComplete }) => {
             drugId={drugId}
             drugType={drugType}
             drugBox={drugBox}
+            result={result}
           />
         }
 

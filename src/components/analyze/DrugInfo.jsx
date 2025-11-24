@@ -3,15 +3,22 @@ import requestHandler from "../../utils/requestHandler";
 import "../../styles/analyze/DrugInfo.css"
 import LoadingSpinner from "../../utils/LoadingSpinner";
 import {useRef} from "react";
+
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
-const loadImageUrl = () => {
-  return sessionStorage.getItem(ImageUrlKey) || null;
+const loadImageUrl = (result) => {
+  let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
+
+  if ((!imageUrl || imageUrl == null) && result.imageUrl) {
+    imageUrl = result.image_url;
+  };
+
+  return imageUrl;
 };
 
-const DrugImageCropper = ({box}) => {
+const DrugImageCropper = ({box, result}) => {
   const canvasRef = useRef(null);
-  const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+  const originalImageUrl = loadImageUrl(result); // 세션에서 원본 URL 로드
 
   const coordinates = Array.isArray(box)
     ? box
@@ -68,7 +75,7 @@ const DrugImageCropper = ({box}) => {
   return <canvas ref={canvasRef} className="meds_box_image" />;
 };
 
-const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox  }) => {
+const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox, result  }) => {
   const [drugData, setDrugData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -195,7 +202,10 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox  }) => {
                   <div className="drugInfo_image_container">
                     {" "}
                     {/* 이미지를 담을 컨테이너 추가 */}
-                    <DrugImageCropper box={drugBox} />
+                    <DrugImageCropper
+                      box={drugBox}
+                      result={result}
+                    />
                   </div>
                 )}
                 <div className="drugInfo_box">

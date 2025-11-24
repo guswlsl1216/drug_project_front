@@ -5,23 +5,20 @@ import requestHandler from '../../utils/requestHandler';
 import { useEffect, useState } from 'react';
 import useLoginRedirect from '../../utils/useLoginRedirect';
 import UseNavi from '../../utils/UseNavi';
+import { useLocation } from 'react-router-dom';
 
 const AnalyzeResult = () => {
   const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   const [isSave, setIsSave] = useState(false);  // 결과 저장 여부
-  const [croppedImages, setCroppedImages] = useState([]); // 크롭된 의약품 사진
-  const [medImages, setMedImages] = useState([]); // 크롭된 의약품 사진의 파일명
 
-  // 새로운 Blob을 배열에 추가하는 함수
-  const addCroppedImages = (newBlob, newMed) => {
-    setCroppedImages(prevImages => [...prevImages, newBlob]);
-    setMedImages(prevMeds => [...prevMeds, newMed]);
-  };
-  
   const result = JSON.parse(sessionStorage.getItem("ANALYSIS_RESULT_DATA"));
   // console.log("세션에서 불러온 분석 결과:", result);
+
+  // 분석 요청한 의약품 이미지 파일 전송용
+  const location = useLocation();
+  const { uploadedFile } = location.state;
   
   const saveResult = () => {
     requireLogin(() => {
@@ -33,16 +30,11 @@ const AnalyzeResult = () => {
         return;
       } else {
         const formData = new FormData();
-        formData.append('result', result);
-        croppedImages.forEach((imageBlob, index) => {
-          const filename = medImages[index];
-          formData.append('drug_images', imageBlob, filename);
-        });
-
-        for (let p of formData.entries()) {
-          console.log(p);
-        }
-
+        if (uploadedFile) {
+            formData.append('file', uploadedFile, uploadedFile.name )
+          }
+          formData.append('result', JSON.stringify(result));
+        
         requestHandler({
           method: "post",
           url: "/result/save",
@@ -73,6 +65,8 @@ const AnalyzeResult = () => {
       setIsSave(true);
     }
   }, [])
+
+  console.log(uploadedFile)
   
   return (
     <>
@@ -81,10 +75,7 @@ const AnalyzeResult = () => {
           <h1>분석 결과</h1>
         </div>
 
-        <AnalyzeResultDisplay
-          result={result}
-          onCropComplete={addCroppedImages}
-        />
+        <AnalyzeResultDisplay result={result} />
       
         <div className='analyze_result_actions'>
           <Button variant='primary' onClick={saveResult} disabled={loading || isSave}>
