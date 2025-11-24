@@ -64,7 +64,7 @@ const Login = () => {
               <input className="login-input" type="password" name="password" value={form.password} onChange={Changehandler(setForm)} />
             </div>
 
-            <Button className="login-btn" variant="primary" onClick={handleSubmit}>로그인</Button>
+            <Button className="login-btn" type="submit" variant="primary" onClick={handleSubmit}>로그인</Button>
 
           </form>
         </div>

@@ -38,6 +38,10 @@ const Cart = () => {
     getCart();
   },[]);
 
+  useEffect(() => {
+    requireLogin(() => {}, true);
+  },[]);
+
   if (loading) return <div>장바구니 제품을 불러오는 중 ...</div>
 
   // 수량 변경

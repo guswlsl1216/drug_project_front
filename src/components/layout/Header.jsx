@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
-  const { user, setUser, isLoggedIn } = useUser();
+  const { user, setUser, isLoggedIn, vetified, setVerified } = useUser();
   const {goTo} = UseNavi();
   const location = useLocation();
   const menuRef = useRef(null);
@@ -62,6 +62,7 @@ const Header = () => {
         setUser(null); // Context에서 로그아웃 처리 (초기화)
         sessionStorage.removeItem('isSave');  // 세션 삭제 (분석 결과 저장 유무)
         sessionStorage.removeItem('result');  // 세션 삭제 (분석 결과)
+        setVerified(false); // 로그아웃 시 비밀번호 인증 한 것을 false로 바꿈
         alert("로그아웃 되었습니다.");
         goTo("/login"); // 로그인 페이지로 이동
       },

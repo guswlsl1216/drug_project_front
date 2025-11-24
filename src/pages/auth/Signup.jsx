@@ -1,6 +1,6 @@
 // 회원가입 페이지
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UseNavi from "../../utils/UseNavi";
 import Button from "../../components/ui/Button";
 import requestHandler from "../../utils/requestHandler";
@@ -20,6 +20,7 @@ const Signup = () => {
     gender:"",
     address:"",
     detailed_address:"",
+    jibun:"",
     zipcode:"",
     tel:""
   });
@@ -29,6 +30,7 @@ const Signup = () => {
       ...prev,
       address: addr.road || addr.jibun || "", 
       detailed_address: addr.detail || "",
+      jibun: addr.jibun || "",
       zipcode: addr.postcode || "",
     }));
   };
@@ -73,6 +75,10 @@ const Signup = () => {
       setForm({ ...form, [name]: value });
     }
   };
+
+  useEffect(() => {
+    requireLogin(() => {}, true);
+  },[]);
 
   const required = ["username","password","email","nickname"] // 필수 입력
   const unable = required.some((field) => form[field].trim() === ""); 

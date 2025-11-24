@@ -8,7 +8,7 @@ import requestHandler from "../../utils/requestHandler";
 const UserCheck = () => {
   const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
-  const { user, loading } = useUser();
+  const { user, loading, verified, setVerified } = useUser();
 
   const [password, setPassword] = useState(""); // 사용자가 입력하는 비밀번호
 
@@ -25,6 +25,14 @@ const UserCheck = () => {
   if (loading) return <div>로딩 중...</div>;
   if (!user) return null; // 로그인 안 되면 렌더링X
 
+  useEffect(() => {
+    if (verified) {
+      goTo("/mypage/userinfo");
+      return;
+    }
+    requireLogin(() => {}, true);
+  }, [verified])
+
   const handleCheck = async () => {
     if (!password.trim()) {
       alert("비밀번호를 입력해주세요.");
@@ -38,6 +46,7 @@ const UserCheck = () => {
         payload:{password},
         onSuccess:(data) => {
           console.log(data)
+          setVerified(true); // 인증 한번 하면 userContext에 저장해서 여러번 인증 안 하도록 방지
           goTo("/mypage/userinfo")
         },
         onError: (msg) => {
@@ -53,17 +62,22 @@ const UserCheck = () => {
   return (
     <div className="check-container">
       <h2 className="check-title">비밀번호 재확인</h2>
-      <div className="login-form-group">
-        <h4 className="login-label">아이디</h4>
-        <input className="login-input" type="text" value={user.username} readOnly />
-      </div>
+      <form onSubmit={(e) => {e.preventDefault(); handleCheck();}}>
 
-      <div className="login-form-group">
-        <h4 className="login-label">비밀번호</h4>
-        <input type="password" className="login-input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
+        <div className="login-form-group">
+          <h4 className="login-label">아이디</h4>
+          <input className="login-input" type="text" value={user.username} readOnly />
+        </div>
 
-      <button className="login-btn" onClick={handleCheck}>확인</button>
+        <div className="login-form-group">
+          <h4 className="login-label">비밀번호</h4>
+          <input type="password" className="login-input" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+
+        <button className="login-btn" type="submit" >확인</button>
+
+      </form>
+
     </div>
   )
 }
