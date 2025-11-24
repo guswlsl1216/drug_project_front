@@ -30,6 +30,8 @@ const ProductDetail = () => {
   // 상호작용 분석 모달 열림 닫힘 관리 state
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
 
+  const isSoldOut = (product?.stock ?? 0 ) <= 0 || product?.is_active === false
+
   const addRecentItem = (newItem) => {
     let items = sessionStorage.getItem("recentItems");
     items = items ? JSON.parse(items) : [];
@@ -144,6 +146,11 @@ const ProductDetail = () => {
   };
 
   const handleOrder = () => {
+    if(isSoldOut) {
+      alert("품절된 상품은 구매할 수 없습니다.")
+      return
+    }
+
     requireLogin(() => {
       goTo("/orders", {
         buyer: {
@@ -184,6 +191,7 @@ const ProductDetail = () => {
         <div className="detail-section">
           {/* A. 제품 이미지 영역 */}
           <div className="detail-image-area">
+            {isSoldOut && <div className="soldout-badge">품절</div>}
             <img src={product.image_path} alt="[상품 상세 이미지]" />
           </div>
 
@@ -207,6 +215,9 @@ const ProductDetail = () => {
                 {product.price ? product.price.toLocaleString() : "가격 미정"}원
               </p>
               <p>배송비 기본 2,500원 / 2만원 이상 구매 시 무료</p>
+              {isSoldOut && (
+                <p className="soldout-text">현재 이 상품은 품절 상태입니다.</p>
+              )}
             </div>
 
             {/* 수량 및 합계 */}
@@ -229,15 +240,22 @@ const ProductDetail = () => {
 
             {/* 구매 액션 버튼 */}
             <div className="purchase-options">
-              <button className="add-to-cart-btn" onClick={handleCart}>장바구니 담기</button>
+              <button 
+                className="add-to-cart-btn" 
+                onClick={handleCart}
+                disabled={isSoldOut}
+              >
+                {isSoldOut ? "품절" : "장바구니 담기"}
+              </button>
               
               <div className="buy-and-favorite-group"> 
                 <Button
                   variant="text"
                   className="buy-now-btn"
                   onClick={handleOrder}
+                  disabled={isSoldOut}
                 >
-                  바로구매
+                  {isSoldOut ? "품절" : "바로구매"}
                 </Button>
 
                 <button

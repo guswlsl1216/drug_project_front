@@ -5,6 +5,9 @@ import { useUser } from "../../components/context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import "../../styles/cart/Cart.css";
 import useLoginRedirect from "../../utils/useLoginRedirect";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const Cart = () => {
   
@@ -38,7 +41,7 @@ const Cart = () => {
     getCart();
   },[]);
 
-  if (loading) return <div>장바구니 제품을 불러오는 중 ...</div>
+  if (loading) return <div><LoadingSpinner size={30} label="장바구니 제품을 불러오는 중 ..." /></div>
 
   // 수량 변경
   const cahngeCount = async (i, action) => {    
@@ -106,6 +109,12 @@ const Cart = () => {
 
   const checkedItems = cartItem.filter(item => item.check);
 
+  // .some : 배열 안에 특정 조건을 만족하는 요소가 "하나라도 있는지" 검사하는 역할
+  const hasSoldOutSelected = checkedItems.some(item => {
+    const stock = item.stock ?? 0
+    return stock <= 0 || item.is_active === false
+  })
+
   // 총 결제 금액
   const selectedTotalPrice = checkedItems.reduce(
     (acc, item) => acc + item.price * item.count, 0 
@@ -123,6 +132,15 @@ const Cart = () => {
       if (checkedItems.length === 0) {
         alert("구매할 상품을 선택해 주세요.");
         return;
+      }
+
+      const hasSoldOut = checkedItems.some(item => {
+        const stock = item.stock ?? 0
+        return stock <= 0 || item.is_active === false
+      })
+
+      if (hasSoldOut) {
+        alert("품절된 상품이 포함되어 있습니다. 품절 상품을 선택 해제하거나 삭제해 주세요.")
       }
 
       const orderItems = checkedItems.map(item => ({
@@ -147,6 +165,22 @@ const Cart = () => {
         total_price
       })
     }, false)
+  }
+
+  if (!loading && cartItem.length === 0) {
+    return (
+      <div className="cart-empty">
+        <FontAwesomeIcon icon={faBasketShopping} className="empty-cart-icon" />
+        <h3>장바구니에 담김 상품이 없습니다.</h3>
+        <p>원하는 상품을 장바구니에 담아보세요.</p>
+        <Button 
+          onClick={() => goTo("/store/allgoods")}
+          className="empty-cart-btn"
+        >
+          상품 보러가기
+        </Button>
+      </div>
+    )
   }
 
 
@@ -210,8 +244,9 @@ const Cart = () => {
         <div className="summary-button-box">
           <Button 
             onClick={ordershandle}
+            disabled={checkedItems.length === 0 || hasSoldOutSelected}
           >
-            구매하기
+            { hasSoldOutSelected ? "품절 상품 포함" :"구매하기"}
           </Button>
         </div>
 

@@ -29,6 +29,7 @@ const OrderSheet = () => {
     zipcode:"",
     address :"",
     address_detail :"",
+    address_extra: "",
     receiver: "",
     phone: ""
   })
@@ -191,7 +192,8 @@ const OrderSheet = () => {
         phone: "",
         zipcode: "",
         address: "",
-        address_detail: ""
+        address_detail: "",
+        address_extra: ""     // 같이 초기화
       }))
     }
   }
@@ -232,7 +234,8 @@ const OrderSheet = () => {
       phone: addr.phone || "",
       zipcode: addr.zipcode || "",
       address: addr.address || "",
-      address_detail: addr.address_detail || ""
+      address_detail: addr.address_detail || "",
+      address_extra: addr.address_extra || ""
     }))
     setShowAddressModal(false)
   }
@@ -242,9 +245,10 @@ const OrderSheet = () => {
     ...prev,
     zipcode: next.postcode || "",
     address: next.road || next.jibun || next.display.raw || "",
-    address_detail: next.detail || ""
-    }));
-  };
+    address_detail: next.detail || "",
+    address_extra: next.extras || ""  
+  }));
+};
 
   return(
     <>
@@ -321,7 +325,7 @@ const OrderSheet = () => {
                 postcode: order.zipcode || "",
                 road: order.address || "",
                 jibun: order.address || "",
-                extras: "",
+                extras: order.address_extra || "",   
                 local: "",
                 type: "",
                 display: {
@@ -509,6 +513,7 @@ const OrderSheet = () => {
                     <div>{addr.receiver} / {addr.phone}</div>
                     <div>{addr.zipcode} {addr.address}</div>
                     <div>{addr.address_detail}</div>
+                    <div>{addr.address_extra}</div>
                   </button>
                 ))
               )}
