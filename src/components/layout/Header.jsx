@@ -82,10 +82,10 @@ const Header = () => {
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
-                      <NavLink to="/routine">루틴</NavLink>
+                      <NavLink to="/routine">루틴 캘린더</NavLink>
                     </li>
                     <li>
-                      <NavLink to="/mydrugs">복용약</NavLink>
+                      <NavLink to="/mydrugs">루틴 등록/관리</NavLink>
                     </li>
                   </ul>
                 </div>

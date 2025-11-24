@@ -203,6 +203,7 @@ const MedInput = ( {setActiveTab, loadDrugs }) => {
                     onClick={handleSave}
                     className="action-btn"
                     disabled={loading} 
+                    handleSave={handleSave}
                   >
                   저장하기</button>
                 </div>

@@ -9,7 +9,7 @@ import Button from "../../components/ui/Button";
 
 
 
-const SuppInput = ( {setActiveTab }) => {
+const SuppInput = ( {setActiveTab, loadDrugs }) => {
 
   const { isLoggedIn } = useUser();         // ✅ 로그인 상태 확인
   const { requireLogin } = useLoginRedirect(); 
@@ -150,8 +150,11 @@ const SuppInput = ( {setActiveTab }) => {
     if (success) {
       alert("✅ 저장 완료! 목록으로 이동합니다.")
       setActiveTab('list')
+      resetForm();
+      loadDrugs()
     }
   }
+
 
   return (
   <>
