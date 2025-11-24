@@ -67,7 +67,9 @@ const SupplementPage = () => {
 
   // 추가 - 분석 요청한 의약품 이미지 파일 전송용
   const location = useLocation();
-  const { uploadedFile } = location.state;
+  const { uploadedFile } = location.state
+    ? location.state
+    : '';
 
   // 상태 초기값: ingredients는 배열(string[])로 관리
   const [recognizedSupplements, setRecognizedSupplements] = useState(loadSupplementList());

@@ -6,13 +6,18 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import DrugInfo from './DrugInfo';
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
 const loadImageUrl = (result) => {
   let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
-
-  if ((!imageUrl || imageUrl == null) && result.imageUrl) {
+  
+  if ((!imageUrl || imageUrl == null) && result.image_url) {
     imageUrl = result.image_url;
+
+    if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('blob')) {
+      imageUrl = `${BASE_URL}${originalImageUrl}`;
+    };
   };
 
   return imageUrl;
