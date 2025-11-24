@@ -742,3 +742,59 @@
   cursor: pointer;
   accent-color: #7a5cff;  /* 테마 컬러 (보라색 강조) */
 }
+.title-and-search-wrapper {
+    display: flex;
+    justify-content: space-between; /* 제목은 왼쪽, 검색창은 오른쪽 끝에 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 20px; /* 정렬 버튼과의 간격 */
+}
+
+/* 기존 제목 스타일 (수정) */
+.goods-list-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0; /* 부모 래퍼(title-and-search-wrapper)가 간격을 관리하므로 0으로 설정 */
+    color: #333;
+}
+
+/* 기존 검색 폼 스타일 (재사용) */
+.store-search-form {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 250px; /* 작은 사이즈 유지 */
+    transition: all 0.3s ease;
+}
+
+.search-input-small {
+    padding: 8px 15px;
+    border: none;
+    background: transparent;
+    outline: none;
+    flex-grow: 1;
+    font-size: 0.9em;
+    color: #333;
+    width: calc(100% - 40px);
+}
+
+.search-input-small::placeholder {
+    color: #bbb;
+}
+
+/* 검색 아이콘 버튼 */
+.search-icon-button {
+    background-color: transparent; /* 배경 투명 */
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1.2em; /* 아이콘 크기 */
+    color: #777;
+    transition: color 0.2s ease;
+}
+
+.search-icon-button:hover {
+    color: #555;
+}

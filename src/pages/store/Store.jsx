@@ -1,7 +1,7 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import "../../styles/Store.css";
 import StoreSideMenu from "../../components/store/StoreSideMenu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Store = () => {
   const location = useLocation();
@@ -32,6 +32,31 @@ const Store = () => {
     location.pathname.startsWith('/store/ingredient')
   )
 
+  // 검색 기능 --------
+  const [searchQuery, setSearchQuery] = useState("");
+  const [submittedSearchQuery, setSubmittedSearchQuery] = useState("");
+  const resetSearchStates = () => {
+    setSearchQuery("");
+    setSubmittedSearchQuery("");
+  }
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSubmittedSearchQuery(searchQuery)
+    console.log("검색어 제출:", searchQuery)
+  }
+
+  useEffect(() => {
+    if (location.pathname.startsWith('/store/')) {
+      setSearchQuery("");
+      setSubmittedSearchQuery("");
+    }
+  }, [location])
+
   return (
     <>
     <div className="store-container">
@@ -47,11 +72,19 @@ const Store = () => {
             성분별
           </NavLink>
         </nav>
-      )}    
-      
+      )}
+
       <div className={`store-content-wrapper ${shouldShowSideMenu ? 'showSide' : ''}`}>
         <div className="store-content">
-          <Outlet context={{ triggerUpdate, triggerCartUpdate }} />
+          <Outlet context={{ 
+            triggerUpdate, 
+            triggerCartUpdate, 
+            searchQuery, 
+            handleSearchChange, 
+            handleSearchSubmit, 
+            submittedSearchQuery, 
+            resetSearchStates 
+          }} />
         </div>
         
         {shouldShowSideMenu && (
