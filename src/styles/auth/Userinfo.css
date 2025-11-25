@@ -1,18 +1,19 @@
+
+/* 회원정보 수정 컨테이너 */
 .userinfo-container {
   max-width: 400px;
-  margin: 30px auto;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  margin: 40px auto; /* 위아래 여백 살짝 추가 */
+  padding: 25px 20px;
+  background-color: #f2faff; /* 이전보다 더 연한 파랑 */
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* 기존의 userinfo-group 스타일 유지 */
-
+/* 각 입력 그룹 */
 .userinfo-group {
   width: 100%;
   margin-bottom: 15px;
@@ -20,22 +21,59 @@
 
 .userinfo-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-weight: 600;
+  color: #333333; /* 어두운 회색 글씨 */
 }
 
 .userinfo-group input,
 .userinfo-group select {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 10px 12px;
+  border: 1px solid #b8dbff; /* 연한 파랑 테두리 */
+  border-radius: 6px;
   font-size: 14px;
   box-sizing: border-box;
+  background-color: #f7fdff; /* 입력창 배경도 더 연하게 */
+  color: #333; /* 입력 글씨 어둡게 */
 }
 
-/* 버튼을 감싸는 컨테이너가 없으면, 버튼에 margin-top을 줘서 적절히 띄우기 */
-button {
+/* 버튼 컨테이너 */
+.button-container {
+  display: flex;
+  justify-content: space-between; /* 좌우 끝 정렬 */
+  width: 100%;
   margin-top: 20px;
-  align-self: center; /* 부모 flex 컨테이너 내에서 중앙 정렬 */
+  gap: 10px; /* 버튼 사이 간격 */
+}
+
+/* 버튼 스타일 */
+.button-container .button {
+  flex: 1; /* 버튼이 동일한 너비를 가지도록 */
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* 왼쪽 버튼 - 수정 (연한 파랑) */
+.button-container .button:first-child {
+  background-color: #80c1ff; /* 연한 파랑 */
+  color: #fff;
+}
+
+.button-container .button:first-child:hover {
+  background-color: #66b3ff;
+}
+
+/* 오른쪽 버튼 - 삭제 (연한 빨강) */
+.button-container .button:last-child {
+  background-color: #ff9999; /* 연한 빨강 */
+  color: #fff;
+}
+
+.button-container .button:last-child:hover {
+  background-color: #ff8080;
 }

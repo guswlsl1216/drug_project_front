@@ -38,7 +38,7 @@ const Login = () => {
       }
       
     } catch (err) {
-      alert(err?.response?.data?.message || "로그인 실패"); // 조건문 해석 불가능 다시 알아보고 수정 필요
+      alert(err?.response?.data?.message || "로그인 실패"); 
 
     } finally {
       setLoading(false);

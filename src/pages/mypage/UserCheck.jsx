@@ -4,6 +4,7 @@ import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
 import axiosInstance from "../../utils/axiosInstance";
 import requestHandler from "../../utils/requestHandler";
+import "../../styles/auth/UserCheck.css";
 
 const UserCheck = () => {
   const { goTo } = UseNavi();
