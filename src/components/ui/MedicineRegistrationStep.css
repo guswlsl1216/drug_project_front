@@ -1,0 +1,253 @@
+/* MedicineRegistrationStep.css 또는 관련 CSS 파일 */
+
+/* ---------------------------------------------------- */
+/* 1. 메인 컨테이너 및 중앙 정렬 */
+/* ---------------------------------------------------- */
+.medicine-registration-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 내용을 중앙으로 정렬 */
+    padding: 20px;
+    background-color: #f4f7f9; /* 배경색으로 페이지 구분 */
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    width: 100%;
+    max-width: 700px; /* 콘텐츠 너비 제한 */
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+h3 {
+    font-size: 1.5em;
+    color: #333333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+/* ---------------------------------------------------- */
+/* 2. 섹션 레이아웃 */
+/* ---------------------------------------------------- */
+.image-analysis-section {
+    margin-bottom: 40px;
+}
+
+.recognized-list-section {
+    margin-bottom: 40px;
+}
+
+/* 영양제 정보 박스 스타일 */
+.medicine-registration-step > div:first-child { 
+    /* 컴포넌트 코드의 영양제 정보 div에 대한 명시적 스타일 */
+    border: 1px solid #c8e6c9 !important;
+    border-radius: 8px !important;
+    background: #e8f5e9 !important;
+    padding: 15px !important;
+    margin-bottom: 25px;
+    color: #388e3c;
+    font-size: 1.1em;
+}
+
+/* ---------------------------------------------------- */
+/* 3. 이미지 업로드 및 검사 버튼 */
+/* ---------------------------------------------------- */
+.image-display-box {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #cccccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+}
+
+.placeholder-text {
+    color: #999999;
+    font-size: 1.1em;
+}
+
+.button-upload, .button-search {
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    margin-right: 10px;
+}
+
+.button-upload {
+    background-color: #6c757d; /* 회색 버튼 */
+    color: #ffffff;
+    border: none;
+    display: inline-block; /* label이 버튼처럼 보이게 */
+}
+
+.button-upload:hover {
+    background-color: #5a6268;
+}
+
+.button-search {
+    background-color: #007bff; /* 파란색 버튼 */
+    color: #ffffff;
+    border: none;
+}
+
+.button-search:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.button-search:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* ---------------------------------------------------- */
+/* 4. 의약품 리스트 (항목) */
+/* ---------------------------------------------------- */
+.medicine-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.medicine-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.unvalidated {
+    background-color: #fff8e1; /* 확정되지 않음 - 연한 노란색 */
+    border: 1px solid #ffd740;
+}
+
+.validated {
+    background-color: #e8f5e9; /* 확정됨 - 연한 녹색 */
+    border: 1px solid #a5d6a7;
+}
+
+.medicine-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-right: 10px;
+    transition: border-color 0.2s;
+    background: #ffffff;
+}
+
+.medicine-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.medicine-input:disabled {
+    background-color: #eeeeee;
+    color: #555;
+}
+
+/* ---------------------------------------------------- */
+/* 5. 아이템 액션 버튼 (확정/삭제) */
+/* ---------------------------------------------------- */
+.button-edit, .button-delete {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 50%;
+    margin-left: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+
+.button-edit {
+    background-color: #28a745; /* 확정 - 녹색 */
+    color: white;
+}
+
+.button-edit:hover:not(:disabled) {
+    background-color: #1e7e34;
+}
+
+.button-edit:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.button-delete {
+    background-color: #dc3545; /* 삭제 - 빨간색 */
+    color: white;
+}
+
+.button-delete:hover {
+    background-color: #c82333;
+}
+
+.button-add {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffc107; /* 추가 - 노란색 */
+    color: #333;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 700;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.button-add:hover {
+    background-color: #e0a800;
+}
+
+/* ---------------------------------------------------- */
+/* 6. 하단 박스 및 분석 버튼 */
+/* ---------------------------------------------------- */
+.bottom-box {
+    width: 100%;
+    max-width: 700px; /* content-wrapper와 너비 일치 */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05); /* 상단에 그림자 */
+    text-align: center;
+}
+
+.guidance-text-bottom {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+.button-next {
+    width: 100%;
+    padding: 15px;
+    background-color: #007bff; /* 메인 액션 버튼 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.button-next:hover {
+    background-color: #0056b3;
+}
