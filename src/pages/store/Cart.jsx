@@ -50,7 +50,6 @@ const Cart = () => {
   // 수량 변경
   const cahngeCount = async (i, action) => {    
     const item = cartItem[i]
-    item.count += (action == 'plus' ? 1 : -1 );
 
     await requestHandler ({
       method:'put',
@@ -59,7 +58,7 @@ const Cart = () => {
       onSuccess: (data) => {
         console.log(data)
         setCartItem(prev => 
-          prev.map(ci => ci.cart_id === item.cart_id ? {...ci, count:item.count} : ci)
+          prev.map(ci => ci.cart_id === item.cart_id ? {...ci, count:data.count} : ci)
         );
       },
       onError: (msg) => {
@@ -209,7 +208,12 @@ const Cart = () => {
           <div className="count-box">
             <Button onClick={() => cahngeCount(i, 'minus')} disabled={item.count == 1}>-</Button>
             <div>{item.count}</div>
-            <Button onClick={() => cahngeCount(i, 'plus')}>+</Button>
+            <Button 
+              onClick={() => cahngeCount(i, 'plus')}
+              disabled={item.count >= item.stock}
+            >
+              +
+            </Button>
           </div>
 
           <div className="price-box">
