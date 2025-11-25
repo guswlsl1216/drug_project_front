@@ -152,6 +152,38 @@
   margin-top: 15px;
 }
 
+.cart-empty {
+  text-align: center;
+  padding: 90px 20px;
+  color: #444;
+}
+
+.empty-cart-icon {
+  font-size: 70px;
+  color: #b9b9c9;
+  margin-bottom: 20px;
+}
+
+.cart-empty h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.cart-empty p {
+  color: #777;
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.empty-cart-btn {
+  margin-top: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
 /* summary가 표시되는 화면에서 카드가 summary에 가려지지 않게 오른쪽 여백 추가 */
 @media (max-width: 1500px) {
   .cart-item {

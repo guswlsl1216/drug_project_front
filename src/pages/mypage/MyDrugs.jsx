@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../components/context/UserContext"; // UserContext import
-import UseNavi from "../../utils/UseNavi"; // 리다이렉트를 위해 UseNavi import
 import "../../styles/MyDrugs.css";
 import DrugList from "./DrugList";
 import MedInput from "./MedInput";
@@ -8,16 +7,24 @@ import SuppInput from "./SuppInput";
 import requestHandler from "../../utils/requestHandler";
 import DrugHistory from "./DrugHistory";
 import EditDrugModal from "./EditDrugModal";
+import useLoginRedirect from "../../utils/useLoginRedirect";
+import { useSearchParams } from "react-router-dom";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const MyDrugs = ( ) => {
   // 🚨 UserContext에서 사용자 정보와 로그인 상태를 가져옵니다.
   const { user, isLoggedIn } = useUser();
-  const { goTo } = UseNavi(); 
-  
   // 🚨 Context에서 user.id를 userId로 설정합니다.
   const userId = user?.id;
+  const { requireLogin } = useLoginRedirect();
+  
 
-  const [activeTab, setActiveTab] = useState("list");
+  
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") || "list";
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+
   const [meds, setMeds] = useState([]);
   const [supps, setSupps] = useState([]);
   const [logs, setLogs] = useState({});
@@ -34,22 +41,15 @@ const MyDrugs = ( ) => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
-  if (!isLoggedIn || !userId) {
-      // 로그인 정보가 없거나 유효하지 않으면 로그인 페이지로 이동
-      console.log("로그인 정보 없음. 로그인 페이지로 이동.");
-      alert("로그인 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
-      goTo("/login"); // 실제 로그인 페이지 경로로 수정하세요.
-    }
-    }, [isLoggedIn, userId, goTo])
-    
+  requireLogin(); 
+  }, []);
 
+  // 로그인 된 경우에만 userId 존재 → loadDrugs 실행
   useEffect(() => {
-    if (userId) {
-    loadDrugs();
-    } else {
-      console.error("userId가 없어서 loadDrugs를 실행하지 않습니다. (로그인 대기중")
+    if (user?.id) {
+      loadDrugs();
     }
-  }, [userId]);
+  }, [user?.id]);
 
   useEffect(() => {
     if(successMessage){
@@ -137,9 +137,9 @@ const MyDrugs = ( ) => {
       case "med-input":
         return <MedInput userId={userId} form={form} setForm={setForm} loadDrugs={loadDrugs} setActiveTab={setActiveTab} />;
       case "supp-input":
-        return <SuppInput userId={userId} form={form} setForm={setForm} onSubmit={loadDrugs} setActiveTab={setActiveTab} />;
+        return <SuppInput userId={userId} form={form} setForm={setForm} loadDrugs={loadDrugs} setActiveTab={setActiveTab} />;
       case "drug-history":
-        return <DrugHistory userId={userId} onSubmit={loadDrugs} setActiveTab={setActiveTab} />;
+        return <DrugHistory userId={userId} onSubmit={loadDrugs} setActiveTab={setActiveTab} />; 
       default:
         return <DrugList 
           meds={meds} 
@@ -166,7 +166,7 @@ if (!isLoggedIn) {
     return (
       <div className="my-med-container clean-theme">
         <div style={{ padding: '40px', textAlign: 'center' }}>
-          <h2>⏳ 목록 로딩 중...</h2>
+          <LoadingSpinner label="목록 로딩 중..." size={65} />
         </div>
       </div>
     );
@@ -175,10 +175,10 @@ if (!isLoggedIn) {
     <div className="my-med-container clean-theme">
       <div className="main-layout-wrapper">
         <div className="med-sidebar">
-          <button className={`sidebar-btn ${activeTab==="list"?"active":""}`} onClick={()=>setActiveTab("list")}>내 약/영양제 목록</button>
           <button className={`sidebar-btn ${activeTab==="med-input"?"active":""}`} onClick={()=>setActiveTab("med-input")}>💊 복용약 등록</button>
           <button className={`sidebar-btn ${activeTab==="supp-input"?"active":""}`} onClick={()=>setActiveTab("supp-input")}>🌿 영양제 등록</button>
-          <button className={`sidebar-btn ${activeTab==="drug-history"?"active":""}`} onClick={()=>setActiveTab("drug-history")}>📘 내 히스토리</button>
+          <button className={`sidebar-btn ${activeTab==="list"?"active":""}`} onClick={()=>setActiveTab("list")}>📜 루틴 목록</button>
+          <button className={`sidebar-btn ${activeTab==="drug-history"?"active":""}`} onClick={()=>setActiveTab("drug-history")}>📘 루틴 히스토리</button>
         </div>
         <div className="tab-content-wrapper">
           {successMessage && <div className="success-message-global">{successMessage}</div>}
