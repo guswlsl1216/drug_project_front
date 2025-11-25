@@ -151,7 +151,8 @@ const Cart = () => {
         goods_name: item.goods_name,
         image_path: item.image_path,
         unit_price: item.price,
-        count: item.count
+        count: item.count,
+        cart_id: item.cart_id
       }))
 
       const total_price = orderItems.reduce(

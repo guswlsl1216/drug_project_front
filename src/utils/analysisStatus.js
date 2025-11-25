@@ -11,7 +11,7 @@ const ANALYSIS_STATUS_MAPPING = {
   // 0: 양호 상태, 이상 없을 가능성이 큼
   0: {
     status_label: '양호',
-    status_message: '함께 복용해도 괜찮을 가능성이 높아요!',
+    status_message: '함께 복용해도 괜찮을 가능성이 커요!',
     status_className: 'status_good',
     status_color: 'seagreen',
     status_fontAwesome: faCircleCheck
