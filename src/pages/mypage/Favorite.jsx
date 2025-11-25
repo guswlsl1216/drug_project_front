@@ -1,15 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import { useEffect, useState } from "react";
-import axiosInstance from "../../utils/axiosInstance";
 import "../../styles/Mypage.css";
 import requestHandler from "../../utils/requestHandler";
+import LoadingSpinner from "../../utils/LoadingSpinner";
+import UseNavi from "../../utils/UseNavi";
 
 const Favorite = () => {
 
   const { requireLogin } = useLoginRedirect();
-  const navigate = useNavigate();
-
+  const { goTo } = UseNavi()
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,7 +43,7 @@ const Favorite = () => {
     fetchFavorite();
   }, [setLoading, setFavorites, setError])
 
-  if (loading) return <div className="loading-message">찜 목록을 불러오는 중...</div>
+  if (loading) return <LoadingSpinner label="찜 목록을 불러오는 중..." />
   if (error) return <div className="error-message">{error}</div>
 
   return(
@@ -56,7 +55,7 @@ const Favorite = () => {
         <div className="no-favorites">
           <p>아직 찜한 상품이 없습니다. 마음에 드는 상품을 찜해보세요!</p>
           <button 
-            onClick={() => navigate('/store/allgoods')}
+            onClick={() => goTo('/store/allgoods')}
             className='go-to-store-btn'>
             스토어 바로가기
           </button>
@@ -67,7 +66,7 @@ const Favorite = () => {
             <div 
               key={item.id} 
               className="favorite-card"
-              onClick={() => navigate(`/store/detail/${item.id}`)}>
+              onClick={() => goTo(`/store/detail/${item.id}`)}>
               <div className="favorite-image">
                 <img src={item.image_path || 'placeholder.png'} alt={item.goods_name} />  
               </div>
@@ -75,14 +74,6 @@ const Favorite = () => {
                 <div className="favorite-name">{item.goods_name}</div>  
                 <div className="favorite-price">{item.price ? item.price.toLocaleString() : '가격 미정'}원</div>
               </div>
-              <div className="favorite-actions">
-                <button className="add-to-cart-small-btn" onClick={(e) => {
-                  e.stopPropagation(); console.log('장바구니');
-                }}>장바구니</button>
-                <button className="buy-now-small-btn" onClick={(e) => { 
-                  e.stopPropagation(); console.log('바로구매'); }}>바로구매
-                </button>
-              </div>  
             </div>
           ))}
         </div>

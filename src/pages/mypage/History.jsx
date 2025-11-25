@@ -5,56 +5,56 @@ import { useEffect, useState } from 'react';
 import '../../styles/utils/analysisStatus.css';
 import ANALYSIS_STATUS_MAPPING from '../../utils/analysisStatus';
 import UseNavi from '../../utils/UseNavi';
-import { useLocation } from 'react-router-dom';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import useLoginRedirect from '../../utils/useLoginRedirect';
 import '../../styles/analyze.css'
+import Pagination from '../../components/ui/Pagination';
+import time from '../../utils/time';
 
 const History = () => {
+  const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   const [historyList, setHistoryList] = useState([]); // 분석 결과 목록
 
-  const [has_prev, setHas_prev] = useState(false);  // 이전 페이지 유무
-  const [has_next, setHas_next] = useState(false);  // 다음 페이지 유무
-  const [pageNumbers, setPageNumbers] = useState(null); // 페이지 버튼에 보여줄 번호 리스트
-
-  const { goTo } = UseNavi();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const initialPage = parseInt(queryParams.get('page'), 10);
-  // page=NaN 혹은 page=-1 등의 잘못된 값 처리 -> page=1로 변환
-  const safeInitialPage = (isNaN(initialPage) || initialPage < 1) ? 1 : initialPage;
-
-  const [currentPage, setCurrentPage] = useState(safeInitialPage);  // 현재 페이지 번호
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(1)
+  const [total, setTotal] = useState(0)
+  const [perPage, setPerPage] = useState(5)
   
   useEffect(() => {
     requireLogin(() => {
       requestHandler({
         method: "get",
         url: "/result/history",
-        params: { page: currentPage },
+        params: { page: page, per_page: perPage },
         setLoading,
         onSuccess: (data) => {
-          if(data.history.length === 0 && currentPage !== 1) {
-            setCurrentPage(1);
+          if(data.history.length === 0 && page !== 1) {
+            setHistoryList([]);
+            setTotal(0);
+            setPages(1);
             goTo("/mypage/history", null, true);
             return;
           }
           setHistoryList(data.history);
-          setHas_prev(data.has_prev);
-          setHas_next(data.has_next);
-          setPageNumbers(data.pageNumbers);
+          setTotal(typeof data.total === "number" ? data.total : 0);
+          setPages(typeof data.pages === "number" ? data.pages : 1);
+          setPerPage(typeof data.per_page === "number" ? data.per_page : 10);
         },
-        onError: (msg) => alert(msg),
+        onError: (msg) => {
+          alert(msg);
+          setHistoryList([]);
+          setTotal(0);
+          setPages(1);
+        },
       })
     }, true)
-  }, [currentPage, location]);
+  }, [page, perPage]);
   
   const historyCard = (history) => {
     const { status_label, status_className } = ANALYSIS_STATUS_MAPPING[history.status]
     const fullDateTime = history.analysis_date;
-    const dateOnlySlice = fullDateTime.slice(0, 10);
     
     return (
       <article className="history_card">
@@ -63,7 +63,7 @@ const History = () => {
             <p>{status_label}</p>
           </div>
           <div className="history_cardInfo_content">
-            <h3>{dateOnlySlice}</h3>
+            <h3>{time(fullDateTime)}</h3>
             <p className='ellipsis'><span>[의약품]</span> {
               history.meds.map(med => med.name).join(', ')
             }</p>
@@ -90,10 +90,6 @@ const History = () => {
           </div>
         </section>
         <section className="history_container analyze-tab-content">
-          {/* <div className="history_title">
-            <h2>분석 결과 내역</h2>
-          </div> */}
-
           {
             loading
             ?
@@ -114,6 +110,7 @@ const History = () => {
                 <Button variant='primary' onClick={() => goTo("/analyze/medicine")}>분석하러 가기</Button>
               </div>
               :
+              <>
               <ul className="history_cardlist">
                 {
                   historyList.map((history, i) => {
@@ -124,45 +121,17 @@ const History = () => {
                   })
                 }
               </ul>
+              <div className="history_pagination">
+                <Pagination
+                  page={page}
+                  pages={pages}
+                  loading={loading}
+                  onChange={(num) => setPage(num)}
+                />
+              </div>
+              </>
             }
 
-            <div className="history_pagination">
-              <ul className="history_pagination_list">
-                {
-                  has_prev &&
-                  <li className='history_pagination_prev' onClick={() => {
-                    setCurrentPage(currentPage - 1)
-                    goTo(`/mypage/history?page=${currentPage - 1}`)
-                  }}>&lt;</li>
-                }
-                {
-                  pageNumbers &&
-                  pageNumbers.map((page, i) => {
-                    if(page) {
-                      return (
-                        <li
-                        key={i}
-                        className={currentPage == page ? 'history_active' : '' }
-                        onClick={() => {
-                          setCurrentPage(page)
-                          goTo(`/mypage/history?page=${page}`)
-                        }}
-                        >{page}</li>
-                      )
-                    } else {
-                      return <p key={i}>...</p>
-                    }
-                  })
-                }
-                {
-                  has_next &&
-                  <li className='history_pagination_next' onClick={() => {
-                    setCurrentPage(currentPage + 1)
-                    goTo(`/mypage/history?page=${currentPage + 1}`)
-                  }}>&gt;</li>
-                }
-              </ul>
-            </div>
             </>
           }
 

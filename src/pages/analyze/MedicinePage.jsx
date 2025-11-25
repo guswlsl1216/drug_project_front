@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import UseNavi from "../../utils/UseNavi";
 import SearchModal from "../../components/ui/SearchModal";
 import "../../styles/MedicinePage.css";
 import axios from "axios";
-import axiosInstance from "../../utils/axiosInstance";
 
 const ResultDataKey = "ANALYSIS_RESULT_DATA"; // 결과 데이터 키 (사용하지 않더라도 일관성을 위해 유지)
 const MedicineDataKey = "MEDICINE_LIST_TO_SEND"; // 약물 목록 저장 키
@@ -48,7 +46,6 @@ const saveMedicineList = (data) => {
 
 
 const MedicinePage = () => {
-  const navigate = useNavigate();
   const {goTo} = UseNavi();
   // 이미지 파일 객체 자체를 저장할 상태 추가
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -200,7 +197,7 @@ const MedicinePage = () => {
     saveMedicineList(recognizedMedicines);
     console.log("의약품 데이터 저장:", recognizedMedicines);
     // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
-    goTo("/analyze/supplement"); // SupplementPage로 이동
+    goTo("/analyze/supplement", { uploadedFile: uploadedFile }); // SupplementPage로 이동
   };
 
   return (

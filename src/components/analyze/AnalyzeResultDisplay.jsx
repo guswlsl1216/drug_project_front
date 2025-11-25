@@ -1,24 +1,39 @@
 import "../../styles/analyze/AnalyzeResultDisplay.css";
 import "../../styles/utils/analysisStatus.css";
 import ANALYSIS_STATUS_MAPPING from "../../utils/analysisStatus";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
-import {useEffect, useRef, useState} from "react";
-import DrugInfo from "./DrugInfo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useEffect, useRef, useState } from 'react';
+import DrugInfo from './DrugInfo';
+import { useLocation } from 'react-router-dom';
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
-const loadImageUrl = () => {
-  return sessionStorage.getItem(ImageUrlKey) || null;
+const loadImageUrl = (result) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const detailPathRegex = /^\/history\/detail\/\d+$/;
+  const isDetailPage = detailPathRegex.test(currentPath);
+
+  let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
+  
+  if (isDetailPage) {
+    imageUrl = `${BASE_URL}${result.image_url}`;
+  };
+
+  return imageUrl;
 };
 
-const DrugImageCropper = ({box = []}) => {
+const DrugImageCropper = ({ box, result }) => {
   const canvasRef = useRef(null);
-  const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+  const originalImageUrl = loadImageUrl(result); // 세션에서 원본 URL 로드
+  const didProcessRef = useRef(false);
 
   useEffect(() => {
-    // box가 유효하지 않거나(배열이 아니거나 길이가 4가 아님) 이미지가 없으면 리턴
-    if (!originalImageUrl || !Array.isArray(box) || box.length !== 4) return;
+    if (didProcessRef.current) return;
+    if (!originalImageUrl || !box || box.length !== 4) return;
+    didProcessRef.current = true;
 
     const canvas = canvasRef.current;
     if (!canvas) return; // 캔버스 ref 방어 코드
@@ -53,25 +68,12 @@ const DrugImageCropper = ({box = []}) => {
     img.onerror = () => {
       console.error("이미지 로드 실패 또는 CORS 오류");
     };
-  }, [originalImageUrl, box]);
+    
+  }, [originalImageUrl, box]); // 원본 URL이나 좌표가 바뀌면 다시 그림
 
   // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
-  if (!originalImageUrl || !Array.isArray(box) || box.length !== 4) {
-    return (
-      <div
-        className="meds_box_image"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#f0f0f0",
-          color: "#ccc",
-          fontSize: "12px",
-        }}
-      >
-        이미지 없음
-      </div>
-    );
+  if (!originalImageUrl || !box || box.length !== 4) {
+    return '';  // 이미지 분석으로 등록하지 않은 의약품 대응
   }
 
   return <canvas ref={canvasRef} className="meds_box_image" />;
@@ -189,8 +191,8 @@ const AnalyzeResultDisplay = ({result}) => {
             return (
               <div className="drugs_box" key={i}>
                 <DrugImageCropper
-                  // detection_box가 없을 경우를 대비해 빈 배열 전달
-                  box={med.detection_box || []}
+                  box={med.detection_box} // MedicinePage에서 추가한 좌표 사용
+                  result={result}
                 />
                 <p title={med.name} className="drugs_box_name ellipsis">
                   {med.name}
@@ -296,7 +298,8 @@ const AnalyzeResultDisplay = ({result}) => {
             setIsOpen={setIsOpen}
             drugId={drugId}
             drugType={drugType}
-            drugBox={{drugBox}} // 주의: DrugInfo에서 props 받는 형태 확인 필요 (여기서는 그대로 둠)
+            drugBox={drugBox}
+            result={result}
           />
         )}
 

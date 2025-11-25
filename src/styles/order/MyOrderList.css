@@ -1,0 +1,357 @@
+/* 전체 컨테이너 */
+.myorder-list {
+  width: 100%;
+  max-width: 1040px;      /* 찜 목록이랑 맞추기 */
+  margin: 0 auto;
+  padding: 70px 10px 60px;  /* 위/좌우/아래 여백도 찜 목록이랑 비슷하게 */
+}
+
+/* 헤더 */
+.myorder-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.myorder-list__summary {
+  color: #555;
+  font-size: 14px;
+}
+
+/* 필터 영역 */
+.myorder-list__filters {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* 조회기간 박스 */
+.myorder-list__range-group h6 {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.myorder-list__range-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.range-btn {
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+/* 활성화된 버튼 */
+.range-btn.is-active {
+  background-color: #7a5cff;
+  color: white;
+  border-color: #7a5cff;
+}
+
+/* 검색 영역 */
+.myorder-list__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.myorder-list__search__form {
+  flex: 1;
+  min-width: 180px;
+  max-width: 300px;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* 테이블 */
+.myorder-list__table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.myorder-list__table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 2px solid #555;
+}
+
+.myorder-list__table th,
+.myorder-list__table td {
+  padding: 14px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 14px;
+}
+
+/* 각 컬럼 크기 조절 */
+.cell-order-code {
+  width: 160px;
+  font-weight: 500;
+  font-size: 13px;
+  color: #555;
+}
+
+.cell-order-date {
+  width: 160px;
+  color: #666;
+}
+
+.cell-order-info {
+  width: auto;
+}
+
+/* 이미지 + 텍스트 구조 */
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 썸네일 */
+.order-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fafafa;
+  border: 1px solid #eee;
+  flex-shrink: 0;
+}
+
+.order-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 텍스트 영역 */
+.order-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-main-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.order-extra {
+  font-size: 13px;
+  color: #888;
+}
+
+.order-price-qty {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 상세보기 라인 */
+.order-view-detail {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  width: fit-content;
+  transition: color 0.2s ease;
+}
+
+.order-view-detail:hover {
+  color: #5a42f5;
+}
+
+.order-view-detail__icon {
+  font-size: 12px;
+  margin-top: 1px;
+}
+
+/* 빈 목록 */
+.empty {
+  text-align: center;
+  padding: 50px 0;
+  color: #888;
+}
+
+/* 로딩 */
+.loading {
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ========================= */
+/*        반 응 형           */
+/* ========================= */
+
+/* 1024px 이하: 양 옆 여백 조금 넓히고 헤더/필터 정리 */
+@media (max-width: 1024px) {
+  .myorder-list {
+    max-width: 100%;
+    padding: 72px 16px 20px;
+  }
+
+  .myorder-list__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .myorder-list__filters {
+    align-items: flex-start;
+  }
+
+  .myorder-list__search {
+    justify-content: flex-start;
+  }
+}
+
+/* 768px 이하: 글자 살짝 줄이고, 주문번호/날짜 줄바꿈 허용 */
+@media (max-width: 768px) {
+  .myorder-list {
+    padding: 64px 12px 16px;
+  }
+
+  .myorder-list__table th,
+  .myorder-list__table td {
+    font-size: 13px;
+    padding: 10px 6px;
+  }
+
+  .cell-order-code,
+  .cell-order-date {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .order-main-name {
+    font-size: 14px;
+  }
+
+  .order-thumb {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+/* 600px 이하: 필터/검색 세로 배치, 검색창 100% */
+@media (max-width: 600px) {
+  .myorder-list {
+    padding: 64px 10px 16px;
+  }
+
+  .myorder-list__filters {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .myorder-list__search {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .myorder-list__search__form {
+    max-width: 100%;
+  }
+
+  /* 테이블을 카드형으로 변경 */
+  .myorder-list__table {
+    border-top: none;
+  }
+
+  .myorder-list__table thead {
+    display: none;          /* 헤더 숨기기 */
+  }
+
+  .myorder-list__table,
+  .myorder-list__table tbody,
+  .myorder-list__table tr,
+  .myorder-list__table td {
+    display: block;
+    width: 100%;
+  }
+
+  .myorder-list__table tr {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .myorder-list__table td {
+    padding: 4px 0;
+    font-size: 13px;
+  }
+
+  /* 주문번호 / 주문일시를 위쪽에 작은 텍스트로 */
+  .cell-order-code {
+    font-size: 12px;
+    color: #777;
+    font-weight: 500;
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+
+  .cell-order-date {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  /* 상품 정보 영역 */
+  .cell-order-info {
+    padding: 0;
+  }
+
+  .order-item {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .order-thumb {
+    width: 44px;
+    height: 44px;
+  }
+
+  .order-main-name {
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .order-price-qty {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+/* 400px 이하: 전체 조금 더 컴팩트하게 */
+@media (max-width: 400px) {
+  .myorder-list {
+    padding: 56px 10px 12px;
+  }
+
+  .myorder-list__header h2 {
+    font-size: 18px;
+  }
+
+  .myorder-list__table th,
+  .myorder-list__table td {
+    font-size: 12px;
+  }
+
+  .order-main-name {
+    font-size: 13px;
+  }
+
+  .order-price-qty {
+    font-size: 12px;
+  }
+}

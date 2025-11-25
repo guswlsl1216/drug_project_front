@@ -85,7 +85,7 @@ const AnalysisResultModal = ({isOpen, onClose, resultData}) => {
       <div className="modal-content">
         {/* 모달 헤더 (닫기 버튼 유지) */}
         <div className="modal-header">
-          <h2 className="modal-title"> 의약품-영양제 병용섭취 분석 결과</h2>
+          <h2 className="modal-title"> 병용섭취 분석 결과</h2>
           <button className="modal-close-button" onClick={onClose}>
             &times;
           </button>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/MyDrugs.css";
 import requestHandler from "../../utils/requestHandler";
-import { useUser } from "../../components/context/UserContext";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 
 const EditDrugModal = ({

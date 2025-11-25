@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GoodsList from "../../components/store/GoodsList";
 import "../../styles/Store.css"
+import { useOutletContext } from "react-router-dom";
 
 const Ingredient = () =>{
   
@@ -16,33 +17,35 @@ const Ingredient = () =>{
   ]
 
   const [selectedCategory, setSelectedCategory] = useState(ingredients[0]); 
+  const {resetSearchStates} = useOutletContext();
 
   const handleCategoryClick = (category) => {
-        setSelectedCategory(category);
+    resetSearchStates();
+    setSelectedCategory(category);
   }
 
   return (
     <>
-    <div className="ingredient-container">
-      <div className="category-grid">
-        {ingredients.map((item, idx) => (
-          <div 
-            className={`category-item ${selectedCategory === item ? 'category-active' : ''}`}
-            key={idx}
-            onClick={() => handleCategoryClick(item)}
-          >
-            {item}
-          </div>
-        ))}
+      <div className="ingredient-container">
+        <div className="category-grid">
+          {ingredients.map((item, idx) => (
+            <div 
+              className={`category-item ${selectedCategory === item ? 'category-active' : ''}`}
+              key={idx}
+              onClick={() => handleCategoryClick(item)}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+
+        <hr className="functionality-hr"/>
+
+        <GoodsList
+            categoryKey="classify" // DB 컬럼명에 맞게 조정 필요
+            categoryValue={selectedCategory}
+        />
       </div>
-
-      <hr className="functionality-hr"/>
-
-      <GoodsList
-          categoryKey="classify" // DB 컬럼명에 맞게 조정 필요
-          categoryValue={selectedCategory}
-      />
-    </div>
     
     </>
   )

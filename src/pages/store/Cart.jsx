@@ -4,6 +4,10 @@ import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import "../../styles/cart/Cart.css";
+import useLoginRedirect from "../../utils/useLoginRedirect";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBasketShopping } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const Cart = () => {
   
@@ -12,6 +16,7 @@ const Cart = () => {
   const [loading, setLoading] = useState(false);
   const {user, setUser, isLoggedIn} = useUser(); // 로그인 한 사람만 접근 가능
   const [allCheck, setAllCheck] = useState(false); // 전체 선택 
+  const { requireLogin } = useLoginRedirect();
   
 
   // 장바구니 목록 가져오기
@@ -36,12 +41,15 @@ const Cart = () => {
     getCart();
   },[]);
 
-  if (loading) return <div>장바구니 제품을 불러오는 중 ...</div>
+  useEffect(() => {
+    requireLogin(() => {}, true);
+  },[]);
+
+  if (loading) return <div><LoadingSpinner size={30} label="장바구니 제품을 불러오는 중 ..." /></div>
 
   // 수량 변경
   const cahngeCount = async (i, action) => {    
     const item = cartItem[i]
-    item.count += (action == 'plus' ? 1 : -1 );
 
     await requestHandler ({
       method:'put',
@@ -50,7 +58,7 @@ const Cart = () => {
       onSuccess: (data) => {
         console.log(data)
         setCartItem(prev => 
-          prev.map(ci => ci.cart_id === item.cart_id ? {...ci, count:item.count} : ci)
+          prev.map(ci => ci.cart_id === item.cart_id ? {...ci, count:data.count} : ci)
         );
       },
       onError: (msg) => {
@@ -102,11 +110,81 @@ const Cart = () => {
     setCartItem(prev => prev.filter(item => !item.check));
   };
 
+  const checkedItems = cartItem.filter(item => item.check);
+
+  // .some : 배열 안에 특정 조건을 만족하는 요소가 "하나라도 있는지" 검사하는 역할
+  const hasSoldOutSelected = checkedItems.some(item => {
+    const stock = item.stock ?? 0
+    return stock <= 0 || item.is_active === false
+  })
+
   // 총 결제 금액
-  const totalPrice = cartItem.reduce((acc, item) => acc + item.price * item.count, 0 );
+  const selectedTotalPrice = checkedItems.reduce(
+    (acc, item) => acc + item.price * item.count, 0 
+  );
 
   // 배송비
-  const shipping = totalPrice >= 20000 ? 0 : 2500;
+  const shipping = selectedTotalPrice === 0
+    ? 0
+    : selectedTotalPrice >= 20000
+    ? 0 : 2500
+
+  const ordershandle = () => {
+    requireLogin(() => {
+      const checkedItems = cartItem.filter(item => item.check);
+      if (checkedItems.length === 0) {
+        alert("구매할 상품을 선택해 주세요.");
+        return;
+      }
+
+      const hasSoldOut = checkedItems.some(item => {
+        const stock = item.stock ?? 0
+        return stock <= 0 || item.is_active === false
+      })
+
+      if (hasSoldOut) {
+        alert("품절된 상품이 포함되어 있습니다. 품절 상품을 선택 해제하거나 삭제해 주세요.")
+      }
+
+      const orderItems = checkedItems.map(item => ({
+        goods_id: item.goods_id,       // 장바구니 데이터 구조에 맞게 'goods_id' 사용
+        goods_name: item.goods_name,
+        image_path: item.image_path,
+        unit_price: item.price,
+        count: item.count,
+        cart_id: item.cart_id
+      }))
+
+      const total_price = orderItems.reduce(
+        (acc, item) => acc + item.unit_price * item.count,0
+      );
+
+      goTo("/orders", {
+        buyer: {
+          nickname: user?.nickname ?? "",
+          tel: user?.tel ?? ""
+        },
+        items: orderItems,
+        total_price
+      })
+    }, false)
+  }
+
+  if (!loading && cartItem.length === 0) {
+    return (
+      <div className="cart-empty">
+        <FontAwesomeIcon icon={faBasketShopping} className="empty-cart-icon" />
+        <h3>장바구니에 담김 상품이 없습니다.</h3>
+        <p>원하는 상품을 장바구니에 담아보세요.</p>
+        <Button 
+          onClick={() => goTo("/store/allgoods")}
+          className="empty-cart-btn"
+        >
+          상품 보러가기
+        </Button>
+      </div>
+    )
+  }
 
 
   return (
@@ -131,7 +209,12 @@ const Cart = () => {
           <div className="count-box">
             <Button onClick={() => cahngeCount(i, 'minus')} disabled={item.count == 1}>-</Button>
             <div>{item.count}</div>
-            <Button onClick={() => cahngeCount(i, 'plus')}>+</Button>
+            <Button 
+              onClick={() => cahngeCount(i, 'plus')}
+              disabled={item.count >= item.stock}
+            >
+              +
+            </Button>
           </div>
 
           <div className="price-box">
@@ -147,12 +230,12 @@ const Cart = () => {
           
           <div className="summary-subtext">
             <span>총 상품금액 : </span>
-            <h3 className="summary-price">{totalPrice}원</h3>
+            <h3 className="summary-price">{selectedTotalPrice.toLocaleString()}원</h3>
           </div>
             
           <div className="summary-subtext">
             <span>총 배송비 : </span>
-            <h3 className="summary-price">{shipping}원 </h3>
+            <h3 className="summary-price">{shipping.toLocaleString()}원 </h3>
           </div>        
         </div>
 
@@ -160,14 +243,19 @@ const Cart = () => {
 
         <div className="summary-final-section">
           <p className="summary-title">결제 예정 금액</p>
-          <h2 className="summary-final-price">{totalPrice + shipping}원</h2>
+          <h2 className="summary-final-price">{(selectedTotalPrice + shipping).toLocaleString()}원</h2>
           <p className="summary-info">
             ⓘ 쿠폰 및 적립금은 구매하기 버튼을 누른 후 주문서에서 적용하실 수 있습니다.
           </p>
         </div>
 
         <div className="summary-button-box">
-          <Button onClick={()=>{goTo("/orders")}}>구매하기</Button>
+          <Button 
+            onClick={ordershandle}
+            disabled={checkedItems.length === 0 || hasSoldOutSelected}
+          >
+            { hasSoldOutSelected ? "품절 상품 포함" :"구매하기"}
+          </Button>
         </div>
 
       </div>

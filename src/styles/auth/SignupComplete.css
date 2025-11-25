@@ -1,0 +1,52 @@
+/* 페이지 전체 중앙 배치 */
+.signup-complete-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;  /* 세로로 정렬 */
+  justify-content: center; /* 세로 중앙 */
+  align-items: center;     /* 가로 중앙 */
+  padding: 60px 16px;     /* 네비바 높이 + 모바일 여백 */
+  box-sizing: border-box;
+  background-color: #f9f9f9; /* 깔끔한 연한 배경 */
+}
+
+/* 안내 문구 */
+.signup-complete-message {
+  text-align: center;
+  font-size: 20px;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  max-width: 500px;       /* 글자 폭 제한 */
+}
+
+/* 버튼 */
+.signup-complete-btn {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.signup-complete-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 반응형: 화면 작을 때 여백 확보 */
+@media (max-width: 600px) {
+  .signup-complete-wrapper {
+    padding: 60px 16px;
+  }
+  .signup-complete-message {
+    font-size: 18px;
+  }
+  .signup-complete-btn {
+    width: 100%;
+  }
+}

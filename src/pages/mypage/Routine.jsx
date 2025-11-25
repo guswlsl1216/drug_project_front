@@ -81,10 +81,11 @@ const Routine = () => {
   };
 
   return (
-    <>
-      <h2>규칙적으로 약을 복용하세요</h2>
-      <div id="Routine">
-        <div id="calendar">
+    <div className="routine-page">
+      <h2 className="routine-title">규칙적으로 약을 복용하세요</h2>
+
+      <div className="routine-main-wrapper">
+        <div className="routine-calendar-section">
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 설정
             editable={true} // 이벤트의 드래그 앤 드롭, 리사이징, 이동을 허용합니다.
@@ -109,19 +110,22 @@ const Routine = () => {
               const d = String(date.getDate()).padStart(2, '0');
               const now = `${y}-${m}-${d}`;
               let classname = 'common'
-              let outofrange = false
+              let outofrange = true
+              //캘린더의 날짜가 오늘을 넘어갔는가?
               if (date > Date.now()) {
                 return classname
               }
+              //루틴이 존재하는 기간인가?
+              //이거근데 map왜돌렸지 << 하루에 event가 여러개있으니까 하나도 없으면 return
               events.map((data) => {
-                if (date < new Date(data['start']) || date > new Date(data['end'])) {
-                  outofrange = true
+                if (new Date(now) >= new Date(data['start']) && new Date(now) <= new Date(data['end'])) {
+                  outofrange=false
                 }
-                else {
-                  outofrange = false
+                else if(outofrange!=false){
+                  outofrange=true
                 }
               })
-              if (outofrange) {
+              if(outofrange){
                 return classname
               }
               for (const [k, v] of Object.entries(counts)) {
@@ -131,7 +135,7 @@ const Routine = () => {
                 classname = 'warning'
               } else if (classes.filter(el => el === 'danger').length + classes.filter(el => el === undefined).length == classes.length) {
                 classname = 'danger'
-              } else if (classes.filter(el => el === 'good').length == classes.length - events.filter(el=>new Date(el.start)>new Date(now)).length) {
+              } else if (classes.filter(el => el === 'good').length == classes.length - events.filter(el=>new Date(el['start'])>new Date(now)||new Date(el['end'])<new Date(now)).length) {
                 classname = 'good'
               } else {
                 classname = 'warning'
@@ -141,7 +145,7 @@ const Routine = () => {
             }}
           />
         </div>
-        <div id="list">
+        <div className="routine-list-section">
           <FullCalendar
             ref={calendarRef}
             plugins={[listPlugin]}
@@ -189,7 +193,7 @@ const Routine = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

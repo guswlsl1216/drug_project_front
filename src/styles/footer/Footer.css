@@ -1,0 +1,63 @@
+footer {
+    width: 100%;
+    background-color: #333; /* 어두운 배경 */
+    color: #ccc; /* 밝은 텍스트 */
+    padding: 30px 0;
+    font-size: 13px;
+    border-top: 1px solid #555;
+    margin-top: auto;
+}
+
+.footer_container {
+    max-width: 1200px; /* 콘텐츠 최대 너비 */
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+/* --- 필수 링크 영역 --- */
+.footer_links {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 15px;
+}
+
+.footer_links a {
+    color: #fff; /* 링크 텍스트는 흰색으로 강조 */
+    text-decoration: none;
+    font-weight: 500;
+    margin: 0 15px;
+    transition: color 0.2s;
+}
+
+.footer_links a:hover {
+    color: #6f3cff; /* 마우스 오버 시 브랜드 색상 (보라색) */
+}
+
+/* 링크 사이의 구분선 (|) 스타일링 */
+.footer_links a:not(:last-child)::after {
+    content: "|";
+    color: #888;
+    margin-left: 20px;
+}
+
+
+/* --- 회사 정보 영역 --- */
+.company_info p {
+    margin: 5px 0;
+    line-height: 1.7;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.company_info p:last-child {
+    margin-bottom: 0;
+}
+
+/* --- 저작권 영역 --- */
+.copyright {
+    margin-top: 20px;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #888;
+}
