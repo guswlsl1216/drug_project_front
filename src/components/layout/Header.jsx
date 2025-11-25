@@ -136,10 +136,10 @@ const Header = () => {
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
-                      <NavLink to="/routine">루틴 캘린더</NavLink>
+                      <NavLink to="/routine">캘린더</NavLink>
                     </li>
                     <li>
-                      <NavLink to="/mydrugs">루틴 등록/관리</NavLink>
+                      <NavLink to="/mydrugs">등록 / 관리</NavLink>
                     </li>
                   </ul>
                 </div>
@@ -235,7 +235,7 @@ const Header = () => {
                   className="mobile-menu-link"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  등록 / 목록
+                  등록 / 관리
                 </NavLink>
               </li>
 
