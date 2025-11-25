@@ -197,7 +197,7 @@ const MedicinePage = () => {
     saveMedicineList(recognizedMedicines);
     console.log("의약품 데이터 저장:", recognizedMedicines);
     // 여기에 최종 의약품 리스트를 서버에 저장하는 로직 추가
-    goTo("/analyze/supplement"); // SupplementPage로 이동
+    goTo("/analyze/supplement", { uploadedFile: uploadedFile }); // SupplementPage로 이동
   };
 
   return (

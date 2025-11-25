@@ -5,19 +5,35 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import DrugInfo from './DrugInfo';
+import { useLocation } from 'react-router-dom';
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
-const loadImageUrl = () => {
-  return sessionStorage.getItem(ImageUrlKey) || null;
+const loadImageUrl = (result) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const detailPathRegex = /^\/history\/detail\/\d+$/;
+  const isDetailPage = detailPathRegex.test(currentPath);
+
+  let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
+  
+  if (isDetailPage) {
+    imageUrl = `${BASE_URL}${result.image_url}`;
+  };
+
+  return imageUrl;
 };
 
-const DrugImageCropper = ({box}) => {
+const DrugImageCropper = ({ box, result }) => {
   const canvasRef = useRef(null);
-  const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+  const originalImageUrl = loadImageUrl(result); // 세션에서 원본 URL 로드
+  const didProcessRef = useRef(false);
 
   useEffect(() => {
+    if (didProcessRef.current) return;
     if (!originalImageUrl || !box || box.length !== 4) return;
+    didProcessRef.current = true;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -53,11 +69,12 @@ const DrugImageCropper = ({box}) => {
       console.error("이미지 로드 실패 또는 CORS 오류");
       // 이미지 로드 실패 시 대체 텍스트나 아이콘을 표시할 수 있습니다.
     };
+    
   }, [originalImageUrl, box]); // 원본 URL이나 좌표가 바뀌면 다시 그림
 
   // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
-  if (!originalImageUrl || box.length !== 4) {
-    return <p className="meds_box_image">이미지 없음</p>;
+  if (!originalImageUrl || !box || box.length !== 4) {
+    return '';  // 이미지 분석으로 등록하지 않은 의약품 대응
   }
 
   return <canvas ref={canvasRef} className="meds_box_image" />;
@@ -163,6 +180,7 @@ const AnalyzeResultDisplay = ({ result }) => {
               <div className="drugs_box" key={i}>
                 <DrugImageCropper
                   box={med.detection_box} // MedicinePage에서 추가한 좌표 사용
+                  result={result}
                 />
                 <p title={med.name} className="drugs_box_name ellipsis">
                   {med.name}
@@ -260,7 +278,8 @@ const AnalyzeResultDisplay = ({ result }) => {
             setIsOpen={setIsOpen}
             drugId={drugId}
             drugType={drugType}
-            drugBox={{drugBox}}
+            drugBox={drugBox}
+            result={result}
           />
         }
 
