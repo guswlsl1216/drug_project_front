@@ -5,7 +5,6 @@ import requestHandler from '../../utils/requestHandler';
 import { useEffect, useState } from 'react';
 import useLoginRedirect from '../../utils/useLoginRedirect';
 import UseNavi from '../../utils/UseNavi';
-import { useLocation } from 'react-router-dom';
 
 const AnalyzeResult = () => {
   const { goTo } = UseNavi();
@@ -17,8 +16,7 @@ const AnalyzeResult = () => {
   // console.log("세션에서 불러온 분석 결과:", result);
 
   // 분석 요청한 의약품 이미지 파일 전송용
-  const location = useLocation();
-  const { uploadedFile } = location.state;
+  const uploadedFile = sessionStorage.getItem("uploadedFile") || null;
   
   const saveResult = () => {
     requireLogin(() => {
@@ -29,17 +27,15 @@ const AnalyzeResult = () => {
         alert('저장 중입니다. 잠시만 기다려주세요.');
         return;
       } else {
-        const formData = new FormData();
-        if (uploadedFile) {
-            formData.append('file', uploadedFile, uploadedFile.name )
-          }
-          formData.append('result', JSON.stringify(result));
-        
+        const requestData = {
+          result: result,
+          temp_image_url: uploadedFile
+        }
+
         requestHandler({
           method: "post",
           url: "/result/save",
-          payload: formData,
-          userImage: true,
+          payload: requestData,
           setLoading,
           onSuccess: (data) => {
             alert(data.message);
@@ -66,8 +62,6 @@ const AnalyzeResult = () => {
     }
   }, [])
 
-  console.log(uploadedFile)
-  
   return (
     <>
       <div className="wrapper analyze_result">
@@ -84,8 +78,8 @@ const AnalyzeResult = () => {
             }
             </Button>
           <Button variant='primary' onClick={() => {
-            requireLogin(() => goTo("/mydrugs"))
-          }}>복용 루틴 설정</Button>
+            requireLogin(() => goTo("/mydrugs?tab=med-input"))
+          }}>결과 루틴으로 설정</Button>
         </div>
       </div>
     </>

@@ -3,19 +3,21 @@ import requestHandler from "../../utils/requestHandler";
 import "../../styles/analyze/DrugInfo.css"
 import LoadingSpinner from "../../utils/LoadingSpinner";
 import {useRef} from "react";
+import { useLocation } from "react-router-dom";
 
 const BASE_URL = import.meta.env.VITE_SERVER_URL;
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
 const loadImageUrl = (result) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const detailPathRegex = /^\/history\/detail\/\d+$/;
+  const isDetailPage = detailPathRegex.test(currentPath);
+
   let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
-
-  if ((!imageUrl || imageUrl == null) && result.image_url) {
-    imageUrl = result.image_url;
-
-    if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('blob')) {
-      imageUrl = `${BASE_URL}${imageUrl}`;
-    };
+  
+  if (isDetailPage) {
+    imageUrl = `${BASE_URL}${result.image_url}`;
   };
 
   return imageUrl;

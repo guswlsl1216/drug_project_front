@@ -108,6 +108,36 @@ const SupplementPage = () => {
   };
 
   const handleNext = async () => {
+    // 이미지 파일 url 세션 삭제
+    sessionStorage.removeItem("uploadedFile");
+
+    // 분석 이미지 파일 임시 저장
+    let publicImageUrl = '';
+
+    if (uploadedFile) {
+      try {
+        const formData = new FormData();
+        formData.append('file', uploadedFile, uploadedFile.name );
+
+        await requestHandler({
+          method: "post",
+          url: "/aiAnalyze/images/temp",
+          payload: formData,
+          userImage: true,
+          onSuccess: (data) => {
+            publicImageUrl = data.image_url;
+            sessionStorage.setItem("uploadedFile", publicImageUrl);
+          },
+          onError: (msg) => {
+            console.error("임시 파일 업로드 요청 중 오류 발생 : ", msg);
+          }
+        })
+      } catch (e) {
+        console.error("임시 파일 업로드 중 오류 발생 : ", e);
+        return;
+      }
+    }
+    
     const medicineList = loadMedicineList();
     const hasUnvalidatedMedicineInSession = medicineList.some((med) => med.isValidated === false);
 
@@ -183,7 +213,7 @@ const SupplementPage = () => {
       saveAnalysisResult(analysisResult);
 
       // 5. 결과 페이지로 이동
-      goTo("/analyze/result", { uploadedFile: uploadedFile })
+      goTo("/analyze/result");
     } catch (error) {
       console.error("분석 결과 요청 중 오류 발생:", error);
       alert("분석 요청 중 오류가 발생했습니다. 콘솔을 확인해 주세요.");
