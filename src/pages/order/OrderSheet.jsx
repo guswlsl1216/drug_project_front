@@ -31,7 +31,8 @@ const OrderSheet = () => {
     address_detail :"",
     address_extra: "",
     receiver: "",
-    phone: ""
+    phone: "",
+    delivery_message: "",
   })
 
   // db 저장용 orderItem 스테이트
@@ -315,6 +316,17 @@ const OrderSheet = () => {
               value={order.phone}
               onChange={Changehandler(setOrder)}
               placeholder="휴대폰 번호 "
+            />
+
+            <label className="field-label" htmlFor="delivery-message">배송 시 요청사항</label>
+            <input
+              className="field-input"
+              id="delivery-message"
+              type="text"
+              name="delivery_message"
+              value={order.delivery_message}
+              onChange={Changehandler(setOrder)}
+              placeholder="예: 부재 시 문 앞에 놓아주세요"
             />
 
             <label className="field-label">주소</label>

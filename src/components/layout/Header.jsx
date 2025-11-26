@@ -155,9 +155,6 @@ const Header = () => {
                       <NavLink to="store/favorite">찜 목록</NavLink>
                     </li>
                     <li>
-                      <NavLink to="/myOrderList">주문 내역</NavLink>
-                    </li>
-                    <li>
                       <NavLink to="/myReview">나의 리뷰</NavLink>
                     </li>
                     <li>
@@ -254,13 +251,6 @@ const Header = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   찜 목록
-                </NavLink>
-                <NavLink
-                  to="/myOrderList"
-                  className="mobile-menu-link"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  주문 내역
                 </NavLink>
                 <NavLink
                   to="/myReview"

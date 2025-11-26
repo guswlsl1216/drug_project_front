@@ -138,6 +138,7 @@ const Userinfo = () => {
               zipcode: data.postcode
             }));
           }}
+          enableExtra={false}
         />
       </div>
 
