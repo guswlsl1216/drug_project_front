@@ -4,6 +4,7 @@ import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
 import axiosInstance from "../../utils/axiosInstance";
 import requestHandler from "../../utils/requestHandler";
+import "../../styles/auth/UserCheck.css";
 
 const UserCheck = () => {
   const { goTo } = UseNavi();
@@ -27,7 +28,7 @@ const UserCheck = () => {
 
   useEffect(() => {
     if (verified) {
-      goTo("/mypage/userinfo");
+      goTo("/mypage/userinfo", {state:{verified: true}}); // 렌더링 최소화
       return;
     }
     requireLogin(() => {}, true);

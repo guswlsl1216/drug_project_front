@@ -7,8 +7,10 @@ import requestHandler from "../../utils/requestHandler";
 import Changehandler from "../../utils/Changehandler";
 import AddressPicker from "../../components/ui/AddressPicker";
 import "../../styles/auth/Signup.css";
+import { useUser } from "../../components/context/UserContext";
 
 const Signup = () => {
+  const {isLoggedIn} = useUser();
   const { goIndex, goTo, goBack } = UseNavi();
   const [loading,setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -19,17 +21,24 @@ const Signup = () => {
     age:"",
     gender:"",
     address:"",
-    detailed_address:"",
+    dstail:"",
     jibun:"",
     zipcode:"",
     tel:""
   });
 
+  useEffect(() => { 
+    if (isLoggedIn) {
+      goTo("/")
+    }
+  }, [isLoggedIn, goTo]);
+
+
   const handleAddressChange = (addr) => {
     setForm((prev) => ({
       ...prev,
       address: addr.road || addr.jibun || "", 
-      detailed_address: addr.detail || "",
+      dstail: addr.detail || "",
       jibun: addr.jibun || "",
       zipcode: addr.postcode || "",
     }));
@@ -49,7 +58,7 @@ const Signup = () => {
       payload: payload,
       setLoading,
       onSuccess:(data) => {
-        alert(`${data.data.nickname}님 환영합니다. 일반 로그인은 알림 설정이 불가능 합니다.`);
+        alert(`${data.data.nickname}님 환영합니다.`);
         console.log(data);
         
         goTo("/signupComplete");
