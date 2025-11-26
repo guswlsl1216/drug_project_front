@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
-import axiosInstance from "../../utils/axiosInstance";
 import requestHandler from "../../utils/requestHandler";
 import { useLocation } from "react-router-dom";
 

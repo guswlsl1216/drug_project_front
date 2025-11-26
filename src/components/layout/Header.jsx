@@ -42,6 +42,10 @@ const Header = () => {
     pathname.startsWith('/orders')) {
       return "store";
     }
+    else if (pathname.startsWith('/contactUs')) {
+      return "contactUs";
+    }
+    
   }
 
   useEffect(() => {
@@ -160,8 +164,15 @@ const Header = () => {
                     <li>
                       <NavLink to="store/cart">장바구니</NavLink>
                     </li>
+                  </ul>
+                </div>
+              </li>
+              <li className={`main_menu ${activeMenu == 'contactUs' ? 'activeMenu' : ''}`}>
+                <NavLink to="contactUs">고객센터</NavLink>
+                <div className="sub_menu_container">
+                  <ul className="sub_menu">
                     <li>
-                      <NavLink to="store/contactUs">문의하기</NavLink>
+                      <NavLink to="/contactUs">문의하기</NavLink>
                     </li>
                   </ul>
                 </div>

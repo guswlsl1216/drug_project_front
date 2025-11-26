@@ -5,19 +5,25 @@ import listPlugin from "@fullcalendar/list"
 import "../../styles/Routine.css";
 import { getRoutine, performRoutine } from "../../static/Routine"
 import { useEffect, useRef, useState } from "react";
+import useLoginRedirect from '../../utils/useLoginRedirect';
+import UseNavi from "../../utils/UseNavi";
 
 const Routine = () => {
   const [events, setEvents] = useState([])
   const [logs, setLogs] = useState([])
   const [counts, setCounts] = useState([])
 
-  const calendarRef = useRef(null);
+  const calendarRef = useRef(null); // list
+  const calRef = useRef(null); // calendar
+
+  const { requireLogin }= useLoginRedirect();
+  const {goTo} = UseNavi()
 
   const routine_load = async () => {
     const routine_data = await getRoutine()
 
     if (routine_data.ok) {
-      const filterd = routine_data.routine.map((data) => ({ 'id': data.id, 'eattime' : data.eattime, 'title': data.drugName, 'start': data.start_date, 'end': data.end_date+'T23:59:00'}))
+      const filterd = routine_data.routine.map((data) => ({ 'id': data.id, 'eattime': data.eattime, 'title': data.drugName, 'start': data.start_date, 'end': data.end_date + 'T23:59:00' }))
       setEvents(filterd)
       //{id: 1, eattime : [true, true, true], title: "오메가", start: "2025-10-31", end: '2025-10-31'}
       setLogs(routine_data.log)
@@ -28,8 +34,10 @@ const Routine = () => {
   }
 
   useEffect(() => {
+    requireLogin(()=>{
+      routine_load()
+    }, true, goTo('/routine'))
     //페이지 로드 되면 루틴리스트와 그에 해당하는 로그들을 쫙불러옴
-    routine_load()
   }, [])
 
   //요청전송
@@ -44,12 +52,12 @@ const Routine = () => {
     checkbox.type = 'checkbox'
     checkbox.checked = isChecked
 
-    const today = new Date();          
+    const today = new Date();
     const y = today.getFullYear();
     const m = String(today.getMonth() + 1).padStart(2, '0');
     const d = String(today.getDate()).padStart(2, '0');
-    const now = `${y}-${m}-${d}`; 
-    if (date != now||eattime[index]==false) {
+    const now = `${y}-${m}-${d}`;
+    if (date != now || eattime[index] == false) {
       checkbox.disabled = true
     }
 
@@ -77,7 +85,10 @@ const Routine = () => {
   //레퍼런스로 지정한 캘린더를 지정한 날짜로 이동시킴
   const goToDate = (dateStr) => {
     const calendarApi = calendarRef.current.getApi();
+    const calApi = calRef.current.getApi();
+
     calendarApi.gotoDate(dateStr);
+    calApi.gotoDate(dateStr);
   };
 
   return (
@@ -87,6 +98,7 @@ const Routine = () => {
       <div className="routine-main-wrapper">
         <div className="routine-calendar-section">
           <FullCalendar
+            ref={calRef}
             plugins={[dayGridPlugin, interactionPlugin]} // 플러그인 설정
             editable={true} // 이벤트의 드래그 앤 드롭, 리사이징, 이동을 허용합니다.
             droppable={true} // 캘린더에 요소를 드롭하여 이벤트를 생성할 수 있도록 허용합니다.
@@ -98,7 +110,7 @@ const Routine = () => {
             allDay={true} // 이벤트가 하루 종일인지 여부를 지정합니다.
             timeZone="GMT" // 캘린더의 시간대를 GMT로 설정합니다.
             headerToolbar={{
-              left: "prev today", center: "title", right: "next",
+              left: "prev", center: "title", right: "next",
             }}
             dateClick={handleDateClick} //날짜클릭시 이벤트
             dayCellClassNames={(arg) => {
@@ -119,13 +131,13 @@ const Routine = () => {
               //이거근데 map왜돌렸지 << 하루에 event가 여러개있으니까 하나도 없으면 return
               events.map((data) => {
                 if (new Date(now) >= new Date(data['start']) && new Date(now) <= new Date(data['end'])) {
-                  outofrange=false
+                  outofrange = false
                 }
-                else if(outofrange!=false){
-                  outofrange=true
+                else if (outofrange != false) {
+                  outofrange = true
                 }
               })
-              if(outofrange){
+              if (outofrange) {
                 return classname
               }
               for (const [k, v] of Object.entries(counts)) {
@@ -135,7 +147,7 @@ const Routine = () => {
                 classname = 'warning'
               } else if (classes.filter(el => el === 'danger').length + classes.filter(el => el === undefined).length == classes.length) {
                 classname = 'danger'
-              } else if (classes.filter(el => el === 'good').length == classes.length - events.filter(el=>new Date(el['start'])>new Date(now)||new Date(el['end'])<new Date(now)).length) {
+              } else if (classes.filter(el => el === 'good').length == classes.length - events.filter(el => new Date(el['start']) > new Date(now) || new Date(el['end']) < new Date(now)).length) {
                 classname = 'good'
               } else {
                 classname = 'warning'
@@ -150,7 +162,16 @@ const Routine = () => {
             ref={calendarRef}
             plugins={[listPlugin]}
             initialView="listDay"
-            headerToolbar={{ left: "prev today", center: "title", right: "next" }}
+            height="auto"  // 컨텐츠 크기에 맞춤
+            headerToolbar={{ left: "today", center: "title", right: "" }}
+            customButtons={{
+              today: {
+                text: "today",
+                click: function () {
+                  goToDate(Date.now())
+                }
+              }
+            }}
             timeZone="local"
             editable={true} // 이벤트의 드래그 앤 드롭, 리사이징, 이동을 허용합니다.
             droppable={true} // 캘린더에 요소를 드롭하여 이벤트를 생성할 수 있도록 허용합니다.
@@ -160,8 +181,8 @@ const Routine = () => {
             eventBackgroundColor="#ff0000" // 이벤트의 배경색을 설정합니다.
             eventBorderColor="#0000ff" // 이벤트의 테두리 색을 설정합니다.
             allDay={false}
-            nextDayThreshold= "00:00"
-            displayEventTime= {false}
+            nextDayThreshold="00:00"
+            displayEventTime={false}
             events={events}
             eventDidMount={(info) => {
               const element = info.el.querySelector('.fc-list-event-title')
