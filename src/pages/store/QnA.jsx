@@ -211,9 +211,55 @@ const QnA = () => {
     })
   }
 
+  const handleQuestionUpdate = async (e) => {
+    e.preventDefault();
+    setEditError(null);
+
+    if (!editFormData.question_title || !editFormData.question_content) {
+      setEditError("제목과 내용을 모두 입력해주세요.")
+      return;
+    }
+    
+    // PUT 요청 시에는 FormData 대신 JSON Payload를 사용하는 것이 일반적이며,
+    // Flask 백엔드가 JSON을 받는 로직이 있으므로 JSON으로 보냅니다.
+    const payload = {
+      question_title: editFormData.question_title,
+      question_content: editFormData.question_content,
+      is_private: editFormData.is_private,
+    };
+
+    await requestHandler({
+      method:'put',
+      url:`/qna/${editingQnaId}`,
+      payload:payload,
+      setLoading: setFormLoading, // 질문 등록/수정 시 공통 로딩 사용
+      onSuccess:(data) => {
+        setFormMessage(data.message);
+        setEditingQnaId(null); // 수정 모드 종료
+        setEditFormData({ // 폼 초기화
+          question_title: '',
+          question_content: '',
+          answer_content: '',
+          is_private: false
+        });
+      fetchQnAList();
+    },
+    onError: (msg) => {
+      setEditError(msg || "질문 수정에 실패했습니다.");
+    }
+  });
+};
+
   const startEdit = (qna) => {
-    if (!isAdmin() && qna.status === 'answered') {
-      alert("답변이 완료된 질문은 수정할 수 없습니다")
+  // 수정 권한: 질문 작성자 본인만 가능. 관리자에게는 질문 수정 권한을 부여하지 않음.
+    if (!qna.is_owner) {
+      alert("질문 수정 권한이 없습니다.");
+      return;
+    }
+ 
+    // 답변이 완료된 질문은 작성자도 수정 불가능
+    if (qna.status === 'answered') {
+      alert("답변이 완료된 질문은 수정할 수 없습니다.");
       return;
     }
 
@@ -304,6 +350,8 @@ const QnA = () => {
             {qnaList.map((qna) => {
               const canView = !qna.is_private || qna.is_owner || isAdmin();
 
+              const isEditing = editingQnaId === qna.id;
+
               return (
                 <li key={qna.id} className="qna-item">
                   {/* --- 질문 영역 --- */}
@@ -317,8 +365,16 @@ const QnA = () => {
                     <span className="q-date">{time(qna.created_at)}</span>
 
                     {/* (관리자)질문 수정 버튼 제거 */}
-                    {(qna.is_owner || isAdmin()) && (
+                    {(qna.is_owner || isAdmin()) && !isEditing && (
                       <div className="qna-actions">
+                        <Button
+                          type="button"
+                          className="edit-button small"
+                          onClick={() => startEdit(qna)}
+                        >
+                          수정
+                        </Button>
+
                         <Button
                           type="button"
                           className="delete-button small"
@@ -330,10 +386,61 @@ const QnA = () => {
                     )}
                   </div>
 
-                  {/* 질문 내용 */}
-                  <div className="qna-content">
-                    {canView ? qna.content : <span className="private-tag">비밀글입니다</span>}
-                  </div>
+                  {isEditing ? (
+                    <form onSubmit={handleQuestionUpdate} className="edit-question-form">
+                      {editError && <div className="qna-error-message">{editError}</div>}
+                      <div className="form-group">
+                        <input 
+                          type="text" 
+                          name="question_title"
+                          placeholder="제목을 수정해주세요."
+                          value={editFormData.question_title}
+                          onChange={(e) => setEditFormData(prev => ({...prev, question_title: e.target.value}))}
+                          disabled={formLoading}
+                         />
+                      </div>
+                      <div className="form-group">
+                        <textarea
+                          name="question-content"
+                          rows="4"
+                          placeholder="내용을 수정해주세요."
+                          value={editFormData.question_content}
+                          onChange={(e) => setEditFormData(prev => ({...prev, question_content: e.target.value}))}
+                          disabled={formLoading}
+                        />
+                      </div>
+
+                      <div className="form-action-row">
+                        <label className="private-checkbox">
+                          <input 
+                            type="checkbox" 
+                            name="is_private"
+                            checked={editFormData.is_private}
+                            onChange={(e) => 
+                              setEditFormData((prev) => ({...prev, is_private: e.target.checked}))
+                            }
+                            disabled={formLoading}
+                          />
+                          비밀글로 변경
+                        </label>
+                        <Button type="submit" disabled={formLoading} className="small">
+                          {formLoading ? "수정 중..." : "수정 완료"}
+                        </Button>
+                        <Button 
+                          type="button" 
+                          className="small cancel-button"
+                          onClick={() => setEditingQnaId(null)}
+                          disabled={formLoading}
+                        >
+                          취소
+                        </Button>
+                      </div>
+                    </form>
+                  ) : (
+                    <div className="qna-content">  {/* 질문 내용 */}
+                      {canView ? qna.content : <span className="private-tag">비밀글입니다</span>}
+                    </div>
+                  )}
 
                   {/* --- 답변 영역 --- */}
                   {qna.answer ? (
