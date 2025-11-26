@@ -121,7 +121,6 @@ const AnalyzeResultDisplay = ({result}) => {
     return (
       <div className="analyze_result_warnings analyze_result_bg">
         <h4>병용섭취 주의사항</h4>
-        <p>※전문적인 판단이 아니므로 자세한 내용은 전문 의약사와 상담하세요.</p>
         {sortedInteractions.map((item, i) => {
           // item.level 매핑 시 방어 코드 추가
           const mapInfo = ANALYSIS_STATUS_MAPPING[item.level] || {
@@ -275,6 +274,10 @@ const AnalyzeResultDisplay = ({result}) => {
           <FontAwesomeIcon icon={status_fontAwesome} size="3x" style={{color: status_color}} />
           <h3 style={{color: status_color}}>{status_label}</h3>
           <p>{status_message}</p>
+        </div>
+
+        <div className="analyze_result_caution">
+          <p>※전문적인 판단이 아니므로 자세한 내용은 전문 의약사와 상담하세요.</p>
         </div>
 
         {analyzeResultContent.map((content, i) => {

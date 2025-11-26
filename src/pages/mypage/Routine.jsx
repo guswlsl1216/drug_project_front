@@ -94,6 +94,10 @@ const Routine = () => {
   return (
     <div className="routine-page">
       <h2 className="routine-title">규칙적으로 약을 복용하세요</h2>
+      <div className="routine-info">
+        <p>※ 하루의 모든 루틴을 완료하면 <b>10포인트</b>를 드립니다! (매일 0시 지급)</p>
+        <p>※ 당일에만 체크할 수 있습니다.</p>
+      </div>
 
       <div className="routine-main-wrapper">
         <div className="routine-calendar-section">
