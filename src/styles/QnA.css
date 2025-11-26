@@ -59,6 +59,7 @@
   align-items: center; /* 세로 중앙 정렬 */
   font-size: 14px; /* 글자 크기 조정 */
   color: #666; /* 글자 색상 조정 */
+  font-weight: 500;
 }
 
 .private-checkbox input {
@@ -133,7 +134,6 @@
   font-size: 12px;
   color: #bbb;
   margin-left: auto; /* ⭐이 부분이 작성일을 오른쪽 끝으로 밀어냅니다. */
-  margin-right: 10px; /* 버튼과의 적절한 간격 확보 */
 }
 
 /* ================================
@@ -142,12 +142,16 @@
 .qna-actions {
   display: flex;
   gap: 8px;
+  margin-left: 10px;
 }
 
 .qna-actions .small {
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 13px;
+  border: 1px solid #c9c9c9;
+  color: #666;
+  margin-top: 0;
 }
 
 /* 수정 버튼 */
@@ -167,6 +171,7 @@
   background: #fff;
   border: 1px solid #ff3b30;
   color: #ff3b30;
+  margin-top: 0;
 }
 
 .delete-button:hover {
@@ -196,6 +201,10 @@
 .edit-form-container {
   margin-top: 14px;
   padding-left: 33px;
+}
+.edit-question-form .private-checkbox {
+  color: #333;
+  font-weight: 500;
 }
 
 .edit-question-form input,
