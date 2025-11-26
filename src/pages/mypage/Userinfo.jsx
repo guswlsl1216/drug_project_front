@@ -217,6 +217,7 @@ const Userinfo = () => {
         </div>
         
         <div className="button-container">
+        <button className="button gray" onClick={() => goTo("/mypage")}>취소</button>
         <button className="button" onClick={handleChange}>수정</button>
         <button className="button" onClick={handelDelete}>탈퇴</button>
         </div>

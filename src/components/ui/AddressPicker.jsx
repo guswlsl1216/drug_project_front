@@ -69,7 +69,7 @@ const AddressPicker = ({
     const extras = [bname, buildingName].filter(Boolean).join(", ");
 
     const extraText = extras ? ` (${extras})` : "";
-    const raw = `${address}${extraText}`;
+    const raw = `${baseAddress}${extraText}`;
 
     const local = `${sido ?? ""} ${sigungu ?? ""}`.trim();
     const compactDisplay = raw?.startsWith(local)
