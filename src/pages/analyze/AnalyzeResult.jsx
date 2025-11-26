@@ -11,9 +11,12 @@ const AnalyzeResult = () => {
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   const [isSave, setIsSave] = useState(false);  // 결과 저장 여부
-  
+
   const result = JSON.parse(sessionStorage.getItem("ANALYSIS_RESULT_DATA"));
-  console.log("세션에서 불러온 분석 결과:", result);
+  // console.log("세션에서 불러온 분석 결과:", result);
+
+  // 분석 요청한 의약품 이미지 파일 전송용
+  const uploadedFile = sessionStorage.getItem("uploadedFile") || null;
   
   const saveResult = () => {
     requireLogin(() => {
@@ -24,10 +27,15 @@ const AnalyzeResult = () => {
         alert('저장 중입니다. 잠시만 기다려주세요.');
         return;
       } else {
+        const requestData = {
+          result: result,
+          temp_image_url: uploadedFile
+        }
+
         requestHandler({
           method: "post",
           url: "/result/save",
-          payload: result,
+          payload: requestData,
           setLoading,
           onSuccess: (data) => {
             alert(data.message);
@@ -36,6 +44,7 @@ const AnalyzeResult = () => {
             // 세션에 저장된 isSave의 값이 현재 결과 고유 번호와 같으면 저장 버튼 비활성화
             // 만약 테스트를 위해 버튼 활성화가 필요한 경우 세션 삭제 바람
             sessionStorage.setItem('isSave', result.analysis_uid)
+            console.log(data.images)
           },
           onError: (msg) => {
             alert(msg);
@@ -52,7 +61,7 @@ const AnalyzeResult = () => {
       setIsSave(true);
     }
   }, [])
-  
+
   return (
     <>
       <div className="wrapper analyze_result">
@@ -65,12 +74,12 @@ const AnalyzeResult = () => {
         <div className='analyze_result_actions'>
           <Button variant='primary' onClick={saveResult} disabled={loading || isSave}>
             {
-              loading ? '저장 중...' : (isSave ? '저장 완료' : '결과 저장')
+              loading ? '저장 중...' : (isSave ? '저장 완료' : '결과 내역에 저장')
             }
             </Button>
           <Button variant='primary' onClick={() => {
-            requireLogin(() => goTo("/routine"))
-          }}>복용 루틴 설정</Button>
+            requireLogin(() => goTo("/mydrugs?tab=med-input"))
+          }}>결과 루틴으로 설정</Button>
         </div>
       </div>
     </>

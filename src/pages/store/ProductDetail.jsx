@@ -96,7 +96,6 @@ const ProductDetail = () => {
       method: "get",
       url: "/review/goodsReviewInfo/" + goodsId
     })
-    console.log(res.data['info'])
     setReviewInfo(res.data['info'])
   }
 

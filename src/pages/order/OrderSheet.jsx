@@ -62,17 +62,18 @@ const OrderSheet = () => {
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
   
-    useEffect(() => {
-      const processedItems = items.map(item => {
-        return {
-          goods_id: item.goods_id,
-          count: item.count,
-          unit_price: item.unit_price,
-          subtotal: item.count * item.unit_price
-        };
-      });
-      setOrderItem(processedItems)
-    }, [items]);
+  useEffect(() => {
+    const processedItems = items.map(item => {
+      return {
+        goods_id: item.goods_id,
+        count: item.count,
+        unit_price: item.unit_price,
+        subtotal: item.count * item.unit_price,
+        cart_id: item.cart_id
+      };
+    });
+    setOrderItem(processedItems)
+  }, [items]);
 
   useEffect(() => {
     const fee = calcShippingFee(totalPrice);

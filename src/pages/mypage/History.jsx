@@ -110,6 +110,7 @@ const History = () => {
                 <Button variant='primary' onClick={() => goTo("/analyze/medicine")}>분석하러 가기</Button>
               </div>
               :
+              <>
               <ul className="history_cardlist">
                 {
                   historyList.map((history, i) => {
@@ -120,16 +121,17 @@ const History = () => {
                   })
                 }
               </ul>
+              <div className="history_pagination">
+                <Pagination
+                  page={page}
+                  pages={pages}
+                  loading={loading}
+                  onChange={(num) => setPage(num)}
+                />
+              </div>
+              </>
             }
 
-            <div className="history_pagination">
-              <Pagination
-                page={page}
-                pages={pages}
-                loading={loading}
-                onChange={(num) => setPage(num)}
-              />
-            </div>
             </>
           }
 

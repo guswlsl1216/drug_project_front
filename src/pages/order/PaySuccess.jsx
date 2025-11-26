@@ -8,7 +8,7 @@ import useLoginRedirect from "../../utils/useLoginRedirect";
 import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const PaySuccess = () => {
-  const { goIndex, goTo } = UseNavi();
+  const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   
