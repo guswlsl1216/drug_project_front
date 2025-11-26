@@ -203,7 +203,7 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox, result  }) => 
                   <p className="drug_info_close_btn" onClick={closePopup}>
                     ×
                   </p>
-                  <h2>약 상세</h2>
+                  <h2>{drugType == 0 ? '의약품' : '영양제'} 상세</h2>
                 </div>
                 {drugType == 0 && (
                   <div className="drugInfo_image_container">

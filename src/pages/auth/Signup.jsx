@@ -138,7 +138,7 @@ const Signup = () => {
 
         <div className="form-group">
           <h4 className="form-label">주소<small>(선택사항)</small></h4>
-          <AddressPicker onChange={handleAddressChange} />
+          <AddressPicker onChange={handleAddressChange} showExtra={false} />
         </div>
 
         <Button className="signup-btn" variant="primary" disabled={unable} onClick={handleSubmit}>가입하기</Button>

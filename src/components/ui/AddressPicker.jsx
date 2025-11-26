@@ -33,6 +33,7 @@ const AddressPicker = ({
   readOnlyBase = true,
   className,
   idPrefix,
+  showExtra = true,  
 }) => {
   const autoId = useId().replace(/:/g, "");
   const prefix = idPrefix || `addr-${autoId}`;
@@ -134,16 +135,18 @@ const AddressPicker = ({
       </div>
 
       {/* 참고항목 */}
-      <div className="address-row extra-row">
-        <input
-          id={`${prefix}-extra`}
-          aria-label={labels.extra}
-          type="text"
-          placeholder={labels.extra}
-          value={state.extras}
-          onChange={(e) => setState({ extras: e.target.value })}
-        />
-      </div>
+      {showExtra && (
+    <div className="address-row extra-row">
+      <input
+        id={`${prefix}-extra`}
+        aria-label={labels.extra}
+        type="text"
+        placeholder={labels.extra}
+        value={state.extras}
+        onChange={(e) => setState({ extras: e.target.value })}
+      />
+    </div>
+  )}
     </div>
   )
 }
