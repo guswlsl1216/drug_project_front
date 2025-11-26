@@ -35,10 +35,10 @@
   margin-top: 5px;
 }
 
-.analyze_result_warnings > p {
+.analyze_result_caution > p {
   color: red;
-  font-size: 0.8em;
-  padding-bottom: 10px;
+  font-size: 14px;
+  padding-bottom: 15px;
 }
 
 .analyze_result_warning_item {

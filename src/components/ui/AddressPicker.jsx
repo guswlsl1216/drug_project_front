@@ -33,7 +33,7 @@ const AddressPicker = ({
   readOnlyBase = true,
   className,
   idPrefix,
-  enableExtra = true,
+  enableExtra = true
 }) => {
   const autoId = useId().replace(/:/g, "");
   const prefix = idPrefix || `addr-${autoId}`;
@@ -158,7 +158,7 @@ const AddressPicker = ({
           onChange={(e) => setState({ detail: e.target.value })}
         />
       </div>
-
+      {/* 참고항목 */}
       {enableExtra && (
         showExtraEditor ? (
           <div className="address-row extra-row">
@@ -190,7 +190,7 @@ const AddressPicker = ({
         )
       )}
 
-      {/* 참고항목 */}
+      
     </div>
   )
 }

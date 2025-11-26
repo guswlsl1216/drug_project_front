@@ -120,16 +120,14 @@ const Userinfo = () => {
   };
 
   const handelDelete = async () => {
-    if (!window.confirm("정말 탈퇴하시겠습니까? ㄹㅇ? true?")) {
+    if (!window.confirm("정말 탈퇴하시겠습니까?")) {
       return;
     }
 
     try {
-      const res = await axiosInstance.post("/auth/withdraw");
+      const res = await axiosInstance.post("/auth/delete");
 
       alert("탈퇴 요청이 완료되었습니다.");
-
-      localStorage.removeItem("token");
 
       // 로그아웃 시키기
       setUser(null);

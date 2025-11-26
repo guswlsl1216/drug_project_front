@@ -1,0 +1,227 @@
+/* AnalysisResultModal.css */
+
+/* ---------------------------------------------------- */
+/* 1. 모달 오버레이 및 기본 컨테이너 */
+/* ---------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* 투명한 검정색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 1000px; /* 모달의 최대 너비 제한 */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 */
+    max-height: 90vh; /* 화면 높이 제한 */
+    overflow-y: auto; /* 내용이 길 경우 스크롤 가능 */
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 모달 헤더 */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eeeeee;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    font-size: 1.8em;
+    color: #333333;
+    font-weight: 700;
+}
+
+.modal-close-button {
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: #999999;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close-button:hover {
+    color: #333333;
+}
+
+/* ---------------------------------------------------- */
+/* 2. 섹션 제목 및 구분선 */
+/* ---------------------------------------------------- */
+.section-title {
+    font-size: 1.3em;
+    color: #444444;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    border-left: 4px solid #007bff; /* 포인트 색상 */
+}
+
+/* ---------------------------------------------------- */
+/* 3. 종합 위험도 평가 (Summary) */
+/* ---------------------------------------------------- */
+.analysis-result-summary {
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.summary-risk-text {
+    font-size: 2.5em;
+    font-weight: 800;
+    margin: 5px 0 10px 0;
+}
+
+.summary-danger-message {
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 77, 77, 0.1); /* 위험 배경색 */
+    color: #cc0000;
+}
+
+/* 위험도별 색상 */
+.risk-safe { background-color: #e6f7e6; color: #38a169; } /* 양호 - 녹색 계열 */
+.risk-caution { background-color: #fffbe6; color: #d69e2e; } /* 주의 - 주황 계열 */
+.risk-danger { background-color: #ffe6e6; color: #cc0000; } /* 위험 - 빨강 계열 */
+.risk-unknown { background-color: #f0f0f0; color: #555555; } /* 미확인 */
+
+/* ---------------------------------------------------- */
+/* 4. 분석 대상 목록 (태그) */
+/* ---------------------------------------------------- */
+.item-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.analysis-item-tag {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.analysis-item-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.type-meds {
+    background-color: #e0f7fa; /* 의약품 - 하늘색 계열 */
+    color: #00838f;
+    border: 1px solid #b2ebf2;
+}
+
+.type-supps {
+    background-color: #f1f8e9; /* 영양제 - 연두색 계열 */
+    color: #558b2f;
+    border: 1px solid #c5e1a5;
+}
+
+/* ---------------------------------------------------- */
+/* 5. 상호작용 세부 정보 */
+/* ---------------------------------------------------- */
+.interactions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.interaction-item {
+    border: 1px solid #ffcc80; /* 주의를 나타내는 테두리 색상 */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff3e0; /* 연한 주황색 배경 */
+    transition: background-color 0.2s;
+}
+
+.interaction-item:hover {
+    background-color: #ffe0b2;
+}
+
+.interaction-item p {
+    margin: 5px 0;
+    line-height: 1.5;
+    color: #333;
+}
+
+.interaction-item strong {
+    color: #ff6f00; /* 강조 색상 */
+    margin-right: 5px;
+}
+
+.interaction-level {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: #e65100; /* 위험 수준 강조 색상 */
+}
+
+.interactions-safe-message {
+    padding: 15px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-left: 5px solid #66bb6a;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* ---------------------------------------------------- */
+/* 6. 모달 푸터 및 버튼 */
+/* ---------------------------------------------------- */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 20px;
+    border-top: 1px solid #eeeeee;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.button-close {
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #007bff; /* 주 버튼 색상 */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.button-close:hover {
+    background-color: #0056b3;
+}
+
+.button-close:active {
+    transform: scale(0.98);
+}
