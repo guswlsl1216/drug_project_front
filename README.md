@@ -88,6 +88,19 @@ AI 사진 인식을 통해 복용 중인 의약품을 검색하고, 의약품끼
 - 학습 데이터(커뮤니티 데이터) : 직접 수집한 DC Inside 게시글/댓글 데이터 (연구·학습 목적, 비배포)
 - 학습 데이터(한국어 혐오표현 분류) : [SmilingGate AI – UnSmile Dataset](https://huggingface.co/datasets/smilegate-ai/kor_unsmile)
 
+## 필수 설정: 모델 파일 다운로드
+
+본 프로젝트는 용량 문제로 학습된 모델 파일을 Git에 포함하지 않습니다. 
+프로젝트를 실행하기 전에 반드시 아래 링크에서 모델 파일을 다운로드 받아주세요.
+
+### 1. 모델 파일 정보
+| 파일명 | 크기 | 링크 |
+| :--- | :--- | :--- |
+| `finetuned_model_final.pt` | (모델 용량 예: 426MB) | [Google Drive 다운로드 링크](https://drive.google.com/file/d/1JHX1jN7_84vwbEv7afXqtdilKcH717oB/view?usp=sharing) |
+
+### 2. 파일 위치
+다운로드 받은 `finetuned_model_final.pt` 파일을 프로젝트 루트 디렉토리의 **`\runs\detect\train\weight\`** 폴더 안에 위치시켜야 합니다.
+
 ### 의약품 이미지 인식 모델
 - 모델 : YOLOv8 (Ultralytics)
 - 학습 데이터 : [경구약제 이미지 데이터](https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=576)
