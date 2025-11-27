@@ -17,7 +17,6 @@ const Cart = () => {
   const {user, setUser, isLoggedIn} = useUser(); // 로그인 한 사람만 접근 가능
   const [allCheck, setAllCheck] = useState(false); // 전체 선택 
   const { requireLogin } = useLoginRedirect();
-  
 
   // 장바구니 목록 가져오기
   useEffect(() => {
@@ -27,7 +26,6 @@ const Cart = () => {
         url: '/cart',
         setLoading,
         onSuccess: (data) => {
-          console.log("백엔드 응답 데이터 구조: ",data)
 
           if (data) {
             setCartItem(data.map(item => ({ ...item, check:false})));
@@ -200,10 +198,15 @@ const Cart = () => {
 
         <form action="" key={item.cart_id} className="cart-item">
           <input type="checkbox" checked={item.check || false} onChange={() => toggleCheck(i)}/>
-          <div className="cart-info">
+          <div className="cart-info" onClick={() => {goTo(`/store/detail/${item.goods_id}`);}}>
             <p>{i+1}</p>
             <img src={item.image_path} alt="상품이미지" />
-            <p>{item.goods_name}</p>
+            <p className="goods-name-with-badge">
+              {item.goods_name}
+              {(item.stock ?? 0) <= 0 || item.is_active === false ? (
+                <div className="cart-soldout-badge">품절</div>
+              ) : null}
+            </p>
           </div>
 
           <div className="count-box">
@@ -223,6 +226,13 @@ const Cart = () => {
           </div>
         </form>
       ))}
+
+      <Button 
+        onClick={() => goTo("/store/allgoods")}
+        className="empty-cart-btn"
+      >
+        쇼핑 계속하기
+      </Button>
 
       <div className="summary">
         <div>
