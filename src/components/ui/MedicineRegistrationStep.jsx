@@ -81,6 +81,13 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
   const [resultModalOpen, setResultModalOpen] = useState(false); // 결과 모달 표시 상태
   const [analysisResult, setAnalysisResult] = useState(null); // 분석 결과 저장 상태
 
+  // 분석 요청 의약품/영양제 클린업
+  useEffect(() => {
+      return () => {
+        sessionStorage.removeItem(MedicineDataKey);
+      };
+    }, []);
+
 
   useEffect(() => {
     // 등록된 의약품 목록이 변경될 때마다 세션에 저장 (상태 유지)
@@ -385,6 +392,17 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
                   value={med.name}
                   onChange={(e) => handleMedicineNameChange(med.id, e.target.value)}
                   disabled={med.isValidated}
+                  onKeyDown={(e) => {
+                    if(e.key === "Enter") {
+                      if (!med.isValidated) {
+                        setSelectedMedicineId(med.id);
+                        setSearchModalOpen(true);
+                      } else {
+                        // 이미 확정된 경우 (재확인 기능은 구현하지 않음)
+                        alert("이미 확정된 의약품입니다. 수정하려면 삭제 후 다시 등록해주세요.");
+                      }
+                    }
+                  }}
                 />
 
                 {/* 확정 버튼 클릭 시 SearchModal을 열어 정확한 약 정보를 검색/확정 */}

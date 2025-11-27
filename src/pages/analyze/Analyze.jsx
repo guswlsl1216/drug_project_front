@@ -1,9 +1,20 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import '../../styles/mainbg.css'
 import '../../styles/analyze.css'
+import { useEffect } from 'react';
 // 복용 약 & 영양제 분석 페이지
 
+const MedicineDataKey = "MEDICINE_LIST_TO_SEND";
+const SupplementDataKey = "SUPPLEMENT_LIST_TO_SEND";
+
 const Analyze = () => {
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem(MedicineDataKey);
+      sessionStorage.removeItem(SupplementDataKey);
+    };
+  }, []);
+
   return (
     <>
       <div className="wrapper">

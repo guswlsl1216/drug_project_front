@@ -74,13 +74,6 @@ const SupplementPage = () => {
   // 상태 초기값: ingredients는 배열(string[])로 관리
   const [recognizedSupplements, setRecognizedSupplements] = useState(loadSupplementList());
 
-  useEffect(() => {
-    // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
-    return () => {
-      saveSupplementList(recognizedSupplements);
-      console.log("자동 저장 완료: 탭 이동/페이지 이탈 전 영양제 데이터 저장됨.");
-    };
-  }, [recognizedSupplements]);
 
   const handleSupplementNameChange = (id, newName) => {
     setRecognizedSupplements(
