@@ -77,3 +77,18 @@
 .button-container .button:last-child:hover {
   background-color: #ff8080;
 }
+
+/* 취소 버튼(gray) */
+.button.gray {
+  background: #e5e7eb;       /* 은은한 그레이 */
+  color: #374151;            /* 다크 그레이 텍스트 */
+}
+
+.button.gray:hover {
+  background: #d1d5db;       /* 살짝 더 진한 hover */
+}
+
+.button.gray:active {
+  background: #cbd5e1;       /* 클릭 시 반응 */
+  transform: scale(0.98);
+}

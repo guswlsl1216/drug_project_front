@@ -9,7 +9,6 @@ const Footer = () => {
           <div className="footer_links">
             <a href="/terms">이용약관</a>
             <a href="/privacy">개인정보처리방침</a>
-            <a href="/store/contactUs">문의사항</a>
           </div>
 
           <div className="company_info">
