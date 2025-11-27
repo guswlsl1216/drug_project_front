@@ -20,7 +20,7 @@ const SignupComplete = () => {
         <h2 className="signup-title">환영합니다!</h2>
 
         <p className="signup-text">
-          이제 AI 영양 분석으로  
+          이제 의약품/영양제 성분 분석으로  
           <br />
           더 스마트한 건강 관리를 시작해보세요.
         </p>

@@ -119,7 +119,7 @@ const Header = () => {
           <div className="header_main_menu">
             <ul className="main_menu_container">
               <li className={`main_menu ${activeMenu == 'analyze' ? 'activeMenu' : ''}`}>
-                <NavLink to="analyze/medicine">AI분석</NavLink>
+                <NavLink to="analyze/medicine">스마트 분석</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
