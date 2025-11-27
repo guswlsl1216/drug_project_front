@@ -125,7 +125,7 @@ const Userinfo = () => {
     }
 
     try {
-      const res = await axiosInstance.post("/auth/delete");
+      const res = await axiosInstance.delete("/auth/delete");
 
       alert("탈퇴 요청이 완료되었습니다.");
 
