@@ -81,12 +81,30 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
   const [resultModalOpen, setResultModalOpen] = useState(false); // 결과 모달 표시 상태
   const [analysisResult, setAnalysisResult] = useState(null); // 분석 결과 저장 상태
 
+  // AI 이미지 분석 안내 말풍선
+  const [bubbleStatus, setBubbleStatus] = useState("bubble_idle");
+
+  const bubbleMessage = {
+    bubble_idle: "AI가 사진 속 제품이 무엇인지 판별해요!",
+    bubble_loading: "AI가 제품을 인식 중이에요…",
+    bubble_done: "제품 인식 완료!",
+    hide: "제품 인식 완료!"
+  }[bubbleStatus];
+
+  useEffect(() => {
+    if (bubbleStatus === "bubble_done") {
+      setTimeout(() => {
+        setBubbleStatus("hide");
+      }, 2000);
+    }
+  }, [bubbleStatus]);
+
   // 분석 요청 의약품/영양제 클린업
   useEffect(() => {
-      return () => {
-        sessionStorage.removeItem(MedicineDataKey);
-      };
-    }, []);
+    return () => {
+      sessionStorage.removeItem(MedicineDataKey);
+    };
+  }, []);
 
 
   useEffect(() => {
@@ -212,7 +230,14 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
     if (!uploadedFile) {
       alert("이미지 파일을 먼저 업로드해주세요.");
       return;
-    }
+    } else if (bubbleStatus !== "bubble_idle") {
+      const isOk = confirm("이미지는 한 장만 분석할 수 있습니다.\n다른 이미지를 업로드하면 기존 의약품은 자동으로 변경됩니다.\n새로운 이미지를 업로드하시겠습니까?");
+      if (!isOk) {
+        return;
+      }
+    };
+
+    setBubbleStatus("bubble_loading");
 
     const result = await callDetectApi(uploadedFile);
 
@@ -227,6 +252,7 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
         }));
 
         setRecognizedMedicines(newMedicines);
+        setBubbleStatus("bubble_done");
         alert("이미지 분석 및 목록 업데이트가 완료되었습니다.");
       } else {
         alert("이미지에서 인식된 약물이 없습니다. 직접 추가해 주세요.");
@@ -349,7 +375,10 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
         )}
         {/* 이미지 분석 섹션 */}
         <div className="image-analysis-section">
-          <h3>1. 이미지 분석</h3>
+          <div className={`ai-bubble ${bubbleStatus}`}>
+            <p>{bubbleMessage}</p>
+          </div>
+          <h3>1. AI 이미지 분석</h3>
           <div
             className="image-display-box"
             style={{
@@ -434,9 +463,10 @@ const MedicineRegistrationStep = ({onNext, initialSuppsId = null}) => {
         </div>
       </div>
       <div className="bottom-box">
-        <p className="guidance-text-bottom">
-          ※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.
-        </p>
+        <div className="guidance-text-bottom">
+          <p>※ 이미지는 한 장만 분석할 수 있습니다. 다른 이미지를 업로드하면 기존 의약품은 자동으로 변경됩니다.</p>
+          <p>※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.</p>
+        </div>
 
         <button className="button-next" onClick={handleAnalyzeStart}>
           병용섭취 분석 시작

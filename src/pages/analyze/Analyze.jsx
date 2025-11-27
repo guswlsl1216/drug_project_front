@@ -8,6 +8,7 @@ const MedicineDataKey = "MEDICINE_LIST_TO_SEND";
 const SupplementDataKey = "SUPPLEMENT_LIST_TO_SEND";
 
 const Analyze = () => {
+  // 분석 요청 의약품/영양제 클린업
   useEffect(() => {
     return () => {
       sessionStorage.removeItem(MedicineDataKey);

@@ -58,6 +58,7 @@ const MedicinePage = () => {
     loadMedicineList()
   );
 
+  // AI 이미지 분석 안내 말풍선
   const [bubbleStatus, setBubbleStatus] = useState("bubble_idle");
 
   const bubbleMessage = {
@@ -75,14 +76,14 @@ const MedicinePage = () => {
     }
   }, [bubbleStatus]);
 
-  useEffect(() => {
-    // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
-    return () => {
-      // 컴포넌트가 사라지기 직전에 현재 데이터를 세션에 저장합니다.
-      saveMedicineList(recognizedMedicines);
-      console.log("자동 저장 완료: 탭 이동/페이지 이탈 전 의약품 데이터 저장됨.");
-    };
-  }, [recognizedMedicines]);
+  // useEffect(() => {
+  //   // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
+  //   return () => {
+  //     // 컴포넌트가 사라지기 직전에 현재 데이터를 세션에 저장합니다.
+  //     saveMedicineList(recognizedMedicines);
+  //     console.log("자동 저장 완료: 탭 이동/페이지 이탈 전 의약품 데이터 저장됨.");
+  //   };
+  // }, [recognizedMedicines]);
 
   const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 
@@ -153,7 +154,12 @@ const MedicinePage = () => {
     if (!uploadedFile) {
         alert("이미지 파일을 먼저 업로드해주세요.");
         return;
-    }
+    } else if (bubbleStatus !== "bubble_idle") {
+      const isOk = confirm("이미지는 한 장만 분석할 수 있습니다.\n다른 이미지를 업로드하면 기존 의약품은 자동으로 변경됩니다.\n새로운 이미지를 업로드하시겠습니까?");
+      if (!isOk) {
+        return;
+      }
+    };
 
     setBubbleStatus("bubble_loading");
 
@@ -178,8 +184,8 @@ const MedicinePage = () => {
 
         setRecognizedMedicines(newMedicines);
         console.log("인식된 약물 목록 업데이트 완료:", newMedicines);
-        alert("이미지 분석 및 목록 업데이트가 완료되었습니다.");
         setBubbleStatus("bubble_done");
+        alert("이미지 분석 및 목록 업데이트가 완료되었습니다.");
       } else {
         // 탐지 결과가 없을 경우
         alert("이미지에서 인식된 약물이 없습니다. 직접 추가해 주세요.");
@@ -301,9 +307,10 @@ const MedicinePage = () => {
       </div>
 
       {/* 안내 문구 */}
-      <p className="guidance-text">
-        ※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.
-      </p>
+      <div className="guidance-text">
+        <p>※ 이미지는 한 장만 분석할 수 있습니다. 다른 이미지를 업로드하면 기존 의약품은 자동으로 변경됩니다.</p>
+        <p>※ 처방전이나 약봉투에 기재되어 있는 이름이 다를경우 의약품 이름을 수정 해 주세요.</p>
+      </div>
 
       {/* 다음으로 버튼 */}
       <button className="button-next" onClick={handleNext}>
