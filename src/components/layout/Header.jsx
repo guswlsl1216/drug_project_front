@@ -277,8 +277,11 @@ const Header = () => {
                 >
                   장바구니
                 </NavLink>
-                <NavLink
-                  to="/store/contactUs"
+              </li>
+              <li>
+                <p className="mobile-menu-section-title">고객센터</p>
+                <NavLink 
+                  to="/contactUs"
                   className="mobile-menu-link"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
