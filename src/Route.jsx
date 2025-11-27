@@ -44,6 +44,8 @@ import InquiryManage from "./pages/admin/InquiryManage";
 import InquiryList from "./pages/admin/InquiryList";
 import PendingList from "./pages/admin/PendingList";
 import UserCheck from "./pages/mypage/UserCheck";
+import UserProfileView from "./pages/mypage/UserProfileView";
+import PointHistory from "./pages/mypage/PointHistory";
 
 const Routers = () => {
 
@@ -68,8 +70,10 @@ const Routers = () => {
         <Route path="routine" element={<Routine />} />
 
         <Route path="/mypage" element={<Mypage />}>
-          <Route path="userinfo" element={<Userinfo />} />
-          <Route index element={<UserCheck />} />
+          <Route index element={<UserProfileView />} /> {/* 기본: 내정보 보기 + 포인트 요약 */}
+          <Route path="userinfo" element={<Userinfo />} /> {/* 회원정보 수정 페이지 */}
+          <Route path="usercheck" element={<UserCheck />} /> {/* 비밀번호 재확인 */}
+          <Route path="points" element= {<PointHistory />} /> {/* ㅗ인트 적립/사용 내역 */}
         </Route>
         <Route path="/myReview" element={<Review />} />
 
@@ -105,8 +109,8 @@ const Routers = () => {
             <Route path="review" element={<Reviews />} />
             <Route path="qna" element={<QnA/>}/>
           </Route>
-          <Route path="contactUs" element={<ContactUs />} />
         </Route>
+        <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/orders" element={<OrderSheet />} />
         <Route path="/myOrderList" element={<MyOrderList />} />
         <Route path="/myOrderDetail" element={<MyOrderDetail />} />
