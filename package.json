@@ -42,6 +42,7 @@
     "@tosspayments/tosspayments-sdk": "^2.4.1",
     "axios": "^1.12.2",
     "browser-image-compression": "^2.0.2",
+    "framer-motion": "^12.23.24",
     "openai": "^6.8.1",
     "react": "^19.1.1",
     "react-cookie": "^8.0.1",
