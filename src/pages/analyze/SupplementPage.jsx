@@ -212,6 +212,11 @@ const SupplementPage = () => {
       // 4. 분석 결과를 세션에 저장
       saveAnalysisResult(analysisResult);
 
+      const noDetectionBox = medicineList.every(med => !med.detection_box);
+      if (noDetectionBox) {
+        sessionStorage.removeItem("uploadedFile");
+      }
+
       // 5. 결과 페이지로 이동
       goTo("/analyze/result");
     } catch (error) {
