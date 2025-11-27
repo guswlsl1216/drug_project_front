@@ -278,10 +278,27 @@
     font-family: "Noto Sans KR", sans-serif;
 }
 
-.detail-header {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
+.product-header {
+  display: flex;
+  justify-content: space-between; /* 제목과 별점 좌우 배치 */
+  align-items: flex-start;        /* 상단 정렬 */
+  gap: 12px;
+}
+
+.product-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  word-break: break-word; /* 길면 줄바꿈 허용 */
+  flex: 1; /* 너비 최대 차지 */
+}
+
+.product-rating {
+  white-space: nowrap;   /* 줄바꿈 방지 */
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffc107; /* Bootstrap의 text-warning 색상 */
+  flex-shrink: 0;
 }
 
 .product-title {
@@ -700,7 +717,7 @@
 .product-card .product-image .soldout-badge {
   position: absolute;
   top: 8px;
-  left: 8px;        /* ⭐ 오른쪽 대신 왼쪽 */
+  left: 8px;        /* 오른쪽 대신 왼쪽 */
   right: auto;
 
   background: rgba(230, 45, 45, 0.9);

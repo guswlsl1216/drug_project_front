@@ -63,14 +63,17 @@ const OrderDetailModal = ({payment, onClose}) => {
         <h2>주문 상세 내역</h2>
         <section>
           <h3>기본 정보</h3>
-          <p><b>주문번호:</b>{order.id}</p>
-          <p><b>주문일자:</b>{time(order.payment_at)}</p>
-          <p><b>수령인:</b>{order.receiver}</p>
-          <p><b>연락처:</b>{order.phone}</p>
-          <p><b>주소:</b>{order.address} {order.address_detail}</p>
-          {order.address_extra && (
+          <p><b>주문번호:</b> {order.id}</p>
+          <p><b>주문일자:</b> {time(order.payment_at)}</p>
+          <p><b>수령인:</b> {order.receiver}</p>
+          <p><b>연락처:</b> {order.phone}</p>
+          <p>
+            <b>주소:</b> {order.address} {order.address_detail} 
+            {order.address_extra ? ` (${order.address_extra})` : ""}
+          </p>
+          {order.delivery_message && (
             <p style={{ color: "#2563eb", fontWeight: 500 }}>
-              <b>참고항목:</b> {order.address_extra}
+              <b>배송 시 요청사항:</b> {order.delivery_message}
             </p>
           )}
         </section>
