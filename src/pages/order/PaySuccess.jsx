@@ -21,7 +21,7 @@ const PaySuccess = () => {
   const [tossData, setTossData] = useState(null);
   
   // 주문 내역 미리보기 (개수 조절)
-  const DISPLAY_LIMIT = 1; // 화면에 보여줄 주문 목록 개수
+  const DISPLAY_LIMIT = 3; // 화면에 보여줄 주문 목록 개수
 
   const itemsToDisplay = useMemo(() => {
     if (!orderItems) return [];
@@ -50,7 +50,6 @@ const PaySuccess = () => {
           payload: requestData,
           setLoading,
           onSuccess: (data) => {
-            console.log(data)
             setTossData(data)
             setOrderItems(data.order_items)
           },
@@ -99,9 +98,13 @@ const PaySuccess = () => {
                       remainingItemsCount > 0 &&
                       <button 
                         className="view_more_link" 
-                        onClick={() => goTo("/myOrderList")}
+                        onClick={() => goTo("/myOrderDetail", {
+                          order: {
+                            order_id: tossData.order_id
+                          }
+                        })}
                       >
-                        외 {remainingItemsCount}건 더 보기
+                        외 {remainingItemsCount}건 더보기
                       </button>
                     }
                   </div>
