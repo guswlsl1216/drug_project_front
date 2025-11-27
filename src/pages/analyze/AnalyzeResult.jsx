@@ -69,8 +69,10 @@ const AnalyzeResult = () => {
             }
             </Button>
           <Button variant='primary' onClick={() => {
+            alert("루틴 등록 페이지로 이동합니다.");
             requireLogin(() => goTo("/mydrugs?tab=med-input"))
           }}>결과 루틴으로 설정</Button>
+          
         </div>
       </div>
     </>
