@@ -270,6 +270,12 @@ const MedicinePage = () => {
                   className="medicine-input"
                   value={med.name}
                   onChange={(e) => handleMedicineNameChange(med.id, e.target.value)}
+                  onKeyDown={(e) => {
+                    if(e.key === "Enter") {
+                      setSelectedMedicineId(med.id);
+                      setSearchModalOpen(true);
+                    }
+                  }}
                 />
 
                 <button

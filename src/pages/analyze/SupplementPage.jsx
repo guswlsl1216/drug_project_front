@@ -235,6 +235,12 @@ const SupplementPage = () => {
                   className="medicine-input"
                   value={supp.name}
                   onChange={(e) => handleSupplementNameChange(supp.id, e.target.value)}
+                  onKeyDown={(e) => {
+                    if(e.key === "Enter") {
+                      setSelectedSupplementId(supp.id);
+                      setSearchModalOpen(true);
+                    }
+                  }}
                 />
                 <button
                   className="button-edit"

@@ -27,12 +27,6 @@ const Analyze = () => {
             >
               영양제
             </NavLink>
-            <NavLink
-              to="/analyze/result"
-              className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
-            >
-              분석결과
-            </NavLink>
           </nav>
 
           <div className="analyze-tab-content">
