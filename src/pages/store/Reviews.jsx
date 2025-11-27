@@ -6,6 +6,7 @@ import requestHandler from "../../utils/requestHandler";
 import { useOutletContext } from 'react-router-dom';
 import "../../styles/store/Review.css"
 import time from "../../utils/time";
+import useLoginRedirect from "../../utils/useLoginRedirect";
 
 //모델 붙이면 완료인듯
 function Review() {
@@ -13,6 +14,7 @@ function Review() {
   const [comments, setComments] = useState([]); // 댓글 목록
   const [imgurl, setImgurl] = useState(""); //이미지
   const [selectedFile, setSelectedFile] = useState("");
+  const [preview, setPreview] = useState(null); //이미지 미리보기
   const [input, setInput] = useState("");       // 입력값
   const [error, setError] = useState("");       // 에러 메시지
   const [hoverRating, setHoverRating] = useState(0);
@@ -25,7 +27,10 @@ function Review() {
   const [updateHoverRating, setUpdateHoverRating] = useState(0);
   const [updateFile, setUpdateFile] = useState(null);
   const [updateFileName, setUpdateFileName] = useState("");
+  const [updatePreview, setUpdatePreview] = useState(null); //이미지 미리보기
   const { product, reviewUpdate, handleReviewUpdated } = useOutletContext();
+
+  const { requireLogin } = useLoginRedirect();
 
   const [sortType, setSortType] = useState(() => {
     return localStorage.getItem('sortType') || '';
@@ -44,7 +49,6 @@ function Review() {
       method: "get",
       url: "/review/getReview/" + goods_id
     })
-    console.log(res.data['reviews'])
     return res.data['reviews']
   }
 
@@ -60,8 +64,8 @@ function Review() {
 
     await requestHandler({
       method: 'post',
-      url:`/review/addReview/${goods_id}`,
-      payload:formData,
+      url: `/review/addReview/${goods_id}`,
+      payload: formData,
       userImage: true,
       onSuccess: (data) => {
         if (!data.ok) {
@@ -93,6 +97,12 @@ function Review() {
     setError("");
   };
 
+  const addComment = () => {
+    requireLogin(() => {
+      handleAddComment()
+    }, false)
+  }
+
   const handleUpdateReview = (idx, text, rating) => {
     setUpdateMode(idx)
     setUpdateInput(text)
@@ -112,9 +122,9 @@ function Review() {
 
     await requestHandler({
       method: 'put',
-      url:`/review/updateReview/${id}`,
+      url: `/review/updateReview/${id}`,
       payload: formData,
-      userImage:true,
+      userImage: true,
       onSuccess: (data) => {
         if (!data.ok) {
           alert(data.message)
@@ -157,6 +167,37 @@ function Review() {
     }
     setComments(sorted);
   };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file.name);
+      setImgurl(file);
+
+      // 이미지 미리보기
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setPreview(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const updateHandleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUpdateFileName(file.name);
+      setUpdateFile(file);
+
+      // 이미지 미리보기
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUpdatePreview(event.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     (async () => {
       const reviews = await getReview(goodsId);
@@ -235,6 +276,25 @@ function Review() {
             <small className="text-muted ms-2">{rating}점 선택됨</small>
           )}
         </Form.Group>
+        <button
+          type="button"
+          className="file-btn"
+          onClick={() => document.getElementById("fileInput").click()}
+        >
+          📁
+        </button>
+        {selectedFile && (
+          <small className="text-muted mt-1 d-block" style={{ fontSize: "12px" }}>
+            <img src={preview} alt="" style={{ maxWidth: "100px", height: "auto" }} />
+            <button type="button" className = "img-delete"
+              onClick={() => {
+                setPreview('')
+                setImgurl('')
+                setSelectedFile('')
+              }}>X</button>
+            <p>선택된 파일: {selectedFile}</p>
+          </small>
+        )}
         <Form.Group controlId="commentInput">
           <div className="text-input-wrapper">
             <textarea
@@ -242,41 +302,27 @@ function Review() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
+            <Button
+              variant="primary"
+              className="mt-2"
+              onClick={addComment}
+            >
+              등록
+            </Button>
             <div className="file-input-wrapper">
               <input
                 type="file"
                 id="fileInput"
                 style={{ display: "none" }}
-                onChange={(e) => {
-                  setImgurl(e.target.files[0]);
-                  setSelectedFile(e.target.files[0].name);
-                }}
+                onChange={handleFileSelect}
               />
-              <button
-                type="button"
-                className="file-btn"
-                onClick={() => document.getElementById("fileInput").click()}
-              >
-                📁
-              </button>
             </div>
           </div>
-          {selectedFile && (
-            <small className="text-muted mt-1 d-block" style={{ fontSize: "12px" }}>
-              선택된 파일: {selectedFile}
-            </small>
-          )}
         </Form.Group>
         {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
-        <Button
-          variant="primary"
-          className="mt-2"
-          onClick={handleAddComment}
-        >
-          등록
-        </Button>
       </Form>
-
+      <br />
+      <br />
       <ListGroup className="mt-4">
         {comments.length === 0 && (
           <ListGroup.Item className="text-muted">아직 댓글이 없습니다.</ListGroup.Item>
@@ -344,18 +390,41 @@ function Review() {
                   updateMode === idx ? (
                     <div>
                       <div className="mb-2">
-                        <img src={c.img} alt="" style={{ maxWidth: "100px", height: "auto" }} />
+                        {updateFile ? (
+                          <small className="text-muted mt-1 d-block" style={{ fontSize: "12px" }}>
+                            <img src={updatePreview} alt="" style={{ maxWidth: "100px", height: "auto" }} />
+                            <button className= "img-delete" type="button"
+                              onClick={() => {
+                                setUpdatePreview('')
+                                setUpdateFile('')
+                                setUpdateFileName('')
+                                const updatedComments = [...comments];
+                                updatedComments[idx].img = null;
+                                setComments(updatedComments);
+                              }}>X</button>
+                            <p>선택된 파일: {updateFileName}</p>
+                          </small>
+                        ) : (
+                          //서버에서 받은 img경로에는 http://localhost:5000가 붙어있음
+                          c.img && c.img !== 'http://localhost:5000' && (
+                            <>
+                              <img src={c.img} alt="" style={{ maxWidth: "100px", height: "auto" }} />
+                              <button className= "img-delete" type="button"
+                                onClick={() => {
+                                  setUpdateFile(null)
+                                  const updatedComments = [...comments];
+                                  updatedComments[idx].img = null;
+                                  setComments(updatedComments);
+                                }}>X</button>
+                            </>
+                          )
+                        )}
                       </div>
                       <input
                         type="file"
                         id="updateFileInput"
                         style={{ display: "none" }}
-                        onChange={(e) => {
-                          if (e.target.files[0]) {
-                            setUpdateFile(e.target.files[0]);
-                            setUpdateFileName(e.target.files[0].name);
-                          }
-                        }}
+                        onChange={updateHandleFileSelect}
                       />
                       <Button
                         className="btn btn-light btn-sm"
@@ -363,15 +432,10 @@ function Review() {
                       >
                         📁 이미지 변경
                       </Button>
-                      {updateFileName && (
-                        <small className="text-muted d-block mt-1">
-                          새 파일: {updateFileName}
-                        </small>
-                      )}
                     </div>
                   ) : (
                     <div>
-                      <img src={c.img} alt="" style={{ maxWidth: "100px", height: "auto" }} />
+                      <img src={c.img} alt="" style={{ maxWidth: "200px", height: "auto" }} />
                     </div>
                   )
                 ) : null}
@@ -388,55 +452,55 @@ function Review() {
                 ) : (
                   <div className="comment-text">{c.text}</div>
                 )}
-
+                {currentUser == c.username && (
+                  <div className="comment-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+                    {updateMode === idx ? (
+                      <>
+                        <Button
+                          className="btn btn-outline-primary btn-sm"
+                          onClick={() => {
+                            updateReview(c.id)
+                          }}
+                        >
+                          저장
+                        </Button>
+                        <Button
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => {
+                            setUpdateMode('')
+                          }}
+                        >
+                          취소
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          className="btn btn-outline-primary btn-sm"
+                          onClick={() => {
+                            handleUpdateReview(idx, c.text, c.rating)
+                          }}
+                        >
+                          수정
+                        </Button>
+                        <Button
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => {
+                            deleteReview(c.id)
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                )}
                 <small className="text-muted">
                   {time(c.date)}
                 </small>
               </div>
 
-              {currentUser == c.username && (
-                <div className="comment-actions">
-                  {updateMode === idx ? (
-                    <>
-                      <Button
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => {
-                          updateReview(c.id)
-                        }}
-                      >
-                        저장
-                      </Button>
-                      <Button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => {
-                          setUpdateMode('')
-                        }}
-                      >
-                        취소
-                      </Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        className="btn btn-outline-primary btn-sm"
-                        onClick={() => {
-                          handleUpdateReview(idx, c.text, c.rating)
-                        }}
-                      >
-                        수정
-                      </Button>
-                      <Button
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() => {
-                          deleteReview(c.id)
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </>
-                  )}
-                </div>
-              )}
+
             </div>
           </li>
         ))}

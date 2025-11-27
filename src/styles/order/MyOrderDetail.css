@@ -201,12 +201,12 @@
 }
 
 /* 포인트 혜택 섹션 박스 */
-.point-benefit {
+.os-point-benefit {
   margin-top: 16px;
 }
 
 /* 내부 박스 */
-.point-benefit-box {
+.os-point-benefit-box {
   background-color: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
@@ -217,7 +217,7 @@
 }
 
 /* 한 줄 구조 */
-.point-row {
+.os-point-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,13 +225,13 @@
 }
 
 /* 왼쪽 라벨 */
-.point-label {
+.os-point-label {
   color: #6b7280;
   font-weight: 500;
 }
 
 /* 오른쪽 값 */
-.point-value {
+.os-point-value {
   font-weight: 700;
   color: #2563eb; /* 파란색 포인트 강조 */
   font-size: 15px;

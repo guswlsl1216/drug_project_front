@@ -17,7 +17,6 @@ const Cart = () => {
   const {user, setUser, isLoggedIn} = useUser(); // 로그인 한 사람만 접근 가능
   const [allCheck, setAllCheck] = useState(false); // 전체 선택 
   const { requireLogin } = useLoginRedirect();
-  
 
   // 장바구니 목록 가져오기
   useEffect(() => {
@@ -27,7 +26,6 @@ const Cart = () => {
         url: '/cart',
         setLoading,
         onSuccess: (data) => {
-          console.log("백엔드 응답 데이터 구조: ",data)
 
           if (data) {
             setCartItem(data.map(item => ({ ...item, check:false})));
@@ -50,7 +48,6 @@ const Cart = () => {
   // 수량 변경
   const cahngeCount = async (i, action) => {    
     const item = cartItem[i]
-    item.count += (action == 'plus' ? 1 : -1 );
 
     await requestHandler ({
       method:'put',
@@ -59,7 +56,7 @@ const Cart = () => {
       onSuccess: (data) => {
         console.log(data)
         setCartItem(prev => 
-          prev.map(ci => ci.cart_id === item.cart_id ? {...ci, count:item.count} : ci)
+          prev.map(ci => ci.cart_id === item.cart_id ? {...ci, count:data.count} : ci)
         );
       },
       onError: (msg) => {
@@ -152,7 +149,8 @@ const Cart = () => {
         goods_name: item.goods_name,
         image_path: item.image_path,
         unit_price: item.price,
-        count: item.count
+        count: item.count,
+        cart_id: item.cart_id
       }))
 
       const total_price = orderItems.reduce(
@@ -174,7 +172,7 @@ const Cart = () => {
     return (
       <div className="cart-empty">
         <FontAwesomeIcon icon={faBasketShopping} className="empty-cart-icon" />
-        <h3>장바구니에 담김 상품이 없습니다.</h3>
+        <h3>장바구니에 담긴 상품이 없습니다.</h3>
         <p>원하는 상품을 장바구니에 담아보세요.</p>
         <Button 
           onClick={() => goTo("/store/allgoods")}
@@ -200,16 +198,26 @@ const Cart = () => {
 
         <form action="" key={item.cart_id} className="cart-item">
           <input type="checkbox" checked={item.check || false} onChange={() => toggleCheck(i)}/>
-          <div className="cart-info">
+          <div className="cart-info" onClick={() => {goTo(`/store/detail/${item.goods_id}`);}}>
             <p>{i+1}</p>
             <img src={item.image_path} alt="상품이미지" />
-            <p>{item.goods_name}</p>
+            <p className="goods-name-with-badge">
+              {item.goods_name}
+              {(item.stock ?? 0) <= 0 || item.is_active === false ? (
+                <div className="cart-soldout-badge">품절</div>
+              ) : null}
+            </p>
           </div>
 
           <div className="count-box">
             <Button onClick={() => cahngeCount(i, 'minus')} disabled={item.count == 1}>-</Button>
             <div>{item.count}</div>
-            <Button onClick={() => cahngeCount(i, 'plus')}>+</Button>
+            <Button 
+              onClick={() => cahngeCount(i, 'plus')}
+              disabled={item.count >= item.stock}
+            >
+              +
+            </Button>
           </div>
 
           <div className="price-box">
@@ -218,6 +226,13 @@ const Cart = () => {
           </div>
         </form>
       ))}
+
+      <Button 
+        onClick={() => goTo("/store/allgoods")}
+        className="empty-cart-btn"
+      >
+        쇼핑 계속하기
+      </Button>
 
       <div className="summary">
         <div>

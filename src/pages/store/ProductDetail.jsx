@@ -96,7 +96,6 @@ const ProductDetail = () => {
       method: "get",
       url: "/review/goodsReviewInfo/" + goodsId
     })
-    console.log(res.data['info'])
     setReviewInfo(res.data['info'])
   }
 
@@ -178,10 +177,14 @@ const ProductDetail = () => {
   if (error) return <div className="error-message">{error}</div>
   if (!product) return <div className="no-data">상품 정보를 찾을 수 없습니다.</div>
 
-  const supplementIngredients = product.ingredients || [
+  const rawIngredients = product.ingredients || [
     {name: "비타민C", amount: "1000mg"},
     {name: "징코", amount: "50mg"},
   ];
+
+  const supplementIngredientNames = Array.isArray(rawIngredients)
+    ? rawIngredients.map((ingr) => (typeof ingr === "string" ? ingr : ingr.name))
+    : rawIngredients;
   
   return (
     <div className="product-detail-container">
@@ -201,11 +204,11 @@ const ProductDetail = () => {
           <div className="detail-info-area">
 
             {/* 제목 및 ID */}
-            <div className="d-flex align-items-center gap-2">
+            <div className="product-header">
               <h1 className="product-title">
                 {product.goods_name}
               </h1>
-              <span className="text-warning fw-bold">
+              <span className="product-rating">
                 ⭐ {reviewInfo['star_avg']}점
               </span>
             </div>
@@ -312,7 +315,7 @@ const ProductDetail = () => {
         supplementInfo={{
           id: product.id,
           name: product.goods_name,
-          ingredients: supplementIngredients, // 상품 성분 정보 전달
+          ingredients: supplementIngredientNames, // 이제 문자열 배열이거나 쉼표 문자열임
         }}
       />
     </div>

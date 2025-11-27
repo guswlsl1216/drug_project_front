@@ -2,15 +2,18 @@ import { useEffect, useState } from "react";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 import UseNavi from "../../utils/UseNavi";
 import { useUser } from "../../components/context/UserContext";
-import axiosInstance from "../../utils/axiosInstance";
 import requestHandler from "../../utils/requestHandler";
+import { useLocation } from "react-router-dom";
 
 const UserCheck = () => {
   const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
+  const location = useLocation();
   const { user, loading, verified, setVerified } = useUser();
 
   const [password, setPassword] = useState(""); // 사용자가 입력하는 비밀번호
+
+  const next = location.state?.next || "/mypage"
 
   // const getCookie = (name) => { // 쿠키에서 accessToken 가져오는 함수
   //   const value = `; ${document.cookie}`;
@@ -27,11 +30,11 @@ const UserCheck = () => {
 
   useEffect(() => {
     if (verified) {
-      goTo("/mypage/userinfo");
+      goTo(next);
       return;
     }
     requireLogin(() => {}, true);
-  }, [verified])
+  }, [verified, next, goTo])
 
   const handleCheck = async () => {
     if (!password.trim()) {
