@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useUser } from "../../components/context/UserContext";
 import { useEffect, useState } from "react";
 import requestHandler from "../../utils/requestHandler";
-import "../../styles/QnA.css"
+import "../../styles/QnA.css";
 import Changehandler from "../../utils/Changehandler";
 import Button from "../../components/ui/Button";
 import UseNavi from "../../utils/UseNavi";
@@ -20,9 +20,9 @@ const QnA = () => {
 
   // 질문 등록 폼 상태
   const [formData, setFormData] = useState({
-    question_title:'',
-    question_content:'',
-    is_private:false,
+    question_title: "",
+    question_content: "",
+    is_private: false,
   });
 
   const [formLoading, setFormLoading] = useState(false);
@@ -54,23 +54,23 @@ const QnA = () => {
   const fetchQnAList = async () => {
     setListLoading(true);
     await requestHandler({
-      method:'get',
-      url:`/qna/${goodsId}`,
-      setLoading:setListLoading,
-      onSuccess:(data) => {
+      method: "get",
+      url: `/qna/${goodsId}`,
+      setLoading: setListLoading,
+      onSuccess: (data) => {
         setQnaList(data.qna_list);
       },
       onError: (msg) => {
-        console.error("Q&A 목록 불러오기 실패:", msg)
-      }
-    })
-  }
+        console.error("Q&A 목록 불러오기 실패:", msg);
+      },
+    });
+  };
 
   useEffect(() => {
-    if(goodsId) {
+    if (goodsId) {
       fetchQnAList();
     }
-  }, [goodsId])
+  }, [goodsId]);
 
   // 글 등록 후 메시지 5초 후 사라짐
   useEffect(() => {
@@ -105,12 +105,12 @@ const QnA = () => {
     setError(null);
 
     if (!isLoggedIn) {
-      setError("로그인 후 질문을 등록할 수 있습니다.")
+      setError("로그인 후 질문을 등록할 수 있습니다.");
       return;
     }
 
     if (!formData.question_title || !formData.question_content) {
-      setError("제목과 내용을 모두 입력해주세요.")
+      setError("제목과 내용을 모두 입력해주세요.");
       return;
     }
 
@@ -120,22 +120,22 @@ const QnA = () => {
     fd.append("is_private", formData.is_private);
 
     await requestHandler({
-      method:'post',
-      url:`/qna/${goodsId}`,
-      payload:fd,
+      method: "post",
+      url: `/qna/${goodsId}`,
+      payload: fd,
       setLoading: setFormLoading,
-      onSuccess:(data) => {
+      onSuccess: (data) => {
         setFormMessage(data.message);
         setFormData({
-          question_title:'',
-          question_content:'',
-          is_private:false,
-        })
+          question_title: "",
+          question_content: "",
+          is_private: false,
+        });
         fetchQnAList();
       },
       onError: (msg) => {
         setError(msg || "질문 등록에 실패했습니다.");
-      }
+      },
     });
   };
 

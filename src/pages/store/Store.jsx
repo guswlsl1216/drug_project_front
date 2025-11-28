@@ -32,6 +32,12 @@ const Store = () => {
     location.pathname.startsWith('/store/ingredient')
   )
 
+  // 배경 섹션을 표시할 경로 목록
+  const shouldShowBg = (
+    location.pathname.startsWith('/store/allgoods') ||
+    location.pathname.startsWith('/store/favorite')
+  )
+
   // 검색 기능 --------
   const [searchQuery, setSearchQuery] = useState("");
   const [submittedSearchQuery, setSubmittedSearchQuery] = useState("");
@@ -60,12 +66,14 @@ const Store = () => {
   return (
     <>
       <div className="wrapper">
-        <section className="store_bg">
-          <div className="bg_text">
-            <h1 className="bg_main_title">Store</h1>
-            <p className="bg_sub_title">내가 먹는 의약품과 분석하며 안전하게 구매하세요. </p>
-          </div>
-        </section>
+        {shouldShowBg && (
+          <section className="store_bg">
+            <div className="bg_text">
+              <h1 className="bg_main_title">Store</h1>
+              <p className="bg_sub_title">내가 먹는 의약품과 분석하며 안전하게 구매하세요. </p>
+            </div>
+          </section>
+        )}
         <div className="store-container-wrapper">
           <div className="store-container">
             {shouldShowNav && (

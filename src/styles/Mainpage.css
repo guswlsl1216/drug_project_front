@@ -1,3 +1,4 @@
+
 @font-face {
     font-family: 'BookkMyungjo';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Lt.woff2') format('woff2');
@@ -20,28 +21,34 @@
 }
 
 .wrapper{
-  padding-top: 50px;
+  padding-top: 50px;;
+}
+
+.wrapper2{
+  background-color: #FAEBD7;
 }
 
 .main_contents {
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-image: url('../images/main01.png');
-    background-attachment:  fixed;
-    background-size: cover;
-    background-position: center;
+    background-image: url('../images/Group32.png');
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
     width: 100%;
     height: 100vh;
 }
 
 .main_title{
-  font-size: 10rem;
+  font-size: 6rem;
   color: white;
 }
 .sub_title{
-  font-size: 2rem;
+  font-size: 3rem;
   color: white;
+  margin-top: 150px;
+  font-weight: 300;
+  letter-spacing: 5px;
 }
 
 .main_text{
@@ -60,6 +67,10 @@
   font-weight: 100;
 }
 
+.intro_text{
+  line-height: 60px;
+}
+
 .intro_img{
   margin: 100px 0px;
 }
@@ -70,7 +81,6 @@
 }
 
 .info_text_box h2{
-  font-family: 'Aggravo';
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 20px;
@@ -79,10 +89,10 @@
 
 .info_section{
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: flex-start;
   width: 100%;
-  height: 500px;
+  min-height: 600px;
   text-align: center;
 }
 
@@ -91,46 +101,283 @@
 }
 
 .info_text_box{
-  padding-top: 200px;
+  margin: 0 auto;
+  width: 50%;
 }
 
 .info_contents{
   width: 50%;
-  height: 500px;
+  min-height: 600px;
 }
 
-.info_left_sec1{
-  background-image: url('../images/main01.png');
-  background-size: contain;
+.info_text_box h2:first-child{
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: left;
 }
 
-.info_right_sec2{
-  background-image: url('../images/main01.png');
-  background-size: contain;
+.info_text_box h2:nth-child(2){
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 25px;
+  text-align: left;
+  line-height: 1.4;
+  color: #2e2e2e;
 }
 
-.info_left_sec3{
-  background-image: url('../images/main01.png');
-  background-size: contain;
+.info_text_box p{
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.8;
+  text-align: left;
+  color: #666;
 }
 
-.info_right_sec4{
-  background-image: url('../images/main01.png');
-  background-size: contain;
+.info_section{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 600px;
+  padding: 0 100px;
+  position: relative;
 }
 
-.info_left_sec5{
-  background-image: url('../images/main01.png');
-  background-size: contain;
-}
-
-.info_right_sec6{
-  background-image: url('../images/main01.png');
-  background-size: contain;
-}
 
 .ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+
+
+.pill_top{
+  width: 100%;
+  margin-top: 100px;
+}
+.pill_btm{
+  width: 100%;
+}
+
+.scroll_arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.scroll_text{
+  color: white;
+  padding-top: 50px;
+}
+/* info 섹션이 화면에 들어올 때 나타나는 기본 애니메이션 */
+.info_contents{
+  opacity: 0;
+  transform: translateY(28px);
+  transition: transform 560ms cubic-bezier(.22,.9,.28,1), opacity 420ms ease;
+  will-change: transform, opacity;
+}
+
+/* 보이면 서서히 올라오며 표시 */
+.info_contents.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 이미지/텍스트 내부에 추가적인 미세 애니메이션 */
+.info_contents img{
+  transform: translateY(8px) scale(0.995);
+  transition: transform 560ms cubic-bezier(.22,.9,.28,1), opacity 420ms ease;
+  opacity: 0.98;
+}
+.info_contents.in-view img{
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* 캘린더 컨테이너: 이미지 위에 숫자 오버레이 */
+.calendar{
+  position: relative;
+  display: inline-block;
+  width: 260px; /* 이미지 크기에 맞춰 조정 가능 */
+  max-width: 100%;
+}
+.calendar img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 오버레이 숫자: 중앙 하단에 위치시키되 이미지 위치/비율에 맞게 조정 */
+.calendar_overlay{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -8%); /* 숫자 위치 미세조정 */
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.calendar_count{
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 70px;
+  padding-top: 35px;
+  color: #000000;
+  letter-spacing: 1px;
+  transform-origin: center;
+  transition: transform 360ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* in-view 일 때 숫자에 소폭 확대 애니메이션 추가 */
+.info_contents.in-view .calendar_count{
+  transform: scale(1.06);
+}
+
+/* 반응형 보정 */
+@media (max-width: 600px){
+  .calendar{ width: 180px; }
+  .calendar_count{ font-size: 30px; text-shadow: 0 4px 10px rgba(0,0,0,0.28); }
+  .info_contents{ transition-duration: 420ms; }
+}
+
+
+/* 화살표 위아래 애니메이션 */
+.scroll_arrow .scroll_img {
+  width: 100px; /* 필요시 크기 조정 */
+  height: auto;
+  animation: floatY 1.6s ease-in-out infinite;
+  cursor: pointer;
+}
+
+@keyframes floatY {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(12px); }
+  100% { transform: translateY(0); }
+}
+
+/* pill wrapper: 위치/정렬은 필요에 따라 조정하세요 */
+.pill_wrapper{
+  position: relative;
+  width: 100%;         /* 캡슐 전체 너비: 필요시 조정 */
+  max-width: 90vw;      /* 화면 너비의 90%를 넘지 않도록 */
+  height: 240px;        /* 캡슐 영역 높이 */
+  margin: 20px auto 0;
+  pointer-events: none;
+}
+
+/* 캡슐 각 부분 기본 위치 (겹치지 않도록 동일 top에 배치) */
+.pill_top, .pill_btm{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: transform 0.7s cubic-bezier(.2,.9,.2,1), top 0.7s;
+  will-change: transform, top;
+  width: 70px; /* 이미지 크기: 필요시 조정 */
+  max-width: 27%;      /* pill_wrapper 대비 비율 유지 */
+}
+.pill_top img, .pill_btm img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 닫힌(초기) 상태: 두 조각이 맞물려 보이도록 조금 겹쳐 배치 */
+.pill_top{
+  top: -50px;
+  z-index: 3;
+  transform-origin: center;
+}
+.pill_btm{
+  top: 130px;
+  z-index: 2;
+  transform-origin: center;
+}
+
+/* 선 위치: 캡슐 하단 중앙에서 시작하도록 조정 */
+.pill_line{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 170px;            /* 캡슐 아래에서 선이 시작되게 */
+  width: 16px;
+  height: 0;
+  background: linear-gradient(180deg, #f6c84a00, #f29800);
+  border-radius: 6px;
+  transition: height 0.9s ease;
+  z-index: 1;
+}
+
+/* 낙하 알갱이 기본 설정 (선 앞에 보이게 z-index 높임) */
+.pill_drops .drop{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  top: 140px;
+  width: 12px;
+  height: 12px;
+  background: #f6c84a;
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* 스크롤 시 활성화: 캡슐이 좌/우로 벌어지고 회전 (첨부 이미지 형태) */
+.pill_wrapper.active .pill_top{
+  transform: translateX(-50%) translateX(-70px) rotate(-40deg);
+  top: 20px;
+}
+.pill_wrapper.active .pill_btm{
+  transform: translateX(-50%) translateX(70px) rotate(-140deg);
+  top: 120px;
+}
+
+/* 선이 길게 내려가도록 (낙하 애니메이션과 맞추기) */
+.pill_wrapper.active .pill_line{
+  height: 2260px; /* 필요시 길이 조정 */
+}
+
+
+/* 낙하 애니메이션 */
+@keyframes fall {
+  0%   { transform: translateX(-50%) translateY(0); opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(-50%) translateY(260px); opacity: 0; }
+}
+
+/* 각 drop에 다르게 딜레이 주기 (중앙으로 모여 떨어지는 연출) */
+.pill_wrapper.active .pill_drops .d1{ animation: fall 1.0s ease-in 0.00s forwards; left:49%; width:15px; height:15px; }
+.pill_wrapper.active .pill_drops .d2{ animation: fall 1.05s ease-in 0.06s forwards; left:51%; width:12px; height:12px; }
+.pill_wrapper.active .pill_drops .d3{ animation: fall 2.10s ease-in 0.12s forwards; left:50%; width:9px; height:9px; }
+.pill_wrapper.active .pill_drops .d4{ animation: fall 1.12s ease-in 0.18s forwards; left:47%; width:11px; height:11px; }
+.pill_wrapper.active .pill_drops .d5{ animation: fall 1.15s ease-in 0.24s forwards; left:53%; width:16px; height:16px; }
+.pill_wrapper.active .pill_drops .d6{ animation: fall 1.18s ease-in 0.20s forwards; left:53%; width:17px; height:17px; }
+.pill_wrapper.active .pill_drops .d7{ animation: fall 1.19s ease-in 0.21s forwards; left:51%; width:12px; height:12px; }
+.pill_wrapper.active .pill_drops .d8{ animation: fall 1.20s ease-in 0.22s forwards; left:53%; width:17px; height:17px; }
+.pill_wrapper.active .pill_drops .d9{ animation: fall 1.30s ease-in 0.15s forwards; left:50%; width:20px; height:20px; }
+.pill_wrapper.active .pill_drops .d10{ animation: fall 1.34s ease-in 0.13s forwards; left:53%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d11{ animation: fall 1.36s ease-in 0.12s forwards; left:55%; width:20px; height:20px; }
+.pill_wrapper.active .pill_drops .d12{ animation: fall 1.32s ease-in 0.05s forwards; left:54%; width:20px; height:20px; }
+.pill_wrapper.active .pill_drops .d13{ animation: fall 1.42s ease-in 0.11s forwards; left:45%; width:20px; height:20px; }
+.pill_wrapper.active .pill_drops .d14{ animation: fall 1.32s ease-in 0.17s forwards; left:51%; width:30px; height:30px; }
+.pill_wrapper.active .pill_drops .d15{ animation: fall 1.22s ease-in 0.30s forwards; left:53%; width:30px; height:30px; }
+.pill_wrapper.active .pill_drops .d16{ animation: fall 1.52s ease-in 0.19s forwards; left:51%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d17{ animation: fall 1.49s ease-in 0.14s forwards; left:50%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d18{ animation: fall 1.40s ease-in 0.25s forwards; left:49%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d19{ animation: fall 1.42s ease-in 0.26s forwards; left:48%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d20{ animation: fall 1.45s ease-in 0.27s forwards; left:52%; width:10px; height:10px; }
+
+/* 모바일 보정 */
+@media (max-width: 600px){
+  .pill_wrapper{ width:180px; height:200px; }
+  .pill_top, .pill_btm{ width:120px; }
+  .pill_wrapper.active .pill_top{ transform: translateX(-50%) translateX(-45px) rotate(-35deg); top:14px; }
+  .pill_wrapper.active .pill_btm{ transform: translateX(-50%) translateX(45px) rotate(35deg); top:62px; }
+  .pill_wrapper.active .pill_line{ height:160px; top:100px; }
+  @keyframes fall { 100% { transform: translateX(-50%) translateY(160px); opacity: 0; } }
 }
