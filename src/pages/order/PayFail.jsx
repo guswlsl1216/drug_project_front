@@ -2,7 +2,6 @@ import { useSearchParams } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import "../../styles/order/Payments.css"
 import UseNavi from "../../utils/UseNavi";
-import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const PayFail = () => {
   const { goBack } = UseNavi();

@@ -1,0 +1,226 @@
+/* 장바구니 전체 컨테이너 */
+.cart-container {
+  padding-top: 80px; /* 네비바 높이 + 여유 공간 */
+  min-height: 70vh;
+}
+
+/* 장바구니 아이템 카드 */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #ffffff;
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  transition: 0.2s ease;
+}
+
+/* 이미지 + 상품명 영역 */
+.cart-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1; /* 줄 길게 차지 */
+  min-width: 0; /* 텍스트 줄바꿈 방지 */
+}
+
+.cart-info img {
+  width: 55px;  /* 이미지 크기 축소 */
+  height: 55px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.cart-info p {
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;  
+  overflow: hidden;
+  text-overflow: ellipsis; /* 상품명 너무 길면 ... 처리 */
+}
+
+/* 수량 조절 */
+.count-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 110px; /* 너무 좁아지지 않도록 */
+  justify-content: center;
+}
+
+.count-box div {
+  min-width: 28px;
+  text-align: center;
+}
+
+/* 가격 */
+.price-box {
+  width: 120px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.goods-name-with-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 상품명과 품절 뱃지 사이 간격 */
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-soldout-badge {
+  padding: 2px 6px;
+  background-color: #e74c3c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+/* 전체 선택 / 삭제 버튼 */
+.top-buttons {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.top-buttons button {
+  border-radius: 8px;
+}
+
+.summary {
+  position: fixed;
+  right: 30px;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 260px;
+  padding: 22px;
+  background: #f7f8ff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  font-family: 'Pretendard', sans-serif;
+  z-index: 100;
+}
+
+/* 섹션 제목 */
+.summary-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  text-align: center; /* 결제예정금액 섹션도 중앙 정렬 */
+}
+
+/* 소항목 (총 상품금액 / 총 배송비) */
+.summary-subtext {
+  font-size: 14px;
+  color: #666;
+  font-weight: 400;
+  margin: 4px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 결제예정금액 영역 중앙 정렬 */
+.summary-final-section {
+  display: flex;
+  flex-direction: column; /* 세로로 쌓기 */
+  align-items: center;    /* 수평 중앙 정렬 */
+  margin-top: 16px;
+}
+
+.summary-final-section .summary-final-price {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 6px 0 0 0;
+}
+
+.summary-final-section .summary-info {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 8px;
+  line-height: 1.4;
+  text-align: center; /* 안내문구 중앙 정렬 */
+}
+
+/* 안내문구(일반용, 중복 제거) */
+.summary-info {
+  font-size: 12px;
+  color: #888888;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* 구분선 */
+.summary-divider {
+  height: 1px;
+  background: #ddd;
+  margin: 16px 0;
+}
+
+/* 버튼 중앙 정렬 */
+.summary-button-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 90px 20px;
+  color: #444;
+}
+
+.empty-cart-icon {
+  font-size: 70px;
+  color: #b9b9c9;
+  margin-bottom: 20px;
+}
+
+.cart-empty h3 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.cart-empty p {
+  color: #777;
+  font-size: 15px;
+  margin-bottom: 22px;
+}
+
+.empty-cart-btn {
+  margin-top: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+
+
+/* summary가 표시되는 화면에서 카드가 summary에 가려지지 않게 오른쪽 여백 추가 */
+@media (max-width: 1500px) {
+  .cart-item {
+    padding-right: 280px; /* summary 폭 + 여유 공간 */
+  }
+}
+
+@media (max-width: 1500px) {
+  .top-buttons {
+    padding-right: 280px; /* SUMMARY 폭만큼 오른쪽 여백 확보 */
+  }
+}
+
+
+
+
+

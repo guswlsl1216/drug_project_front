@@ -1,50 +1,218 @@
+/* ====== 공통: 모달 백드롭 ====== */
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(15, 23, 42, 0.38);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
 }
 
+/* ====== 모달 카드 ====== */
 .modal {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 600px;
+  background: #ffffff;
+  padding: 24px 24px 20px;
+  border-radius: 16px;
+  width: 640px;
+  max-width: calc(100% - 32px);
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  animation: fadeIn 0.2s ease;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+  animation: fadeInModal 0.18s ease-out;
+  box-sizing: border-box;
 }
 
-.modal h2 {
-  margin-bottom: 1rem;
+/* 제목 */
+.modal > h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
 }
 
+/* 섹션 공통 */
 .modal section {
-  margin-top: 1rem;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
 }
 
+.modal section:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.modal section h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1f2933;
+  margin: 0 0 8px;
+}
+
+/* 기본 정보/결제 정보 텍스트 */
+.modal section p {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #374151;
+}
+
+.modal section p b {
+  display: inline-block;
+  min-width: 72px;
+  margin-right: 4px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* 주문 상품 테이블 */
 .modal table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 4px;
+  font-size: 13px;
 }
 
-.modal table th,
-.modal table td {
-  border-bottom: 1px solid #ddd;
-  padding: 6px 8px;
+.modal table thead th {
   text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  font-weight: 600;
+  color: #4b5563;
 }
 
-.modal-actions {
+.modal table tbody td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #111827;
+}
+
+.modal table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* 숫자 정렬 */
+.modal table td:nth-child(2),
+.modal table td:nth-child(3),
+.modal table td:nth-child(4) {
   text-align: right;
-  margin-top: 1.5rem;
 }
 
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(-5px);}
-  to {opacity: 1; transform: translateY(0);}
+/* 버튼 영역 */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
+/* 애니메이션 */
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== 600px 이하: 모바일 기본 ===== */
+@media (max-width: 600px) {
+
+  /* 백드롭을 중앙에 가깝게 조정 */
+  .modal-backdrop {
+    align-items: flex-start;
+    justify-content: center;
+    padding: 130px 0 24px;  
+    overflow-y: auto;
+    margin-left: 10px;
+  }
+
+  .modal {
+    padding: 16px 14px 14px;
+    border-radius: 14px;
+
+    width: 92%;                  /* ⬅ 전체 대비 크기 줄임 */
+    max-width: 380px;            /* ⬅ 너무 넓지 않게 제한 */
+    max-height: none;
+
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.25);
+  }
+
+  /* 제목 */
+  .modal > h2 {
+    font-size: 17px;
+    margin-bottom: 10px;
+  }
+
+  /* 섹션 제목 */
+  .modal section h3 {
+    font-size: 13px;
+  }
+
+  /* 텍스트 */
+  .modal section p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .modal section p b {
+    min-width: 60px;
+    font-size: 12px;
+  }
+
+  /* 테이블 */
+  .modal table {
+    font-size: 12px;
+  }
+
+  .modal table thead th,
+  .modal table tbody td {
+    padding: 6px 4px;
+  }
+
+  /* 버튼 */
+  .modal-actions {
+    margin-top: 14px;
+  }
+}
+
+
+/* ===== 400px 이하: 작은폰 최적화 ===== */
+@media (max-width: 400px) {
+
+  .modal-backdrop {
+    padding: 70px 0 20px;   /* 너무 멀어지지 않도록 조정 */
+  }
+
+  .modal {
+    width: 94%;
+    max-width: 360px;
+    padding: 14px 12px 12px;
+  }
+
+  .modal > h2 {
+    font-size: 16px;
+  }
+
+  .modal section {
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  .modal table thead th,
+  .modal table tbody td {
+    padding: 5px 3px;
+  }
+
+  /* 텍스트 줄바꿈 및 영역 축소 */
+  .modal section p,
+  .modal table td,
+  .modal table th {
+    white-space: normal;
+    word-break: break-word;
+  }
 }

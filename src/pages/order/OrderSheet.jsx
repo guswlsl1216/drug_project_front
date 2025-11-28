@@ -29,8 +29,10 @@ const OrderSheet = () => {
     zipcode:"",
     address :"",
     address_detail :"",
+    address_extra: "",
     receiver: "",
-    phone: ""
+    phone: "",
+    delivery_message: "",
   })
 
   // db 저장용 orderItem 스테이트
@@ -40,6 +42,8 @@ const OrderSheet = () => {
   const [sameAsBuyer, setSameAsBuyer] = useState(false)
   const [point, setPoint] = useState(0)
   const [saveAddress, setSaveAddress] = useState(false);
+  const [addressList, setAddressList] = useState([]);
+  const [showAddressModal, setShowAddressModal] = useState(false);
 
   const calcShippingFee = (price) => {
     return price >= 20000 ? 0 : 2500;
@@ -59,17 +63,18 @@ const OrderSheet = () => {
   const [ready, setReady] = useState(false);
   const [widgets, setWidgets] = useState(null);
   
-    useEffect(() => {
-      const processedItems = items.map(item => {
-        return {
-          goods_id: item.goods_id,
-          count: item.count,
-          unit_price: item.unit_price,
-          subtotal: item.count * item.unit_price
-        };
-      });
-      setOrderItem(processedItems)
-    }, [items]);
+  useEffect(() => {
+    const processedItems = items.map(item => {
+      return {
+        goods_id: item.goods_id,
+        count: item.count,
+        unit_price: item.unit_price,
+        subtotal: item.count * item.unit_price,
+        cart_id: item.cart_id
+      };
+    });
+    setOrderItem(processedItems)
+  }, [items]);
 
   useEffect(() => {
     const fee = calcShippingFee(totalPrice);
@@ -149,7 +154,7 @@ const OrderSheet = () => {
           phone: String(u.tel || ""),
           zipcode: u.zipcode || "",
           address: u.address || "",
-          address_detail: u.detailed_address || ""
+          address_detail: u.detail || ""
         }))
       },
       onError: (msg) => {
@@ -175,7 +180,7 @@ const OrderSheet = () => {
     fetchUserInfo();
   }, []);
 
-  const handleSameAsBuyeerChange = async (e) => {
+  const handleSameAsBuyerChange = async (e) => {
     const checked = e.target.checked;
     setSameAsBuyer(checked)
 
@@ -188,7 +193,8 @@ const OrderSheet = () => {
         phone: "",
         zipcode: "",
         address: "",
-        address_detail: ""
+        address_detail: "",
+        address_extra: ""     // 같이 초기화
       }))
     }
   }
@@ -209,6 +215,41 @@ const OrderSheet = () => {
       used_points: 0
     }))
   }
+
+  const openAddressModal = async () => {
+    await requestHandler({
+      method: "get",
+      url: "/orders/addresses",
+      onSuccess: (data) => {
+        setAddressList(data.addresses || [])
+        setShowAddressModal(true)
+      },
+      onError:(msg) => alert(msg || "배송지 목록을 불러오지 못했습니다.")
+    })
+  }
+
+  const handleSelectAddress = (addr) => {
+    setOrder(prev => ({
+      ...prev,
+      receiver:addr.receiver || "",
+      phone: addr.phone || "",
+      zipcode: addr.zipcode || "",
+      address: addr.address || "",
+      address_detail: addr.address_detail || "",
+      address_extra: addr.address_extra || ""
+    }))
+    setShowAddressModal(false)
+  }
+
+  const handleAddressChange = (next) => {
+  setOrder(prev => ({
+    ...prev,
+    zipcode: next.postcode || "",
+    address: next.road || next.jibun || next.display.raw || "",
+    address_detail: next.detail || "",
+    address_extra: next.extras || ""  
+  }));
+};
 
   return(
     <>
@@ -236,18 +277,29 @@ const OrderSheet = () => {
           <div className="card section-shipping">
             <h5 className="section-title">배송지</h5>
 
-            <div className="inline">
-              <label className="field-label">배송지 선택</label>
-              <label className="switch">
-                <input 
-                  type="checkbox" 
-                  checked={sameAsBuyer}
-                  onChange={handleSameAsBuyeerChange}
-                />
-                <span className="slider"></span>
-              </label>
-              <span className="switch-label">주문자 정보와 동일</span>
+            <div className="shipping-header">
+              <div className="inline shipping-select-row">
+                <label className="field-label">배송지 선택</label>
+                <label className="switch">
+                  <input 
+                    type="checkbox" 
+                    checked={sameAsBuyer}
+                    onChange={handleSameAsBuyerChange}
+                  />
+                  <span className="slider"></span>
+                </label>
+                <span className="switch-label">주문자 정보와 동일</span>
+              </div>
+
+              <Button
+                variant="text"
+                className="address-list-btn"
+                onClick={openAddressModal}
+              >
+                배송지 목록에서 찾기
+              </Button>
             </div>
+
 
             <label className="field-label" htmlFor="receiver">받으시는 분</label>
             <input 
@@ -267,14 +319,25 @@ const OrderSheet = () => {
               placeholder="휴대폰 번호 "
             />
 
+            <label className="field-label" htmlFor="delivery-message">배송 시 요청사항</label>
+            <input
+              className="field-input"
+              id="delivery-message"
+              type="text"
+              name="delivery_message"
+              value={order.delivery_message}
+              onChange={Changehandler(setOrder)}
+              placeholder="예: 부재 시 문 앞에 놓아주세요"
+            />
+
             <label className="field-label">주소</label>
             <AddressPicker 
               className="checkout" 
               value={{
                 postcode: order.zipcode || "",
                 road: order.address || "",
-                jibun: "",
-                extras: "",
+                jibun: order.address || "",
+                extras: order.address_extra || "",   
                 local: "",
                 type: "",
                 display: {
@@ -283,14 +346,7 @@ const OrderSheet = () => {
                 },
                 detail: order.address_detail || ""
               }}
-              onChange={(next) => {
-                setOrder(prev => ({
-                  ...prev,
-                  zipcode: next.postcode || "",
-                  address: next.road || next.jibun || next.display.raw || "",
-                  address_detail: next.detail || ""
-                }))
-              }}
+              onChange={handleAddressChange}
             />
             <div className="inline save-address-inline">
               <input 
@@ -300,7 +356,7 @@ const OrderSheet = () => {
                 onChange={(e) => setSaveAddress(e.target.checked)}
                 id="save-address"
               />
-              <label htmlFor="save-address" className="save-address-label">배송지 저장</label>
+              <label htmlFor="save-address" className="save-address-label">기본 배송지에 저장</label>
             </div>
           </div>
 
@@ -320,22 +376,22 @@ const OrderSheet = () => {
                     </p>
                   </div>
                   <strong className="item-price" name="items_total">
-                    {totalPrice.toLocaleString()}원
+                    {(item.unit_price * item.count).toLocaleString()}원
                   </strong>
                 </div>
               ))
             )}
           </div>
 
-          <div className="card section-points">
+          <div className="card order-points">
             <h5 className="section-title">적립금</h5>
 
-            <div className="inline points-inline">
-              <div className="points-box">
-                <span className="point-label">사용</span>
-                <div className="point-right">
+            <div className="order-points-row">
+              <div className="order-points-box">
+                <span className="order-points-label">사용</span>
+                <div className="order-points-right">
                   <input
-                    className="point-input"
+                    className="order-points-input"
                     id="used_points"
                     type="text"
                     name="used_points"
@@ -344,11 +400,11 @@ const OrderSheet = () => {
                     placeholder="0"
                     disabled={!point}
                   />
-                  <span className="point-unit">원</span>
+                  <span className="order-points-unit">원</span>
                   <Button 
                     variant="text"
                     onClick={resetPoint}
-                    className="point-reset-btn"
+                    className="order-points-reset-btn"
                     disabled={!point}
                   >
                     <FontAwesomeIcon icon={faXmark} />
@@ -453,7 +509,30 @@ const OrderSheet = () => {
             {loading ? "구매중..." : "구매하기"}
           </Button>
         </div>
-
+        {showAddressModal && (
+          <div className="address-modal-backdrop">
+            <div className="address-modal">
+              <h4>배송지 선택</h4>
+              {addressList.length === 0 ? (
+                <p>사용 가능한 배송지가 없습니다.</p>
+              ) : (
+                addressList.map((addr, idx) => (
+                  <button
+                    key={idx}
+                    className="address-item"
+                    onClick={() => handleSelectAddress(addr)}
+                  >
+                    <div>{addr.receiver} / {addr.phone}</div>
+                    <div>{addr.zipcode} {addr.address}</div>
+                    <div>{addr.address_detail}</div>
+                    <div>{addr.address_extra}</div>
+                  </button>
+                ))
+              )}
+              <Button onClick={() => setShowAddressModal(false)}>닫기</Button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   )

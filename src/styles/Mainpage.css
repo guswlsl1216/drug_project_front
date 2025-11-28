@@ -21,29 +21,34 @@
 }
 
 .wrapper{
-  padding-top: 50px;
+  padding-top: 50px;;
+}
+
+.wrapper2{
   background-color: #FAEBD7;
 }
 
 .main_contents {
     display: flex;
     justify-content: center;
-    background-image: url('../images/mainbg01.png');
+    background-image: url('../images/Group32.png');
     background-size: contain;
+    background-position: top;
     background-repeat: no-repeat;
     width: 100%;
     height: 100vh;
 }
 
 .main_title{
-  font-size: 8rem;
+  font-size: 6rem;
   color: white;
 }
 .sub_title{
-  font-size: 4rem;
+  font-size: 3rem;
   color: white;
-  margin-top: 100px;
-  font-weight: 100;
+  margin-top: 150px;
+  font-weight: 300;
+  letter-spacing: 5px;
 }
 
 .main_text{
@@ -114,14 +119,15 @@
 
 .info_text_box h2:nth-child(2){
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 400;
   margin-bottom: 25px;
   text-align: left;
   line-height: 1.4;
+  color: #2e2e2e;
 }
 
 .info_text_box p{
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.8;
   text-align: left;
@@ -257,7 +263,8 @@
 /* pill wrapper: 위치/정렬은 필요에 따라 조정하세요 */
 .pill_wrapper{
   position: relative;
-  width: 260px;         /* 캡슐 전체 너비: 필요시 조정 */
+  width: 100%;         /* 캡슐 전체 너비: 필요시 조정 */
+  max-width: 90vw;      /* 화면 너비의 90%를 넘지 않도록 */
   height: 240px;        /* 캡슐 영역 높이 */
   margin: 20px auto 0;
   pointer-events: none;
@@ -271,7 +278,7 @@
   transition: transform 0.7s cubic-bezier(.2,.9,.2,1), top 0.7s;
   will-change: transform, top;
   width: 70px; /* 이미지 크기: 필요시 조정 */
-  
+  max-width: 27%;      /* pill_wrapper 대비 비율 유지 */
 }
 .pill_top img, .pill_btm img{
   display: block;
@@ -296,7 +303,7 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 130px;            /* 캡슐 아래에서 선이 시작되게 */
+  top: 170px;            /* 캡슐 아래에서 선이 시작되게 */
   width: 16px;
   height: 0;
   background: linear-gradient(180deg, #f6c84a00, #f29800);
@@ -346,20 +353,20 @@
 /* 각 drop에 다르게 딜레이 주기 (중앙으로 모여 떨어지는 연출) */
 .pill_wrapper.active .pill_drops .d1{ animation: fall 1.0s ease-in 0.00s forwards; left:49%; width:15px; height:15px; }
 .pill_wrapper.active .pill_drops .d2{ animation: fall 1.05s ease-in 0.06s forwards; left:51%; width:12px; height:12px; }
-.pill_wrapper.active .pill_drops .d3{ animation: fall 1.10s ease-in 0.12s forwards; left:50%; width:9px; height:9px; }
+.pill_wrapper.active .pill_drops .d3{ animation: fall 2.10s ease-in 0.12s forwards; left:50%; width:9px; height:9px; }
 .pill_wrapper.active .pill_drops .d4{ animation: fall 1.12s ease-in 0.18s forwards; left:47%; width:11px; height:11px; }
 .pill_wrapper.active .pill_drops .d5{ animation: fall 1.15s ease-in 0.24s forwards; left:53%; width:16px; height:16px; }
 .pill_wrapper.active .pill_drops .d6{ animation: fall 1.18s ease-in 0.20s forwards; left:53%; width:17px; height:17px; }
 .pill_wrapper.active .pill_drops .d7{ animation: fall 1.19s ease-in 0.21s forwards; left:51%; width:12px; height:12px; }
-.pill_wrapper.active .pill_drops .d8{ animation: fall 1.20s ease-in 0.22s forwards; left:43%; width:17px; height:17px; }
-.pill_wrapper.active .pill_drops .d9{ animation: fall 1.30s ease-in 0.15s forwards; left:40%; width:20px; height:20px; }
-.pill_wrapper.active .pill_drops .d10{ animation: fall 1.34s ease-in 0.13s forwards; left:43%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d8{ animation: fall 1.20s ease-in 0.22s forwards; left:53%; width:17px; height:17px; }
+.pill_wrapper.active .pill_drops .d9{ animation: fall 1.30s ease-in 0.15s forwards; left:50%; width:20px; height:20px; }
+.pill_wrapper.active .pill_drops .d10{ animation: fall 1.34s ease-in 0.13s forwards; left:53%; width:10px; height:10px; }
 .pill_wrapper.active .pill_drops .d11{ animation: fall 1.36s ease-in 0.12s forwards; left:55%; width:20px; height:20px; }
 .pill_wrapper.active .pill_drops .d12{ animation: fall 1.32s ease-in 0.05s forwards; left:54%; width:20px; height:20px; }
-.pill_wrapper.active .pill_drops .d13{ animation: fall 1.42s ease-in 0.11s forwards; left:43%; width:20px; height:20px; }
+.pill_wrapper.active .pill_drops .d13{ animation: fall 1.42s ease-in 0.11s forwards; left:45%; width:20px; height:20px; }
 .pill_wrapper.active .pill_drops .d14{ animation: fall 1.32s ease-in 0.17s forwards; left:51%; width:30px; height:30px; }
 .pill_wrapper.active .pill_drops .d15{ animation: fall 1.22s ease-in 0.30s forwards; left:53%; width:30px; height:30px; }
-.pill_wrapper.active .pill_drops .d16{ animation: fall 1.52s ease-in 0.19s forwards; left:41%; width:10px; height:10px; }
+.pill_wrapper.active .pill_drops .d16{ animation: fall 1.52s ease-in 0.19s forwards; left:51%; width:10px; height:10px; }
 .pill_wrapper.active .pill_drops .d17{ animation: fall 1.49s ease-in 0.14s forwards; left:50%; width:10px; height:10px; }
 .pill_wrapper.active .pill_drops .d18{ animation: fall 1.40s ease-in 0.25s forwards; left:49%; width:10px; height:10px; }
 .pill_wrapper.active .pill_drops .d19{ animation: fall 1.42s ease-in 0.26s forwards; left:48%; width:10px; height:10px; }

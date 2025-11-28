@@ -39,13 +39,13 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
 
       timerRef.current = setInterval(() => {
         setProgress((p) => {
-          if (p < 50) return p + Math.random() * 4 + 2;    // 0~50: 매우 빠르게
-          if (p < 70) return p + Math.random() * 2 + 1.5;    // 50~70: 빠르게
-          if (p < 90) return p + Math.random() * 0.8;        // 70~90: 보통
-          if (p < 99) return p + Math.random() * 0.2;      // 90~99: 매우 느리게
+          if (p < 50) return p + Math.random() * 0.6 + 0.3;   // 자연스럽고 빠르지 않게
+          if (p < 70) return p + Math.random() * 0.3 + 0.2;
+          if (p < 90) return p + Math.random() * 0.15;
+          if (p < 99) return p + Math.random() * 0.05;         // (0 ~ 0.05)
           return 99;
         });
-      }, 120);
+      }, 180);
 
       const { answer } = await handler ({ text, scope }); 
       setMessages((prev) => [...prev, { role: "assistant", text: answer }]);
@@ -71,7 +71,7 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
     <div className="dock">
       <header className="dock__header">
         <div className="dock__title">
-          <h1>영양제·경구약 AI 챗봇</h1>
+          <h1>영양제·의약품 AI 챗봇</h1>
         </div>
         <div className="dock__actions">
           <button className="icon-btn" aria-label="새 대화" onClick={onNewChat} >

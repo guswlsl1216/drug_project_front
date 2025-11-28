@@ -3,9 +3,9 @@
  * ========================================================================= */
 .store-container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 40px 0px 40px 20px;
     font-family: "Pretendard", "Noto Sans KR", sans-serif;
 }
 
@@ -39,6 +39,15 @@
     color: white;
     background-color: #a671ec;
     box-shadow: 0 -2px 6px rgba(174, 147, 209, 0.3);
+}
+
+.store-content-wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.store-content {
+    flex-grow: 1;
 }
 
 /* =========================================================================
@@ -269,10 +278,27 @@
     font-family: "Noto Sans KR", sans-serif;
 }
 
-.detail-header {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 25px;
+.product-header {
+  display: flex;
+  justify-content: space-between; /* 제목과 별점 좌우 배치 */
+  align-items: flex-start;        /* 상단 정렬 */
+  gap: 12px;
+}
+
+.product-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  word-break: break-word; /* 길면 줄바꿈 허용 */
+  flex: 1; /* 너비 최대 차지 */
+}
+
+.product-rating {
+  white-space: nowrap;   /* 줄바꿈 방지 */
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffc107; /* Bootstrap의 text-warning 색상 */
+  flex-shrink: 0;
 }
 
 .product-title {
@@ -295,12 +321,13 @@
 
 /* 상품 이미지 영역 */
 .detail-image-area {
+    position: relative; 
     flex: 1;
     min-width: 320px;
     height: 320px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    display: flex;
+    display: flex; 
     justify-content: center;
     align-items: center;
     color: #555;
@@ -489,31 +516,15 @@
     margin-top: 10px; /* 위에 purchase-options 그룹과 간격 주기 */
 }
 
-/* 반응형 */
-@media (max-width: 768px) {
-    .detail-section {
-        flex-direction: column;
-        align-items: center;
-    }
-    .detail-image-area {
-        width: 100%;
-        max-width: 400px;
-        height: 300px;
-    }
-    .purchase-options {
-        justify-content: center;
-    }
-}
-
 /* =========================================================================
  * 6. 찜 버튼 관련 스타일 (GoodsList, ProductDetail 공통)
  * ========================================================================= */
-
-/* 상품 카드 내 찜 버튼 컨테이너 (GoodsList.jsx) */
-.product-card {
-    position: relative;
-}
-
+ 
+ /* 상품 카드 내 찜 버튼 컨테이너 (GoodsList.jsx) */
+ .product-card {
+     position: relative;
+    }
+    
 .product-favorite-wrapper {
     position: absolute;
     top: 10px;
@@ -640,4 +651,192 @@
     font-weight: 600;
     font-size: 15px;
     background-color: #fff;
+}
+
+.goodsList_spinner,
+.no-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .detail-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    .detail-image-area {
+        width: 100%;
+        max-width: 400px;
+        height: 300px;
+    }
+    .purchase-options {
+        justify-content: center;
+    }
+}
+
+.product-description-content .goods-desc img {
+    /* 이미지가 부모 컨테이너의 100% 너비를 초과하지 않도록 강제합니다. */
+    max-width: 100%;
+    
+    /* 원래 이미지가 100%보다 작더라도 깨지지 않도록 원래 비율을 유지합니다. */
+    height: auto; 
+    
+    /* 혹시 모를 내부의 고정된 너비 속성을 무시하기 위해 !important를 사용할 수 있습니다. */
+    /* width: 100% !important; */
+}
+
+/* 상품 상세페이지 이미지 우측 상단 품절 배지 */
+.product-detail-card .detail-image-area .soldout-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  background: rgba(230, 45, 45, 0.9);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 10;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  backdrop-filter: blur(3px);
+}
+
+/* 가격 영역 아래에 뜨는 품절 안내 */
+.soldout-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #e02f2f;
+  font-weight: 600;
+}
+
+.product-card .product-image .soldout-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;        /* 오른쪽 대신 왼쪽 */
+  right: auto;
+
+  background: rgba(230, 45, 45, 0.9);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 5;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* 품절 제외 체크 UI (modern shopping mall style) */
+.hide-soldout-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;               /* 체크박스와 글자 간격 */
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+
+  font-size: 14px;
+  color: #444;
+  user-select: none;
+
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.hide-soldout-check:hover {
+  background: #f4f4f7;    /* 은은한 회색 배경 */
+}
+
+/* 체크박스 스타일 보정 */
+.hide-soldout-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #7a5cff;  /* 테마 컬러 (보라색 강조) */
+}
+.title-and-search-wrapper {
+    display: flex;
+    justify-content: space-between; /* 제목은 왼쪽, 검색창은 오른쪽 끝에 배치 */
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-bottom: 20px; /* 정렬 버튼과의 간격 */
+}
+
+/* 기존 제목 스타일 (수정) */
+.goods-list-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0; /* 부모 래퍼(title-and-search-wrapper)가 간격을 관리하므로 0으로 설정 */
+    color: #333;
+}
+
+/* 기존 검색 폼 스타일 (재사용) */
+.store-search-form {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    max-width: 250px; /* 작은 사이즈 유지 */
+    transition: all 0.3s ease;
+}
+
+.search-input-small {
+    padding: 8px 15px;
+    border: none;
+    background: transparent;
+    outline: none;
+    flex-grow: 1;
+    font-size: 0.9em;
+    color: #333;
+    width: calc(100% - 40px);
+}
+
+.search-input-small::placeholder {
+    color: #bbb;
+}
+
+/* 검색 아이콘 버튼 */
+.search-icon-button {
+    background-color: transparent; /* 배경 투명 */
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1.2em; /* 아이콘 크기 */
+    color: #777;
+    transition: color 0.2s ease;
+}
+
+.search-icon-button:hover {
+    color: #555;
+}
+
+
+/* store-menu 오른쪽에 고정된 장바구니 찜목록 등 */
+.store-container-wrapper{
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.store-menu{
+    margin-top: 110px;
+    margin-left: 50px;
+}
+
+.store_bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/store_bg.png');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 40vh;
 }

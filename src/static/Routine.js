@@ -1,4 +1,3 @@
-import axiosInstance from "../utils/axiosInstance"
 import requestHandler from "../utils/requestHandler"
 
 const getRoutine = async (requestDate)=>{

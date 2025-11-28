@@ -1,19 +1,17 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import Mainpage from "./pages/Mainpage";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
+import Signup from "./pages/auth/Signup";
+import Login from "./pages/auth/Login";
 import Analyze from "./pages/analyze/Analyze";
 import Mypage from "./pages/mypage/Mypage";
-import Orders from "./pages/mypage/Orders";
 import Review from "./pages/mypage/Review";
 import Userinfo from "./pages/mypage/Userinfo";
 import History from "./pages/mypage/History";
 import Routine from "./pages/mypage/Routine";
-import Medslist from "./pages/Medslist";
 import MyDrugs from "./pages/mypage/MyDrugs";
 import MedicinePage from "./pages/analyze/MedicinePage";
 import SupplementPage from "./pages/analyze/SupplementPage";
-import SignupComplete from "./pages/SignupComplete"
+import SignupComplete from "./pages/auth/SignupComplete";
 import AnalyzeResult from "./pages/analyze/AnalyzeResult";
 import AdminPage from "./pages/admin/AdminPage";
 import ProductManage from "./pages/admin/ProductManage";
@@ -35,15 +33,27 @@ import Reviews from "./pages/store/Reviews";
 import PaySuccess from "./pages/order/PaySuccess";
 import PayFail from "./pages/order/PayFail";
 import { AdminRoute } from "./hooks/AdminRoute";
+import MyOrderList from "./pages/order/MyOrderList";
+import MyOrderDetail from "./pages/order/MyOrderDetail";
+import Cart from "./pages/store/Cart";
 import ContactUs from "./pages/store/ContactUs";
 import QnA from "./pages/store/QnA";
-
+import TermsOfService from "./pages/footer/TermsOfService";
+import PrivacyPolicy from "./pages/footer/privacyPolicy";
+import InquiryManage from "./pages/admin/InquiryManage";
+import InquiryList from "./pages/admin/InquiryList";
+import PendingList from "./pages/admin/PendingList";
+import UserCheck from "./pages/mypage/UserCheck";
+import UserProfileView from "./pages/mypage/UserProfileView";
+import PointHistory from "./pages/mypage/PointHistory";
 
 const Routers = () => {
 
   return (
     <>
       <Routes>
+        <Route path="/terms" element={<TermsOfService/>}/>
+        <Route path="/privacy" element={<PrivacyPolicy/>}/>
         <Route path="/" element={<Mainpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signupComplete" element={<SignupComplete/>} />
@@ -53,7 +63,6 @@ const Routers = () => {
           <Route path="supplement" element={<SupplementPage />} />
         </Route>
         <Route path="/analyze/result" element={<AnalyzeResult />} />
-        <Route path="/medslist" element={<Medslist />} />
         <Route path="/history" element={<History />} />
         <Route path="/history/detail/:id" element={<HistoryDetail />} />
 
@@ -61,10 +70,12 @@ const Routers = () => {
         <Route path="routine" element={<Routine />} />
 
         <Route path="/mypage" element={<Mypage />}>
-          <Route path="userinfo" element={<Userinfo />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="review" element={<Review />} />
+          <Route index element={<UserProfileView />} /> {/* 기본: 내정보 보기 + 포인트 요약 */}
+          <Route path="userinfo" element={<Userinfo />} /> {/* 회원정보 수정 페이지 */}
+          <Route path="usercheck" element={<UserCheck />} /> {/* 비밀번호 재확인 */}
+          <Route path="points" element= {<PointHistory />} /> {/* ㅗ인트 적립/사용 내역 */}
         </Route>
+        <Route path="/myReview" element={<Review />} />
 
         <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>}>
           <Route index element={<Navigate to="products" replace />} />   {/* 기본: 상품관리 */}
@@ -75,8 +86,19 @@ const Routers = () => {
             <Route path="soldout" element={<SoldoutManage />} /> {/* 품절 관리 */}
           </Route>
           <Route path="order" element={<OrderHistory />} />
+          <Route path="inquiry" element={<InquiryManage />}> {/* 문의 관리 */}
+            <Route index element={<Navigate to="qna" replace />} />
+            {/* 상품 문의 */}
+            <Route path="qna" element={<InquiryList source="qna" />} />
+            <Route path="qna/pending" element={<PendingList source="qna" />} />
+
+            {/* 고객센터 문의 */}
+            <Route path="inquiry" element={<InquiryList source="inquiry" />} />
+            <Route path="inquiry/pending" element={<PendingList source="inquiry" />} />
+          </Route>
         </Route>
         <Route path="/store" element={<Store />} >
+          <Route path="cart" element={<Cart/>} />
           <Route path="allgoods" element={<Allgoods />}/>
           <Route path="functionality" element={<Functionality />}/>
           <Route path="ingredient" element={<Ingredient />}/>
@@ -87,9 +109,11 @@ const Routers = () => {
             <Route path="review" element={<Reviews />} />
             <Route path="qna" element={<QnA/>}/>
           </Route>
-          <Route path="contactUs" element={<ContactUs />} />
         </Route>
+        <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/orders" element={<OrderSheet />} />
+        <Route path="/myOrderList" element={<MyOrderList />} />
+        <Route path="/myOrderDetail" element={<MyOrderDetail />} />
         <Route path="/success" element={<PaySuccess />} />
         <Route path="/fail" element={<PayFail />} />
       </Routes>

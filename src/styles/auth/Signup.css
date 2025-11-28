@@ -1,0 +1,105 @@
+/* 전체 페이지 wrapper */
+.signup-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e6f2ff; /* 연한 파랑 배경 */
+  padding-top: 80px;    /* 위쪽 여백 살짝 증가 */
+  padding-bottom: 80px; /* 아래쪽 여백 */
+  box-sizing: border-box;
+}
+
+/* 폼 박스 */
+.signup-form {
+  background: #ffffff;
+  padding: 28px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  max-width: 450px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 제목 */
+.signup-form h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #333333; /* 진한 회색 */
+}
+
+/* 입력 그룹 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+/* 라벨 */
+.form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333; /* 진한 회색 */
+  margin-bottom: 6px;
+}
+
+/* input */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #99ccff; /* 연한 파랑 테두리 */
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #f0f8ff; /* 아주 연한 파랑 */
+  color: #333333; /* 글씨 진한 회색 */
+}
+
+/* select */
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #99ccff;
+  border-radius: 8px;
+  background-color: #f0f8ff;
+  color: #333333;
+  box-sizing: border-box;
+}
+
+/* 버튼 */
+.signup-btn {
+  width: 100%;
+  padding: 12px 0;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff; /* 버튼 글씨 흰색 */
+  background: linear-gradient(90deg, #99ccff, #66b3ff); /* 연한 파랑 그라데이션 */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.signup-btn:disabled {
+  background-color: #cce6ff; /* 아주 연한 파랑 */
+  cursor: not-allowed;
+}
+
+.signup-btn:hover:enabled {
+  background: linear-gradient(90deg, #66b3ff, #3399ff);
+  transform: translateY(-1px);
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .signup-page-wrapper {
+    padding: 60px 16px;
+  }
+  .signup-form {
+    padding: 20px 24px;
+  }
+}

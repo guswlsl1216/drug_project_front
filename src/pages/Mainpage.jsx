@@ -15,7 +15,7 @@ function Mainpage() {
   const pillRef = useRef(null);
 
  useEffect(() => {
-    const maxLineHeight = 5600; // 선이 최대 내려갈 픽셀값 (원하면 조정)
+    const maxLineHeight = 5000; // 선이 최대 내려갈 픽셀값 (원하면 조정)
     const scrollRange = 5000;   // 시작~끝 스크롤 범위 (원하면 조정)
 
     const onScroll = () => {
@@ -109,7 +109,7 @@ function Mainpage() {
           }
         });
       },
-      { threshold: 0.9 } // 요소 25% 보이면 활성화
+      { threshold: 0.6 } // 요소 60% 보이면 활성화
     );
 
     els.forEach((el) => obs.observe(el));
@@ -119,17 +119,15 @@ function Mainpage() {
 
   return (
     <>
-      <main className="wrapper">
+      <main className="wrapper2">
         <section className="main_contents">
           <div className="main_text">
             <p className="sub_title">안전한 의약품 관리의 시작</p>
             <h1 className="main_title">Medi.Check!</h1>
             <p className="scroll_text">아래로 스크롤 하여 탐색하기</p>
             <div className="scroll_arrow">
-              <img src={ExpandArrow} 
-              alt="스크롤 안내" 
-              className="scroll_img" />
-              </div>
+              <img src={ExpandArrow} alt="스크롤 안내" className="scroll_img" />
+            </div>
             <div className="pill_wrapper" ref={pillRef}>
               <div className="pill_top">
                 <img src={Rectangle20} alt="pill top" />
@@ -141,41 +139,44 @@ function Mainpage() {
               <div className="pill_line" />
 
               <div className="pill_drops" aria-hidden="true">
-              <span className="drop d1" />
-              <span className="drop d2" />
-              <span className="drop d3" />
-              <span className="drop d4" />
-              <span className="drop d5" />
-              <span className="drop d6" />
-              <span className="drop d7" />
-              <span className="drop d8" />
-              <span className="drop d9" />
-              <span className="drop d10" />
-              <span className="drop d11" />
-              <span className="drop d12" />
-              <span className="drop d13" />
-              <span className="drop d14" />
-              <span className="drop d15" />
-              <span className="drop d16" />
-              <span className="drop d17" />
-              <span className="drop d18" />
-              <span className="drop d19" />
-              <span className="drop d20" />
-            </div>
+                <span className="drop d1" />
+                <span className="drop d2" />
+                <span className="drop d3" />
+                <span className="drop d4" />
+                <span className="drop d5" />
+                <span className="drop d6" />
+                <span className="drop d7" />
+                <span className="drop d8" />
+                <span className="drop d9" />
+                <span className="drop d10" />
+                <span className="drop d11" />
+                <span className="drop d12" />
+                <span className="drop d13" />
+                <span className="drop d14" />
+                <span className="drop d15" />
+                <span className="drop d16" />
+                <span className="drop d17" />
+                <span className="drop d18" />
+                <span className="drop d19" />
+                <span className="drop d20" />
+              </div>
             </div>
           </div>
         </section>
-        <section className="intro">
-        </section>
+        <section className="intro"></section>
         <section className="info">
           <div className="info_section">
             <div className="info_contents info_left_sec1">
               <div className="info_text_box">
                 <h2>STEP.01</h2>
-                <h2>사진 인식을 통해 의약품을 체크합니다</h2>
-                <p>여러 약물의 성분을 동시에 검색하고 분석하여 약물 간 상호작용을 확인할 수 있습니다. 위험, 주의, 양호 등급으로 명확하게 안내합니다.</p>
+                <h2>
+                  <strong>사진 인식</strong>을 통해 의약품을 체크합니다
+                </h2>
+                <p>
+                  여러 약물의 성분을 동시에 검색하고 분석하여 약물 간 상호작용을 확인할 수 있습니다.
+                  위험, 주의, 양호 등급으로 명확하게 안내합니다.
+                </p>
               </div>
-              
             </div>
             <div className="info_contents info_right_sec1">
               <img src={step1} alt="" srcset="" />
@@ -185,13 +186,17 @@ function Mainpage() {
           <div className="info_section">
             <div className="info_contents info_left_sec2">
               <img src={step2} alt="" srcset="" />
-              
             </div>
             <div className="info_contents info_right_sec2">
               <div className="info_text_box">
                 <h2>STEP.02</h2>
-                <h2>의약품 및 영양제를 비교, 분석합니다</h2>
-                <p>의약품들과 영양제의 성분을 분석하여 약물 간 상호작용을 확인할 수 있습니다. 위험, 주의, 양호  등급으로 명확하게 안내합니다. </p>
+                <h2>
+                  의약품 및 영양제를 <strong>비교, 분석</strong>합니다
+                </h2>
+                <p>
+                  의약품들과 영양제의 성분을 분석하여 약물 간 상호작용을 확인할 수 있습니다. 위험,
+                  주의, 양호 등급으로 명확하게 안내합니다.{" "}
+                </p>
               </div>
             </div>
           </div>
@@ -199,8 +204,13 @@ function Mainpage() {
             <div className="info_contents info_left_sec3">
               <div className="info_text_box">
                 <h2>STEP.03</h2>
-                <h2>복용 루틴을 체크하세요</h2>
-                <p>매일 먹는 약과 영양제를 기록하고 관리할 수 있습니다. 복용 시간을 놓치지 않도록 알림을 받고, 건강한 습관을 만들어가세요.</p>
+                <h2>
+                  <strong>복용 루틴</strong>을 체크하세요
+                </h2>
+                <p>
+                  매일 먹는 약과 영양제를 기록하고 관리할 수 있습니다. 복용 시간을 놓치지 않도록
+                  알림을 받고, 건강한 습관을 만들어가세요.
+                </p>
               </div>
             </div>
             <div className="info_contents info_right_sec3">
@@ -219,8 +229,13 @@ function Mainpage() {
             <div className="info_contents info_right_sec4">
               <div className="info_text_box">
                 <h2>STEP.04</h2>
-                <h2>내가 먹는 성분과 비교하며 구매하세요</h2>
-                <p>Medi.Check의 성분분석 기능이 포함된 쇼핑몰에서 내가 복용하는 성분과 비교하며 안전하게 구매하세요.</p>
+                <h2>
+                  내가 먹는 성분과 <strong>비교하며 구매</strong>하세요
+                </h2>
+                <p>
+                  Medi.Check의 성분분석 기능이 포함된 쇼핑몰에서 내가 복용하는 성분과 비교하며
+                  안전하게 구매하세요.
+                </p>
               </div>
             </div>
           </div>

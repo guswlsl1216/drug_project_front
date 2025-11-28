@@ -65,51 +65,8 @@
 
 .history_pagination {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   padding: 20px;
-}
-
-.history_pagination_list {
-  display: flex;
-  gap: 10px;
-}
-
-.history_pagination_list > li {
-  padding: 5px 10px;
-  border-radius: 4px;
-  min-width: 35px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.history_pagination_list > li:hover {
-  background-color: #f0f0f0;
-  border-color: #aaa;
-  transition: background-color 0.2s;
-}
-
-.history_active {
-  color: #fff;
-  background-color: coral;
-  border-color: coral;
-  font-weight: bold;
-}
-
-.history_pagination_list > .history_active:hover {
-  background-color: coral;
-  border-color: coral;
-}
-
-.history_pagination_prev,
-.history_pagination_next {
-  font-weight: bold;
-  color: #666;
-}
-
-.history_pagination_prev:hover,
-.history_pagination_next:hover {
-  background-color: #fff;
-  color: coral;
 }
 
 .no_history {
@@ -118,13 +75,11 @@
   align-items: center; /* 가로 중앙 정렬 */
   justify-content: center; 
   padding: 60px 20px;
-  margin-top: 50px;
+  margin: 50px auto;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   background-color: #f9f9f9; 
   max-width: 480px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .no_history_title {

@@ -1,4 +1,5 @@
 import { useOutletContext } from "react-router-dom";
+import "../../styles/Store.css";
 
 
 const ProductDescription = () => {

@@ -3,15 +3,29 @@ import requestHandler from "../../utils/requestHandler";
 import "../../styles/analyze/DrugInfo.css"
 import LoadingSpinner from "../../utils/LoadingSpinner";
 import {useRef} from "react";
+import { useLocation } from "react-router-dom";
+
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 const ImageUrlKey = "ORIGINAL_IMAGE_URL";
 
-const loadImageUrl = () => {
-  return sessionStorage.getItem(ImageUrlKey) || null;
+const loadImageUrl = (result) => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+  const detailPathRegex = /^\/history\/detail\/\d+$/;
+  const isDetailPage = detailPathRegex.test(currentPath);
+
+  let imageUrl = sessionStorage.getItem(ImageUrlKey) || null;
+  
+  if (isDetailPage) {
+    imageUrl = `${BASE_URL}${result.image_url}`;
+  };
+
+  return imageUrl;
 };
 
-const DrugImageCropper = ({box}) => {
+const DrugImageCropper = ({box, result}) => {
   const canvasRef = useRef(null);
-  const originalImageUrl = loadImageUrl(); // 세션에서 원본 URL 로드
+  const originalImageUrl = loadImageUrl(result); // 세션에서 원본 URL 로드
 
   const coordinates = Array.isArray(box)
     ? box
@@ -62,13 +76,13 @@ const DrugImageCropper = ({box}) => {
 
   // 원본 URL이 없거나 좌표가 이상하면 대체 UI를 표시
   if (!originalImageUrl || !coordinates || coordinates.length !== 4) {
-    return <p className="meds_box_image">이미지 없음</p>;
+    return '';  // 이미지 분석으로 등록하지 않은 의약품 대응
   }
 
   return <canvas ref={canvasRef} className="meds_box_image" />;
 };
 
-const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox  }) => {
+const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox, result  }) => {
   const [drugData, setDrugData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -189,13 +203,16 @@ const DrugInfo = ({ isOpen, setIsOpen, drugId, drugType, drugBox  }) => {
                   <p className="drug_info_close_btn" onClick={closePopup}>
                     ×
                   </p>
-                  <h2>약 상세</h2>
+                  <h2>{drugType == 0 ? '의약품' : '영양제'} 상세</h2>
                 </div>
                 {drugType == 0 && (
                   <div className="drugInfo_image_container">
                     {" "}
                     {/* 이미지를 담을 컨테이너 추가 */}
-                    <DrugImageCropper box={drugBox} />
+                    <DrugImageCropper
+                      box={drugBox}
+                      result={result}
+                    />
                   </div>
                 )}
                 <div className="drugInfo_box">

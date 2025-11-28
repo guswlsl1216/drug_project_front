@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/MyDrugs.css";
 import requestHandler from "../../utils/requestHandler";
-import UseNavi from "../../utils/UseNavi";
-import { useUser } from "../../components/context/UserContext"; 
 import useLoginRedirect from "../../utils/useLoginRedirect";  
 
 
 const MedInput = ( {setActiveTab, loadDrugs }) => {
-  const { isLoggedIn } = useUser();         // ✅ 로그인 상태 확인
   const { requireLogin } = useLoginRedirect(); 
 
   const [titleInput, settitleInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const {goTo} = UseNavi();
 
   useEffect(() => {
     requireLogin(() => {
@@ -203,6 +199,7 @@ const MedInput = ( {setActiveTab, loadDrugs }) => {
                     onClick={handleSave}
                     className="action-btn"
                     disabled={loading} 
+                    handleSave={handleSave}
                   >
                   저장하기</button>
                 </div>

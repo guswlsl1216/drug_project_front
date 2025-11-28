@@ -8,7 +8,7 @@ import useLoginRedirect from "../../utils/useLoginRedirect";
 import LoadingSpinner from "../../utils/LoadingSpinner";
 
 const PaySuccess = () => {
-  const { goIndex, goTo } = UseNavi();
+  const { goTo } = UseNavi();
   const { requireLogin } = useLoginRedirect();
   const [loading, setLoading] = useState(false);
   
@@ -21,7 +21,7 @@ const PaySuccess = () => {
   const [tossData, setTossData] = useState(null);
   
   // 주문 내역 미리보기 (개수 조절)
-  const DISPLAY_LIMIT = 1; // 화면에 보여줄 주문 목록 개수
+  const DISPLAY_LIMIT = 3; // 화면에 보여줄 주문 목록 개수
 
   const itemsToDisplay = useMemo(() => {
     if (!orderItems) return [];
@@ -50,7 +50,6 @@ const PaySuccess = () => {
           payload: requestData,
           setLoading,
           onSuccess: (data) => {
-            console.log(data)
             setTossData(data)
             setOrderItems(data.order_items)
           },
@@ -74,41 +73,45 @@ const PaySuccess = () => {
               !tossData || loading ? LoadingSpinner({ size:80 })
               : (
                 <>
-                <div className="payments_title">
-                  <h2 className="paySuccess_title">결제가 완료되었습니다</h2>
-                </div>
-                <dl className="payments_description">
-                  <dt>주문번호</dt>
-                  <dd>{tossData.order_code}</dd>
-                  <dt>결제 금액</dt>
-                  <dd>{tossData.final_amount.toLocaleString()}원</dd>
-                </dl>
-                <div className="order_items_list">
-                  <h3>주문 상품</h3>
-                  {
-                    itemsToDisplay.map((item) => (
-                      <div key={item.id} className="order_item_card">
-                        <p className="item_name">{item.goods.name}</p>
-                        <p className="item_details">
-                          {item.goods.price.toLocaleString()}원 / {item.count}개
-                        </p>
-                      </div>
-                    ))
-                  }
-                  {
-                    remainingItemsCount > 0 &&
-                    <button 
-                      className="view_more_link" 
-                      onClick={() => alert('주문내역 페이지 이동')}
-                    >
-                      외 {remainingItemsCount}건 더 보기
-                    </button>
-                  }
-                </div>
-                <div className="payments_btn">
-                  <Button variant="secondary" onClick={() => goTo("/store/allgoods")}>쇼핑 계속하기</Button>
-                  <Button variant="primary" onClick={() => alert('주문내역 페이지 이동')}>주문 내역</Button>
-                </div>
+                  <div className="payments_title">
+                    <h2 className="paySuccess_title">결제가 완료되었습니다</h2>
+                  </div>
+                  <dl className="payments_description">
+                    <dt>주문번호</dt>
+                    <dd>{tossData.order_code}</dd>
+                    <dt>결제 금액</dt>
+                    <dd>{tossData.final_amount.toLocaleString()}원</dd>
+                  </dl>
+                  <div className="order_items_list">
+                    <h3>주문 상품</h3>
+                    {
+                      itemsToDisplay.map((item) => (
+                        <div key={item.id} className="order_item_card">
+                          <p className="item_name">{item.goods.name}</p>
+                          <p className="item_details">
+                            {item.goods.price.toLocaleString()}원 / {item.count}개
+                          </p>
+                        </div>
+                      ))
+                    }
+                    {
+                      remainingItemsCount > 0 &&
+                      <button 
+                        className="view_more_link" 
+                        onClick={() => goTo("/myOrderDetail", {
+                          order: {
+                            order_id: tossData.order_id
+                          }
+                        })}
+                      >
+                        외 {remainingItemsCount}건 더보기
+                      </button>
+                    }
+                  </div>
+                  <div className="payments_btn">
+                    <Button variant="secondary" onClick={() => goTo("/store/allgoods")}>쇼핑 계속하기</Button>
+                    <Button variant="primary" onClick={() => goTo("/myOrderList")}>주문 내역</Button>
+                  </div>
                 </>
               )}
           </section>

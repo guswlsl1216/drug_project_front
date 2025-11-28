@@ -1,0 +1,347 @@
+/* 🔹 헤더 아래 전체 영역 (연두색 배경) */
+.myorder-detail-page {
+  min-height: calc(100vh - 80px);    /* 적당히 헤더 높이 뺀 값 (대충 80px) */
+  padding: 65px 0 40px;              /* 위/아래 여백 – 헤더랑 적당히 띄우기 */
+  box-sizing: border-box;
+}
+
+/* 전체 래퍼 */
+.myorder-detail {
+  max-width: 900px;
+  background-color: #f5f6f8; 
+  margin: 0 auto; /* ← 40px → 0 으로 변경 */
+  padding: 40px 20px;
+  min-height: 70vh;
+  border-radius: 12px;  
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", sans-serif;
+}
+
+/* 로딩 상태 */
+.myorder-detail.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 페이지 타이틀 */
+.myorder-detail__title {
+  margin-top: 0; 
+  margin-bottom: 16px;
+
+  /* 추가 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.myorder-detail__title-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* 주문번호 영역 */
+.myorder-detail__ordercode {
+  margin-bottom: 20px;
+}
+
+.ordercode-title {
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ordercode-number {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background-color: #e5e7eb;
+}
+
+/* 공통 섹션 박스 */
+.myorder-detail__section {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 18px 18px 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  border: 1px solid #e5e7eb;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+/* 주문 상품 리스트 */
+.order-products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.order-product-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+}
+
+.order-product-thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #f3f4f6;
+}
+
+.order-product-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.order-product-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.order-product-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.order-product-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.order-product-count {
+  font-size: 12px;
+  color: #6b7280;
+  margin-left: 4px;
+}
+
+/* 배송지 정보 */
+.order-address-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.address-name {
+  font-size: 14px;
+  color: #111827;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.address-phone {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.address-full {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.zipcode {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+/* 결제 정보 박스 */
+.order-payment-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.payment-label {
+  color: #6b7280;
+}
+
+.payment-value {
+  color: #111827;
+  font-weight: 600;
+}
+
+/* 주문금액(총액)은 조금 더 강조 */
+.order-payment-box .payment-row:first-child .payment-value {
+  font-size: 15px;
+  color: #2563eb;
+}
+
+/* 포인트 혜택 섹션 박스 */
+.os-point-benefit {
+  margin-top: 16px;
+}
+
+/* 내부 박스 */
+.os-point-benefit-box {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 한 줄 구조 */
+.os-point-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+/* 왼쪽 라벨 */
+.os-point-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* 오른쪽 값 */
+.os-point-value {
+  font-weight: 700;
+  color: #2563eb; /* 파란색 포인트 강조 */
+  font-size: 15px;
+}
+
+.back-to-list-btn {
+  background: #f1f3f5;
+  border: 1px solid #d0d4d8;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.back-to-list-btn:hover {
+  background: #e9ecef;
+}
+
+/* 반응형 (모바일) */
+@media (max-width: 600px) {
+  .myorder-detail-page {
+    padding: 60px 0 30px;          /* 헤더랑 간격 살짝 줄이되 여유 있게 */
+  }
+
+  .myorder-detail {
+    margin: 20px auto 30px;
+    padding: 16px 12px 24px;
+  }
+
+  .myorder-detail__title {
+    flex-direction: row; /* 한 줄 유지 (기본값이라 생략해도 됨) */
+    /* 혹은 세로로 쌓고 싶으면 column 으로 바꾸면 됨 */
+  }
+
+  .myorder-detail__title-text {
+    font-size: 20px;
+  }
+
+  /* 주문번호 영역 조금 더 컴팩트하게 */
+  .myorder-detail__ordercode {
+    margin-bottom: 14px;
+  }
+
+  .ordercode-title {
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .ordercode-number {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+
+  .myorder-detail__section {
+    padding: 14px 12px 12px;
+    margin-bottom: 12px;
+  }
+
+  /* 주문 상품 카드 */
+  .order-products {
+    gap: 8px;
+  }
+
+  .order-product-item {
+    padding: 8px;
+  }
+
+  .order-product-thumb {
+    width: 64px;
+    height: 64px;
+  }
+
+  .order-product-info {
+    gap: 2px;
+  }
+
+  .order-product-name {
+    font-size: 13px;
+    word-break: keep-all;   /* 긴 상품명 줄바꿈 자연스럽게 */
+  }
+
+  .order-product-price {
+    font-size: 12px;
+  }
+
+  /* 배송지 텍스트 살짝 축소 */
+  .address-name {
+    font-size: 13px;
+  }
+
+  .address-phone,
+  .address-full,
+  .zipcode {
+    font-size: 12px;
+  }
+
+  .payment-row {
+    font-size: 12px;
+  }
+
+  .payment-label {
+    padding-right: 4px;   /* 라벨/값 붙는 느낌 살짝 떼기 */
+  }
+
+  .payment-value {
+    padding-left: 4px;
+  }
+
+  .order-payment-box .payment-row:first-child .payment-value {
+    font-size: 14px;
+  }
+}

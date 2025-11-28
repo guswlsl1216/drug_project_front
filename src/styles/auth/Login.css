@@ -1,0 +1,110 @@
+/* 로그인 페이지 전체 중앙 배치 */
+.login-fixed-center {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e9f7ef 0%, #ffffff 100%);
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+/* 로그인 박스 */
+.login-container {
+  background: #ffffff;
+  padding: 32px 36px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+  max-width: 360px;
+  width: 100%;
+  box-sizing: border-box;
+  animation: fadeUp 0.35s ease-out;
+}
+
+/* 로그인 제목 */
+.login-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #1f3c2f;
+}
+
+/* 로그인 폼 */
+.login-form {
+  width: 100%;
+}
+
+/* 폼 그룹 */
+.login-form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 라벨 */
+.login-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d4c3c;
+  margin-bottom: 8px;
+}
+
+/* input */
+.login-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #cdd5d0;
+  border-radius: 10px;
+  background: #fdfdfd;
+  transition: 0.25s;
+}
+
+.login-input:focus {
+  border-color: #2fa060;
+  box-shadow: 0 0 0 3px rgba(47, 160, 96, 0.18);
+  outline: none;
+}
+
+/* 로그인 버튼 */
+.login-btn {
+  width: 100%;
+  padding: 14px 0;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff !important;
+  background-color: #2fa060 !important; /* 영양제 그린 */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.login-btn:hover {
+  background-color: #249452 !important;
+  transform: translateY(-2px);
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .login-fixed-center {
+    padding: 60px 16px;
+  }
+  .login-container {
+    padding: 26px 24px;
+  }
+}
+
+/* 등장 애니메이션 */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
