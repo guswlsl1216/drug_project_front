@@ -396,7 +396,7 @@
   padding: 18px 16px 14px;
   width: 100%;
   max-width: 420px;
-  max-height: 72vh;
+  max-height: 50vh;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
   display: flex;
   flex-direction: column;
@@ -408,6 +408,31 @@
   margin: 0 0 6px 2px;
   font-size: 16px;
   font-weight: 700;
+}
+
+/* 주소 리스트 스크롤 영역 */
+.address-list-scroll {
+  /* ⬇ flex 아이가 빈 공간을 차지하게 */
+  flex: 1;
+  min-height: 0;
+
+  max-height: 100%;    /* 모달 안에서만 차지 */
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* 리스트 스크롤바 스타일 (선택) */
+.address-list-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.address-list-scroll::-webkit-scrollbar-thumb {
+  background: #c7c9d1;
+  border-radius: 4px;
+}
+
+.address-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9b9db0;
 }
 
 /* 개별 배송지 버튼 */
@@ -453,7 +478,7 @@
 
 /* 모달 하단 닫기 버튼 정렬 */
 .address-modal > button {
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 /* ===== 데스크톱 2-컬럼: 플렉스 레이아웃로 변경 ===== */
