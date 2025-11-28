@@ -205,6 +205,8 @@
   font-size: 15px;
 }
 
+
+
 /* summary가 표시되는 화면에서 카드가 summary에 가려지지 않게 오른쪽 여백 추가 */
 @media (max-width: 1500px) {
   .cart-item {

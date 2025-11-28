@@ -43,6 +43,7 @@
     "axios": "^1.12.2",
     "bootstrap": "^5.3.8",
     "browser-image-compression": "^2.0.2",
+    "framer-motion": "^12.23.24",
     "lucide-react": "^0.553.0",
     "openai": "^6.8.1",
     "react": "^19.1.1",

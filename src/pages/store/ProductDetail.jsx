@@ -10,7 +10,6 @@ import { useUser } from "../../components/context/UserContext";
 import LoadingSpinner from "../../utils/LoadingSpinner";
 import useLoginRedirect from "../../utils/useLoginRedirect";
 
-
 const ProductDetail = () => {
   const { triggerUpdate, triggerCartUpdate } = useOutletContext();
 
@@ -55,7 +54,6 @@ const ProductDetail = () => {
         url: `/goods/${goodsId}`,
         setLoading,
         onSuccess: (data) => {
-
           if (data && data.product) {
             const productData = data.product;
 
@@ -71,8 +69,8 @@ const ProductDetail = () => {
             setError(null); // 에러 초기화
             addRecentItem(productData);
           } else {
-            setProduct(null)
-            setIsFavorite(false)
+            setProduct(null);
+            setIsFavorite(false);
             setError("상품 데이터를 찾을 수 없습니다.");
           }
         },
@@ -80,8 +78,8 @@ const ProductDetail = () => {
           console.error("상품 상세 정보 로딩 오류:", err);
           setProduct(null);
           setError(msg || "상품 정보를 불러오는 데 실패했습니다.");
-        }
-      })
+        },
+      });
     };
     getInfo()
     ProductDetailandFavorite();
@@ -106,13 +104,13 @@ const ProductDetail = () => {
         // 재고 상태 : product.stock
         const maxStock = product?.stock || Infinity;
         return prevQuantity < maxStock ? prevQuantity + 1 : prevQuantity;
-      } else if (type === 'decrement') {
+      } else if (type === "decrement") {
         // 최소 수량 1 미만으로 감소 방지
         return prevQuantity > 1 ? prevQuantity - 1 : 1;
       }
       return prevQuantity;
-    })
-  }
+    });
+  };
 
   const totalPrice = (product?.price || 0) * quantity;
 
@@ -216,9 +214,7 @@ const ProductDetail = () => {
 
             {/* 가격 */}
             <div className="price-section">
-              <p className="product-price">
-                {product.price ? product.price.toLocaleString() : "가격 미정"}원
-              </p>
+              <p className="product-price">{product.price ? product.price.toLocaleString() : "가격 미정"}원</p>
               <p>배송비 기본 2,500원 / 2만원 이상 구매 시 무료</p>
               {isSoldOut && (
                 <p className="soldout-text">현재 이 상품은 품절 상태입니다.</p>
@@ -233,10 +229,7 @@ const ProductDetail = () => {
                   -
                 </button>
                 <span>{quantity}</span> {/* */}
-                <button
-                  onClick={() => handleQuantityChange("increment")}
-                  disabled={quantity >= (product?.stock || Infinity)}
-                >
+                <button onClick={() => handleQuantityChange("increment")} disabled={quantity >= (product?.stock || Infinity)}>
                   +
                 </button>
               </div>
@@ -291,10 +284,7 @@ const ProductDetail = () => {
               <NavLink to={`/store/detail/${goodsId}/review`} className={({ isActive }) => isActive ? 'tab-link active' : 'tab-link'}>
                 <h2 className="tab-title-only">리뷰({reviewInfo['length']})</h2>
               </NavLink>
-              <NavLink
-                to={`/store/detail/${goodsId}/qna`}
-                className={({isActive}) => (isActive ? "tab-link active" : "tab-link")}
-              >
+              <NavLink to={`/store/detail/${goodsId}/qna`} className={({ isActive }) => (isActive ? "tab-link active" : "tab-link")}>
                 <h2 className="tab-title-only">Q&A</h2>
               </NavLink>
             </nav>
@@ -320,6 +310,6 @@ const ProductDetail = () => {
       />
     </div>
   );
-}
+};
 
 export default ProductDetail;
