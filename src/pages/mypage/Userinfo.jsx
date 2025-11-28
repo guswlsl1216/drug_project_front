@@ -9,7 +9,7 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const Userinfo = () => {
   const {user, loading, verified, setUser} = useUser();
-  const {goTo} = UseNavi();
+  const {goTo, goIndex} = UseNavi();
   const preVerfied = location.state?.verified ?? false;
 
   const [localVerified, setLocalVerified] = useState(preVerfied);
@@ -132,7 +132,7 @@ const Userinfo = () => {
       // 로그아웃 시키기
       setUser(null);
 
-      goTo("/login");
+      goIndex();
     } catch (error) {
       alert(error?.response?.data?.message || "탈퇴 실패!");
     }

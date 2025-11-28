@@ -1,9 +1,21 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import '../../styles/mainbg.css'
 import '../../styles/analyze.css'
+import { useEffect } from 'react';
 // 복용 약 & 영양제 분석 페이지
 
+const MedicineDataKey = "MEDICINE_LIST_TO_SEND";
+const SupplementDataKey = "SUPPLEMENT_LIST_TO_SEND";
+
 const Analyze = () => {
+  // 분석 요청 의약품/영양제 클린업
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem(MedicineDataKey);
+      sessionStorage.removeItem(SupplementDataKey);
+    };
+  }, []);
+
   return (
     <>
       <div className="wrapper">
@@ -26,12 +38,6 @@ const Analyze = () => {
               className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
             >
               영양제
-            </NavLink>
-            <NavLink
-              to="/analyze/result"
-              className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
-            >
-              분석결과
             </NavLink>
           </nav>
 
