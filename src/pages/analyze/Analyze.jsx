@@ -10,7 +10,7 @@ const Analyze = () => {
         <section className="main_bg">
           <div className="bg_text">
             <h1 className="bg_main_title">AI 분석 페이지</h1>
-            <p className="bg_sub_title">AI가 분석합니다.</p>
+            <p className="bg_sub_title">의약품을 사진으로 쉽게 분석해서 위험도를 체크하세요.</p>
           </div>
         </section>
         <section className="analyze-tab-contents">

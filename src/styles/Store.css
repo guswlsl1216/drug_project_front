@@ -3,9 +3,9 @@
  * ========================================================================= */
 .store-container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 40px 0px 40px 20px;
     font-family: "Pretendard", "Noto Sans KR", sans-serif;
 }
 
@@ -797,4 +797,18 @@
 
 .search-icon-button:hover {
     color: #555;
+}
+
+
+/* store-menu 오른쪽에 고정된 장바구니 찜목록 등 */
+.store-container-wrapper{
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.store-menu{
+    margin-top: 110px;
+    margin-left: 50px;
 }
