@@ -513,22 +513,24 @@ const OrderSheet = () => {
           <div className="address-modal-backdrop">
             <div className="address-modal">
               <h4>배송지 선택</h4>
-              {addressList.length === 0 ? (
-                <p>사용 가능한 배송지가 없습니다.</p>
-              ) : (
-                addressList.map((addr, idx) => (
-                  <button
-                    key={idx}
-                    className="address-item"
-                    onClick={() => handleSelectAddress(addr)}
-                  >
-                    <div>{addr.receiver} / {addr.phone}</div>
-                    <div>{addr.zipcode} {addr.address}</div>
-                    <div>{addr.address_detail}</div>
-                    <div>{addr.address_extra}</div>
-                  </button>
-                ))
-              )}
+              <div className="address-list-scroll">
+                {addressList.length === 0 ? (
+                  <p>사용 가능한 배송지가 없습니다.</p>
+                ) : (
+                  addressList.map((addr, idx) => (
+                    <button
+                      key={idx}
+                      className="address-item"
+                      onClick={() => handleSelectAddress(addr)}
+                    >
+                      <div>{addr.receiver} / {addr.phone}</div>
+                      <div>{addr.zipcode} {addr.address}</div>
+                      <div>{addr.address_detail}</div>
+                      <div>{addr.address_extra}</div>
+                    </button>
+                  ))
+                )}
+              </div>
               <Button onClick={() => setShowAddressModal(false)}>닫기</Button>
             </div>
           </div>
