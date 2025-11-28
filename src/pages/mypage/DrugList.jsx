@@ -4,16 +4,7 @@ import { formatDateKorean } from '../../utils/dateFormatter';
 
 const DrugList = ({ meds, supps, onEdit, onRemove }) => {
 
-  const getTodayDate = () => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
   const ListItemCard = ({ item, type }) => {
-    const now = getTodayDate();
     
     return (
       <div className={`list-item ${type}`}>
