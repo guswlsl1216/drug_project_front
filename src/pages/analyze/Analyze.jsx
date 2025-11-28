@@ -1,16 +1,28 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import '../../styles/mainbg.css'
 import '../../styles/analyze.css'
+import { useEffect } from 'react';
 // 복용 약 & 영양제 분석 페이지
 
+const MedicineDataKey = "MEDICINE_LIST_TO_SEND";
+const SupplementDataKey = "SUPPLEMENT_LIST_TO_SEND";
+
 const Analyze = () => {
+  // 분석 요청 의약품/영양제 클린업
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem(MedicineDataKey);
+      sessionStorage.removeItem(SupplementDataKey);
+    };
+  }, []);
+
   return (
     <>
       <div className="wrapper">
         <section className="main_bg">
           <div className="bg_text">
-            <h1 className="bg_main_title">AI 분석 페이지</h1>
-            <p className="bg_sub_title">AI가 분석합니다.</p>
+            <h1 className="bg_main_title">스마트 분석</h1>
+            <p className="bg_sub_title">의약품/영양제의 성분을 기준으로 안전 여부를 알려드립니다.</p>
           </div>
         </section>
         <section className="analyze-tab-contents">
@@ -26,12 +38,6 @@ const Analyze = () => {
               className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
             >
               영양제
-            </NavLink>
-            <NavLink
-              to="/analyze/result"
-              className={({isActive}) => `supplement-tab${isActive ? " active" : ""}`}
-            >
-              분석결과
             </NavLink>
           </nav>
 

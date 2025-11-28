@@ -1,0 +1,137 @@
+.point-wrapper {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 12px 60px;
+}
+
+/* 상단 보유 포인트 박스 */
+.point-top-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 22px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  margin-bottom: 30px;
+}
+
+.point-top-box h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.point-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #007bff;
+  margin-top: 6px;
+}
+
+.point-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* 리스트 기본 */
+.point-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.point-item {
+  padding: 14px 4px;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.point-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.point-date {
+  font-size: 13px;
+  color: #666;
+}
+
+.point-desc {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* 👉 여기서 187 두 줄로 나뉘게 정리 */
+.point-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 90px;
+  gap: 2px;
+  text-align: right;
+}
+
+.point-amount {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.point-amount.plus {
+  color: #007bff;
+}
+
+.point-amount.minus {
+  color: #e03131;
+}
+
+/* 빈 상태 */
+.point-empty {
+  text-align: center;
+  font-size: 15px;
+  color: #777;
+  padding: 40px 0;
+}
+
+/* 페이지네이션 주변 여백만 살짝 */
+.point-wrapper .pagination-wrapper {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* 📱 반응형 */
+@media (max-width: 600px) {
+  .point-wrapper {
+    padding: 24px 10px 40px;
+  }
+
+  .point-top-box {
+    padding: 16px 16px;
+  }
+
+  .point-value {
+    font-size: 22px;
+  }
+
+  .point-item {
+    padding: 12px 0;
+  }
+
+  .point-desc {
+    font-size: 14px;
+  }
+
+  .point-right {
+    min-width: 80px;
+  }
+
+  .point-amount {
+    font-size: 14px;
+  }
+
+  .point-balance {
+    font-size: 12px;
+  }
+}

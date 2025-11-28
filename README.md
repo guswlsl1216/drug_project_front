@@ -301,12 +301,26 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### 4. Flask 실행
+#### 4. 모델 설치
+##### 필수 설정: 모델 파일 다운로드
+
+본 프로젝트는 용량 문제로 학습된 모델 파일을 Git에 포함하지 않습니다. 
+프로젝트를 실행하기 전에 반드시 아래 링크에서 모델 파일을 다운로드 받아주세요.
+
+###### 4-1. 모델 파일 정보
+| 파일명 | 크기 | 링크 |
+| :--- | :--- | :--- |
+| `finetuned_model_final.pt` | (모델 용량 예: 426.1MB) | [Google Drive 다운로드 링크](https://drive.google.com/file/d/1JHX1jN7_84vwbEv7afXqtdilKcH717oB/view?usp=sharing) 
+
+###### 4-2. 파일 위치
+다운로드 받은 `finetuned_model_final.pt` 파일을 프로젝트 루트 디렉토리의 **`\runs\detect\train\weights\`** 폴더 안에 위치시켜야 합니다.
+
+#### 5. Flask 실행
 ```
 flask run
 ```
 
-#### 5. .env 예시
+#### 6. .env 예시
 ```
 VITE_SERVER_URL=http://localhost:5000
 VITE_OPENAI_API_KEY=your_open_ai_secret

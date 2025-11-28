@@ -179,12 +179,12 @@ const MyOrderDetail = () => {
           </div>
         </div>
 
-        <div className="myorder-detail__section point-benefit">
+        <div className="myorder-detail__section os-point-benefit">
           <h5 className="section-title">포인트 혜택</h5>
-          <div className="point-benefit-box">
-            <p className="point-row">
-              <span className="point-label">구매적립</span>
-              <strong className="point-value">
+          <div className="os-point-benefit-box">
+            <p className="os-point-row">
+              <span className="os-point-label">구매적립</span>
+              <strong className="os-point-value">
                 {order.saved_points.toLocaleString()}원
               </strong>
             </p>

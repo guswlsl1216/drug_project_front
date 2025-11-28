@@ -9,7 +9,7 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const Userinfo = () => {
   const {user, loading, verified, setUser} = useUser();
-  const {goTo} = UseNavi();
+  const {goTo, goIndex} = UseNavi();
   const preVerfied = location.state?.verified ?? false;
 
   const [localVerified, setLocalVerified] = useState(preVerfied);
@@ -120,21 +120,19 @@ const Userinfo = () => {
   };
 
   const handelDelete = async () => {
-    if (!window.confirm("정말 탈퇴하시겠습니까? ㄹㅇ? true?")) {
+    if (!window.confirm("정말 탈퇴하시겠습니까?")) {
       return;
     }
 
     try {
-      const res = await axiosInstance.post("/auth/withdraw");
+      const res = await axiosInstance.delete("/auth/delete");
 
       alert("탈퇴 요청이 완료되었습니다.");
-
-      localStorage.removeItem("token");
 
       // 로그아웃 시키기
       setUser(null);
 
-      goTo("/login");
+      goIndex();
     } catch (error) {
       alert(error?.response?.data?.message || "탈퇴 실패!");
     }
@@ -214,12 +212,14 @@ const Userinfo = () => {
                 zipcode: data.postcode
               }));
             }}
+            enableExtra={false}
           />
         </div>
         
         <div className="button-container">
+        <button className="button gray" onClick={() => goTo("/mypage")}>취소</button>
         <button className="button" onClick={handleChange}>수정</button>
-        <button className="button" onClick={handelDelete}>삭제</button>
+        <button className="button" onClick={handelDelete}>탈퇴</button>
         </div>
 
       </div>

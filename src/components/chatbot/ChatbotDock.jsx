@@ -71,7 +71,7 @@ const ChatbotDock = ({open, onClose, messages, setMessages, onNewChat}) => {
     <div className="dock">
       <header className="dock__header">
         <div className="dock__title">
-          <h1>영양제·경구약 AI 챗봇</h1>
+          <h1>영양제·의약품 AI 챗봇</h1>
         </div>
         <div className="dock__actions">
           <button className="icon-btn" aria-label="새 대화" onClick={onNewChat} >
