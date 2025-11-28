@@ -9,8 +9,8 @@ const Analyze = () => {
       <div className="wrapper">
         <section className="main_bg">
           <div className="bg_text">
-            <h1 className="bg_main_title">AI 분석 페이지</h1>
-            <p className="bg_sub_title">의약품을 사진으로 쉽게 분석해서 위험도를 체크하세요.</p>
+            <h1 className="bg_main_title">스마트 분석</h1>
+            <p className="bg_sub_title">의약품/영양제의 성분을 기준으로 안전 여부를 알려드립니다.</p>
           </div>
         </section>
         <section className="analyze-tab-contents">

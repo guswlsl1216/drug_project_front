@@ -58,6 +58,23 @@ const MedicinePage = () => {
     loadMedicineList()
   );
 
+  const [bubbleStatus, setBubbleStatus] = useState("bubble_idle");
+
+  const bubbleMessage = {
+    bubble_idle: "AI가 사진 속 제품이 무엇인지 판별해요!",
+    bubble_loading: "AI가 제품을 인식 중이에요…",
+    bubble_done: "제품 인식 완료!",
+    hide: "제품 인식 완료!"
+  }[bubbleStatus];
+
+  useEffect(() => {
+    if (bubbleStatus === "bubble_done") {
+      setTimeout(() => {
+        setBubbleStatus("hide");
+      }, 2000);
+    }
+  }, [bubbleStatus]);
+
   useEffect(() => {
     // 탭 이동이나 다른 페이지로 이동하여 컴포넌트가 언마운트될 때 호출됨
     return () => {
@@ -138,6 +155,8 @@ const MedicinePage = () => {
         return;
     }
 
+    setBubbleStatus("bubble_loading");
+
     if (medicineImage) {
       saveImageUrl(medicineImage);
     }
@@ -160,6 +179,7 @@ const MedicinePage = () => {
         setRecognizedMedicines(newMedicines);
         console.log("인식된 약물 목록 업데이트 완료:", newMedicines);
         alert("이미지 분석 및 목록 업데이트가 완료되었습니다.");
+        setBubbleStatus("bubble_done");
       } else {
         // 탐지 결과가 없을 경우
         alert("이미지에서 인식된 약물이 없습니다. 직접 추가해 주세요.");
@@ -205,7 +225,10 @@ const MedicinePage = () => {
       <div className="content-wrapper">
         {/* 이미지 분석 섹션 */}
         <div className="image-analysis-section">
-          <h3>이미지 분석</h3>
+          <div className={`ai-bubble ${bubbleStatus}`}>
+            <p>{bubbleMessage}</p>
+          </div>
+          <h3>AI 이미지 분석</h3>
           <div
             className="image-display-box"
             style={{

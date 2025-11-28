@@ -42,6 +42,10 @@ const Header = () => {
     pathname.startsWith('/orders')) {
       return "store";
     }
+    else if (pathname.startsWith('/contactUs')) {
+      return "contactUs";
+    }
+    
   }
 
   useEffect(() => {
@@ -119,7 +123,7 @@ const Header = () => {
           <div className="header_main_menu">
             <ul className="main_menu_container">
               <li className={`main_menu ${activeMenu == 'analyze' ? 'activeMenu' : ''}`}>
-                <NavLink to="analyze/medicine">AI분석</NavLink>
+                <NavLink to="analyze/medicine">스마트 분석</NavLink>
                 <div className="sub_menu_container">
                   <ul className="sub_menu">
                     <li>
@@ -155,16 +159,20 @@ const Header = () => {
                       <NavLink to="store/favorite">찜 목록</NavLink>
                     </li>
                     <li>
-                      <NavLink to="/myOrderList">주문 내역</NavLink>
-                    </li>
-                    <li>
                       <NavLink to="/myReview">나의 리뷰</NavLink>
                     </li>
                     <li>
                       <NavLink to="store/cart">장바구니</NavLink>
                     </li>
+                  </ul>
+                </div>
+              </li>
+              <li className={`main_menu ${activeMenu == 'contactUs' ? 'activeMenu' : ''}`}>
+                <NavLink to="contactUs">고객센터</NavLink>
+                <div className="sub_menu_container">
+                  <ul className="sub_menu">
                     <li>
-                      <NavLink to="store/contactUs">문의하기</NavLink>
+                      <NavLink to="/contactUs">문의하기</NavLink>
                     </li>
                   </ul>
                 </div>
@@ -256,13 +264,6 @@ const Header = () => {
                   찜 목록
                 </NavLink>
                 <NavLink
-                  to="/myOrderList"
-                  className="mobile-menu-link"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  주문 내역
-                </NavLink>
-                <NavLink
                   to="/myReview"
                   className="mobile-menu-link"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -276,8 +277,11 @@ const Header = () => {
                 >
                   장바구니
                 </NavLink>
-                <NavLink
-                  to="/store/contactUs"
+              </li>
+              <li>
+                <p className="mobile-menu-section-title">고객센터</p>
+                <NavLink 
+                  to="/contactUs"
                   className="mobile-menu-link"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

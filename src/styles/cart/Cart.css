@@ -1,6 +1,7 @@
 /* 장바구니 전체 컨테이너 */
 .cart-container {
   padding-top: 80px; /* 네비바 높이 + 여유 공간 */
+  min-height: 70vh;
 }
 
 /* 장바구니 아이템 카드 */
@@ -63,6 +64,26 @@
   white-space: nowrap;
 }
 
+.goods-name-with-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 상품명과 품절 뱃지 사이 간격 */
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-soldout-badge {
+  padding: 2px 6px;
+  background-color: #e74c3c;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
 /* 전체 선택 / 삭제 버튼 */
 .top-buttons {
   display: flex;
@@ -78,7 +99,7 @@
 .summary {
   position: fixed;
   right: 30px;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   width: 260px;
   padding: 22px;

@@ -189,93 +189,111 @@
 .item-name .muted{ margin-left: 8px; color: var(--muted); font-weight: 400; font-size: 13px; }
 .item-price{ white-space: nowrap; font-weight: 800; }
 
-/* --- 적립금 줄 (네이버 스타일) --- */
-.section-points .points-inline {
+/* ========================= */
+/*      적립금 (주문 페이지) */
+/* ========================= */
+
+/* 적립금 카드 자체 */
+.order-points {
+  margin-top: 16px;
+}
+
+/* "사용 0원" + "전액사용" 한 줄 */
+.order-points-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-top: 8px;
 }
 
-/* [사용  0원] 이 들어가는 회색 박스 */
-.section-points .points-box {
+/* 회색 pill 박스 */
+.order-points-box {
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;   /* 🔥 추가 — 양쪽 끝 정렬 */
-  padding: 8px 14px;
+  justify-content: space-between;
+  padding: 10px 16px;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: #f9fafb;
 }
 
 /* "사용" 텍스트 */
-.section-points .point-label {
+.order-points-label {
   font-size: 14px;
   color: #444;
 }
 
-/* 오른쪽 그룹: [0][원] */
-.section-points .point-right {
+/* 오른쪽 묶음: [input][원][X] */
+.order-points-right {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
 }
 
-/* 숫자 입력 (0) */
-.section-points .point-input {
-  width: 60px;
+/* 숫자 입력 */
+.order-points-input {
+  width: 70px;
+  height: 28px;
   border: none;
   background: transparent;
   text-align: right;
   font-size: 14px;
   color: #111827;
-  padding-right: 0; 
-  margin-right: 0;  
+  padding: 0;
+  margin: 0;
+  line-height: 28px;
 }
-.section-points .point-input:focus {
+.order-points-input:focus {
   outline: none;
 }
 
-/* "원" 텍스트 (0 바로 옆에 붙는 느낌) */
-.section-points .point-unit {
+/* "원" 텍스트 */
+.order-points-unit {
   font-size: 14px;
   font-weight: 600;
   color: #16a34a;
 }
 
-/* 전액사용 버튼 (연두색 pill) */
-.section-points .point-use-all {
+/* X 버튼 */
+.order-points-reset-btn {
+  border: none !important;
+  background: transparent !important;
+  padding: 0;
+  min-width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+.order-points-reset-btn:hover {
+  color: #6b7280;
+}
+.order-points-reset-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* 전액사용 pill 버튼 */
+.order-points-use-all {
   background: #e8ffe9;
   color: #22c55e;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.section-points .point-use-all:hover {
+.order-points-use-all:hover {
   background: #d6ffd9;
 }
-
-/* 입력 내용 삭제(X) 버튼 */
-.section-points .point-reset-btn {
-  border: none;
-  background: transparent;
-  color: #9ca3af;              /* 연회색 */
-  padding: 0 4px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.section-points .point-reset-btn:hover {
-  color: #6b7280;              /* 조금 진한 회색 */
-}
-
-.section-points .point-reset-btn svg {
-  width: 14px;
-  height: 14px;
+.order-points-use-all:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .blind {

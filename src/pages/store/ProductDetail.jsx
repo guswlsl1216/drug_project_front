@@ -96,7 +96,6 @@ const ProductDetail = () => {
       method: "get",
       url: "/review/goodsReviewInfo/" + goodsId
     })
-    console.log(res.data['info'])
     setReviewInfo(res.data['info'])
   }
 
@@ -205,11 +204,11 @@ const ProductDetail = () => {
           <div className="detail-info-area">
 
             {/* 제목 및 ID */}
-            <div className="d-flex align-items-center gap-2">
+            <div className="product-header">
               <h1 className="product-title">
                 {product.goods_name}
               </h1>
-              <span className="text-warning fw-bold">
+              <span className="product-rating">
                 ⭐ {reviewInfo['star_avg']}점
               </span>
             </div>
