@@ -59,44 +59,63 @@ const Store = () => {
 
   return (
     <>
-    <div className="store-container">
-      {shouldShowNav && (
-        <nav className="store-nav">
-          <NavLink to="allgoods" className={({isActive}) => (isActive ? "tab active" : "tab")}>
-            전체
-          </NavLink>
-          <NavLink to="functionality" className={({isActive}) => (isActive ? "tab active" : "tab")}>
-            기능성
-          </NavLink>
-          <NavLink to="ingredient" className={({isActive}) => (isActive ? "tab active" : "tab")}>
-            성분별
-          </NavLink>
-        </nav>
-      )}
-
-      <div className={`store-content-wrapper ${shouldShowSideMenu ? 'showSide' : ''}`}>
-        <div className="store-content">
-          <Outlet context={{ 
-            triggerUpdate, 
-            triggerCartUpdate, 
-            searchQuery, 
-            handleSearchChange, 
-            handleSearchSubmit, 
-            submittedSearchQuery, 
-            resetSearchStates 
-          }} />
-        </div>
-        
-        {shouldShowSideMenu && (
-          <div className="store-menu">
-            <StoreSideMenu isUpdated={isUpdated} cartUpdated={cartUpdated} />
+      <div className="wrapper">
+        <section className="store_bg">
+          <div className="bg_text">
+            <h1 className="bg_main_title">Store</h1>
+            <p className="bg_sub_title">내가 먹는 의약품과 분석하며 안전하게 구매하세요. </p>
           </div>
-        )}
+        </section>
+        <div className="store-container-wrapper">
+          <div className="store-container">
+            {shouldShowNav && (
+              <nav className="store-nav">
+                <NavLink
+                  to="allgoods"
+                  className={({isActive}) => (isActive ? "tab active" : "tab")}
+                >
+                  전체
+                </NavLink>
+                <NavLink
+                  to="functionality"
+                  className={({isActive}) => (isActive ? "tab active" : "tab")}
+                >
+                  기능성
+                </NavLink>
+                <NavLink
+                  to="ingredient"
+                  className={({isActive}) => (isActive ? "tab active" : "tab")}
+                >
+                  성분별
+                </NavLink>
+              </nav>
+            )}
+
+            <div className={`store-content-wrapper ${shouldShowSideMenu ? "showSide" : ""}`}>
+              <div className="store-content">
+                <Outlet
+                  context={{
+                    triggerUpdate,
+                    triggerCartUpdate,
+                    searchQuery,
+                    handleSearchChange,
+                    handleSearchSubmit,
+                    submittedSearchQuery,
+                    resetSearchStates,
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          {shouldShowSideMenu && (
+            <div className="store-menu">
+              <StoreSideMenu isUpdated={isUpdated} cartUpdated={cartUpdated} />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
-    
     </>
-  )
+  );
 }
 
 export default Store;
