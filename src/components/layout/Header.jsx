@@ -2,6 +2,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import "../../styles/Header.css";
 import logoImage from "../../images/logo.png";
+import medicheckLogo from "../../images/medicheck.png";
 import { useUser } from "../context/UserContext";
 import requestHandler from "../../utils/requestHandler";
 import Button from "../ui/Button";
@@ -107,7 +108,7 @@ const Header = () => {
         <nav className="header_container">
           <div className="header_logo">
             <NavLink to="/">
-              <h1 className="logo"><img src="src/images/medicheck.png" alt="" srcset="" /></h1>
+              <h1 className="logo"><img src={medicheckLogo} alt="MediCheck 로고" /></h1>
             </NavLink>
           </div>
           <Button
